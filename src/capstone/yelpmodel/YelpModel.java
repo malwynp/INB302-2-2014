@@ -28,25 +28,38 @@ public class YelpModel implements Serializable {
         File reviewFile = new File(dir + "yelp_training_set/yelp_training_set_review.json");
         File userFile = new File(dir + "yelp_training_set/yelp_training_set_user.json");
         
+        System.out.println("Reading businesses...");
         business = new Business(businessFile);
+        System.out.println("...done.");
+
+        System.out.println("Reading checkins...");
         checkin = new Checkin(checkinFile);
+        System.out.println("...done.");
+
+        System.out.println("Reading reviews...");
         review = new Review(reviewFile);
+        System.out.println("...done.");
+
+        System.out.println("Reading users...");
         user = new User(userFile);
+        System.out.println("...done.");
         
     }
     
     public String toString() {
         String str = "YelpModel:\n";
         
-        str += "\tBusinesses:" + business.size() + "\n";
-        str += "\tCheckins:" + checkin.size() + "\n";
         str += "\tReviews:" + review.size() + "\n";
-        str += "\tUsers:" + user.size() + "\n";
+        str += "\tReview fields: " + ((JSONObject)(review.json.get(0))).keySet() + "\n";
+
+        str += "\tBusinesses:" + business.size() + "\n";
+        str += "\tBusiness fields: " + ((JSONObject)(business.json.get(0))).keySet() + "\n";
         
-        str += "Review fields: " + ((JSONObject)(review.json.get(0))).keySet() + "\n";
-        str += "Business fields: " + ((JSONObject)(business.json.get(0))).keySet() + "\n";
-        str += "Checkin fields: " + ((JSONObject)(checkin.json.get(0))).keySet() + "\n";
-        str += "User fields: " + ((JSONObject)(user.json.get(0))).keySet() + "\n";
+        str += "\tCheckins:" + checkin.size() + "\n";
+        str += "\tCheckin fields: " + ((JSONObject)(checkin.json.get(0))).keySet() + "\n";
+        
+        str += "\tUsers:" + user.size() + "\n";
+        str += "\tUser fields: " + ((JSONObject)(user.json.get(0))).keySet() + "\n";
         
         return str;
     }

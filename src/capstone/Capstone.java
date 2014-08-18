@@ -6,6 +6,11 @@
 
 package capstone;
 
+import capstone.testsuite.ReviewTest;
+import capstone.testsuite.TestSuite;
+import capstone.testsuite.TestUpperCasePercentage;
+import capstone.yelpmodel.Business;
+import capstone.yelpmodel.Review;
 import capstone.yelpmodel.YelpModel;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -21,6 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -28,38 +34,73 @@ import javax.swing.JScrollPane;
  */
 public class Capstone {
     
-    public static final int MAX_RECORDS = 64;
+    public static final int MAX_RECORDS = 20000;
+    public static final int OUTPUT_RECORD_FREQUENCY = 500;
 
+    protected static YelpModel model;
+    
     public static void main(String[] args) throws Exception {
-        
-        System.out.println("Herp");
-        final YelpModel model = new YelpModel("/home/mark/Downloads/yelp/");
-        System.out.println("Derp");
-/*        File f = new File("capstone_yelp_db2.ser");
 
-        FileOutputStream fos = new FileOutputStream(f);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(model);
-        oos.close();
-        fos.close();
+        File f = new File("capstone_yelp_2p31.ser");
 
-        model = null;
-        FileInputStream fis = new FileInputStream(f);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        model = (YelpModel)ois.readObject();
-        ois.close();
-        fis.close(); */
+        try {
+            System.out.println("Reading from serialized object file...");
+            model = null;
+            FileInputStream fis = new FileInputStream(f);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            model = (YelpModel) (ois.readObject());
+            System.out.println("...done.\n");
+        } catch (Exception e) {
+            System.out.println("Reading from file...");
+            model = new YelpModel("/home/mark/Downloads/yelp/");
+            System.out.println("...done.\n");
+
+            System.out.println("Saving serialized object file...");
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(model);
+            oos.close();
+            fos.close();
+            System.out.println("...done.\n");
+        }
         
         System.out.println(model);
-        DefaultListModel<String> listModel = new DefaultListModel<String>();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
 
-        for (int i = 0; i < MAX_RECORDS; i++) {
-           String str = i + ":" + model.getReviews().get(i).get("text").toString();
-           str.substring(0, 8);
-           str = str.replace("\n", "<br/>");
-//           System.out.println("[" + str + "]");
-           listModel.addElement(str);
+        Review set = model.getReviews();
+        Business bus = model.getBusinesses();
+        
+        System.out.println("Original set size: " +set.size());
+
+        System.out.println("Trimming by useful votes:");
+        set = set.trimByVotes("useful", 1L);
+        System.out.println("set size: " +set.size());
+        
+        Review setA, setB;
+        
+        System.out.println("Trimming by business review count (8), method A:");
+        setA = set.trimByBusinessPopularity(8);
+        System.out.println("set A size: " +setA.size());
+
+        System.out.println("Trimming by business review count (8), method B:");
+        setB = set.trimByBusinessPopularity(8, bus);
+        System.out.println("set B size: " +setB.size());
+        
+        TestSuite suite = new TestSuite(new ReviewTest[] {
+           new TestUpperCasePercentage(), 
+        });
+
+        System.out.println("Trimming by test suite:");
+        setB = setB.trimByTestSuite(suite, 20);
+        System.out.println("set B size: " +setB.size());
+        double[] score = suite.testAllRecords(setB);
+        
+        for (int i = 0; i < setB.size(); i++) {
+            JSONObject record = setB.get(i);
+            System.out.println(i + "[testscore:" + score[i] + "] " + Review.niceString(record));
         }
+        
+        System.exit(0);
         
         JFrame frame = new JFrame("GUI");
         frame.setPreferredSize(new Dimension(640, 480));

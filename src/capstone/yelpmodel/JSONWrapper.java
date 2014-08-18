@@ -11,12 +11,17 @@ import org.json.simple.JSONValue;
 
 public class JSONWrapper implements Serializable {
     
-    public static final int MAX_RECORDS = capstone.Capstone.MAX_RECORDS;
-    
     JSONArray json = null;
     
     public JSONWrapper(String src) {
         json = (JSONArray)JSONValue.parse(src);
+    }
+    
+    public JSONWrapper(JSONObject[] arr) {
+        json = new JSONArray();
+        for (JSONObject o : arr) {
+            json.add(o);
+        }
     }
 
     public JSONWrapper(File f) {
@@ -30,11 +35,13 @@ public class JSONWrapper implements Serializable {
             BufferedReader br = new BufferedReader(isr);
 
             int count = 0;
-            while (br.ready() && count < MAX_RECORDS) {
+            while (br.ready() && count < capstone.Capstone.MAX_RECORDS) {
                 String line = br.readLine();
                 src += line + ",\n";
                 count++;
+                if (count % capstone.Capstone.OUTPUT_RECORD_FREQUENCY == 0) System.out.println("\t[ read: " + count + " ]");
             }
+            System.out.print(" (records: " + count + ") ");
             
             src += "]";
 

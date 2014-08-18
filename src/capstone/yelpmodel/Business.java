@@ -7,6 +7,7 @@
 package capstone.yelpmodel;
 
 import java.io.File;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -21,4 +22,26 @@ public class Business extends JSONWrapper {
         super(f);
     }
     
+    public JSONObject getBusinessById(String business_id) {
+        
+        for (int i = 0; i < size(); i++) {
+            if (get(i).get("business_id").equals(business_id)) return get(i);
+        }
+        
+        return null;
+        
+    }
+    
+    public static String niceString(JSONObject o) {
+        if (o == null) return null;
+        String str = "[Business:" + o.get("business_id") + "]";
+        str += "\n\t(review_count = " + o.get("review_count") + ")";
+        str += "\n\t(stars = " + o.get("stars") + ")";
+        str += "\n\t(type = " + o.get("type") + ")";
+        str += "\n\t(name = " + o.get("name") + ")";
+        str += "\n\t(categories = " + o.get("categories") + ")";
+        str += "\n----------\n";
+        return str;
+    }
+
 }
