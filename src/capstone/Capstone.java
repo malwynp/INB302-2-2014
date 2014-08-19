@@ -8,7 +8,7 @@ package capstone;
 
 import capstone.testsuite.ReviewTest;
 import capstone.testsuite.TestSuite;
-import capstone.testsuite.TestUpperCasePercentage;
+import capstone.testsuite.S2_UpperCasePercentageTest;
 import capstone.yelpmodel.Business;
 import capstone.yelpmodel.Review;
 import capstone.yelpmodel.YelpModel;
@@ -76,23 +76,15 @@ public class Capstone {
         set = set.trimByVotes("useful", 1L);
         System.out.println("set size: " +set.size());
         
-        Review setA, setB;
-        
-        System.out.println("Trimming by business review count (8), method A:");
-        setA = set.trimByBusinessPopularity(8);
-        System.out.println("set A size: " +setA.size());
-
-        System.out.println("Trimming by business review count (8), method B:");
-        setB = set.trimByBusinessPopularity(8, bus);
-        System.out.println("set B size: " +setB.size());
-        
         TestSuite suite = new TestSuite(new ReviewTest[] {
-           new TestUpperCasePercentage(), 
+           new S2_UpperCasePercentageTest(), 
         });
+        
+        suite = TestSuite.getDefaultSuite();
 
         System.out.println("Trimming by test suite:");
-        setB = setB.trimByTestSuite(suite, 20);
-        System.out.println("set B size: " +setB.size());
+        Review setB = set.trimByTestSuite(suite, 15);
+        System.out.println("set size: " +setB.size());
         double[] score = suite.testAllRecords(setB);
         
         for (int i = 0; i < setB.size(); i++) {

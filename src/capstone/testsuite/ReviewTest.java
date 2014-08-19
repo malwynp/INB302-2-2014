@@ -6,14 +6,15 @@
 
 package capstone.testsuite;
 
+import capstone.CapException;
 import capstone.yelpmodel.Review;
 
 /**
  *
  * @author mark
  */
-public interface ReviewTest {
+public abstract class ReviewTest {
     
-    public double getScore(Review review, int index);
+    public abstract double getScore(Review review, int index) throws CapException;
     
 }

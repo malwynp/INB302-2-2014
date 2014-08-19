@@ -6,6 +6,7 @@
 
 package capstone.yelpmodel;
 
+import capstone.CapException;
 import capstone.testsuite.TestSuite;
 import java.io.File;
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class Review extends JSONWrapper {
         return new Review(lobj2.toArray(new JSONObject[lobj2.size()]));
     }
     
-    public Review trimByTestSuite(TestSuite suite, double minimumScore) {
+    public Review trimByTestSuite(TestSuite suite, double minimumScore) throws CapException {
         List <JSONObject> lobj = new ArrayList<>();
         double scores[] = suite.testAllRecords(this);
         
@@ -132,5 +133,9 @@ public class Review extends JSONWrapper {
         str += "\n----------\n";
         
         return str;
+    }
+
+    public boolean contains(int index) {
+        return index >= 0 && index < size();
     }
 }

@@ -6,6 +6,7 @@
 
 package capstone.testsuite;
 
+import capstone.CapException;
 import capstone.yelpmodel.Review;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class TestSuite {
         }
     }
     
-    public double testRecord(Review reviews, int index) {
+    public double testRecord(Review reviews, int index) throws CapException {
         double score = 0;
         
         for (ReviewTest rt : tests) {
@@ -38,7 +39,7 @@ public class TestSuite {
         return score;
     }
     
-    public double[] testAllRecords(Review reviews) {
+    public double[] testAllRecords(Review reviews) throws CapException {
         double[] results = new double[reviews.size()];
         
         for (int i = 0; i < reviews.size(); i++) {
@@ -46,6 +47,18 @@ public class TestSuite {
         }
         
         return results;
+    }
+    
+    public static final TestSuite getDefaultSuite() {
+        return new TestSuite( new ReviewTest[] {
+           new S2_UpperCasePercentageTest(), 
+           new S3_NewLineRatioTest(), 
+           new S4_WordCountTest(), 
+           new S5_ComplexWordCountTest(), 
+           new S6_SentenceCountTest(), 
+           new S7_AverageWordSyllableTest(), 
+           new S8_AverageWordsPerSentenceTest(), 
+        });
     }
     
 }
