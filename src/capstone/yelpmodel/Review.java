@@ -110,12 +110,12 @@ public class Review extends JSONWrapper {
         return new Review(lobj2.toArray(new JSONObject[lobj2.size()]));
     }
     
-    public Review trimByTestSuite(TestSuite suite, double minimumScore) throws CapException {
+    public Review trimByTestSuite(TestSuite suite) throws CapException {
         List <JSONObject> lobj = new ArrayList<>();
-        double scores[] = suite.testAllRecords(this);
+        boolean scores[] = suite.testAllRecordsPassFail(this);
         
         for (int i = 0; i < scores.length; i++) {
-            if (scores[i] >= minimumScore) lobj.add(get(i));
+            if (scores[i]) lobj.add(get(i));
         }
         
         return new Review(lobj.toArray(new JSONObject[lobj.size()]));

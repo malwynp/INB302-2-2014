@@ -16,6 +16,10 @@ import org.json.simple.JSONObject;
  */
 public class S3_NewLineRatioTest extends ReviewTest {
 
+    public S3_NewLineRatioTest(double minimum, double maximum) {
+        super(minimum, maximum);
+    }
+
     public double getScore(Review review, int index) throws CapException {
         if (review == null || !review.contains(index))
             throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");

@@ -38,6 +38,15 @@ public class TestSuite {
         
         return score;
     }
+    public boolean testRecordPassFail(Review reviews, int index) throws CapException {
+        
+        for (ReviewTest rt : tests) {
+            if (!rt.getScorePassFail(reviews, index))
+                return false;
+        }
+        
+        return true;
+    }
     
     public double[] testAllRecords(Review reviews) throws CapException {
         double[] results = new double[reviews.size()];
@@ -51,14 +60,24 @@ public class TestSuite {
     
     public static final TestSuite getDefaultSuite() {
         return new TestSuite( new ReviewTest[] {
-           new S2_UpperCasePercentageTest(), 
-           new S3_NewLineRatioTest(), 
-           new S4_WordCountTest(), 
-           new S5_ComplexWordCountTest(), 
-           new S6_SentenceCountTest(), 
-           new S7_AverageWordSyllableTest(), 
-           new S8_AverageWordsPerSentenceTest(), 
+           new S2_UpperCasePercentageTest(0, 15), 
+           new S3_NewLineRatioTest(0, 10), 
+           new S4_WordCountTest(5, 250), 
+           new S5_ComplexWordCountTest(5, 250), 
+           new S6_SentenceCountTest(1, 50), 
+           new S7_AverageWordSyllableTest(1,3), 
+           new S8_AverageWordsPerSentenceTest(3,10), 
         });
+    }
+
+    public boolean[] testAllRecordsPassFail(Review reviews) throws CapException {
+        boolean[] results = new boolean[reviews.size()];
+        
+        for (int i = 0; i < reviews.size(); i++) {
+            results[i] = testRecordPassFail(reviews, i);
+        }
+        
+        return results;
     }
     
 }

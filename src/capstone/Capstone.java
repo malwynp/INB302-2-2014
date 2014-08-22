@@ -7,8 +7,9 @@
 package capstone;
 
 import capstone.testsuite.ReviewTest;
+import capstone.testsuite.S4_WordCountTest;
+import capstone.testsuite.TestInverter;
 import capstone.testsuite.TestSuite;
-import capstone.testsuite.S2_UpperCasePercentageTest;
 import capstone.yelpmodel.Business;
 import capstone.yelpmodel.Review;
 import capstone.yelpmodel.YelpModel;
@@ -26,6 +27,8 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import org.json.simple.JSONObject;
 
 /**
@@ -34,13 +37,20 @@ import org.json.simple.JSONObject;
  */
 public class Capstone {
     
-    public static final int MAX_RECORDS = 20000;
+    public static final int MAX_RECORDS = 25000;
     public static final int OUTPUT_RECORD_FREQUENCY = 500;
 
     protected static YelpModel model;
     
     public static void main(String[] args) throws Exception {
 
+        try {
+            for (LookAndFeelInfo lafi : UIManager.getInstalledLookAndFeels())
+                if (lafi.getName().contains("GTK"))
+                    UIManager.setLookAndFeel(lafi.getClassName());
+        } catch (Exception e) {
+        }
+        
         File f = new File("capstone_yelp_2p31.ser");
 
         try {
@@ -77,19 +87,24 @@ public class Capstone {
         System.out.println("set size: " +set.size());
         
         TestSuite suite = new TestSuite(new ReviewTest[] {
-           new S2_UpperCasePercentageTest(), 
+//           new S2_UpperCasePercentageTest(70, 100), 
+//            new S4_WordCountTest(1, 2),
+            new TestInverter(new S4_WordCountTest(10, 1000)),
         });
         
-        suite = TestSuite.getDefaultSuite();
+//        suite = TestSuite.getDefaultSuite();
 
         System.out.println("Trimming by test suite:");
-        Review setB = set.trimByTestSuite(suite, 15);
+        Review setB = set.trimByTestSuite(suite);
         System.out.println("set size: " +setB.size());
         double[] score = suite.testAllRecords(setB);
         
         for (int i = 0; i < setB.size(); i++) {
             JSONObject record = setB.get(i);
-            System.out.println(i + "[testscore:" + score[i] + "] " + Review.niceString(record));
+            String str = (String) record.get("text");
+            str = str.replace("\n", "");
+            System.out.println(i + "[testscore:" + score[i] + "] " + str);
+//            System.out.println(i + "[testscore:" + score[i] + "] " + Review.niceString(record));
         }
         
         System.exit(0);

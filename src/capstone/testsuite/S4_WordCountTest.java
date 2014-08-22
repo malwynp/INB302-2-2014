@@ -16,18 +16,24 @@ import org.json.simple.JSONObject;
  */
 public class S4_WordCountTest extends ReviewTest {
 
+    public S4_WordCountTest(double minimum, double maximum) {
+        super(minimum, maximum);
+    }
+
     public double getScore(Review review, int index) throws CapException {
         if (review == null || !review.contains(index))
             throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
 
         JSONObject record = review.get(index);
         String text = (String) record.get("text");
-        text = text.replace("<br/>", "");
-        text = text.replace("<br />", "");
-        text = text.replace("<p>", "");
-        text = text.replace("</p>", "");
+        text = text.replace("<br/>", " ");
+        text = text.replace("<br />", " ");
+        text = text.replace("<p>", " ");
+        text = text.replace("</p>", " ");
+        text = text.replace("\n", " ");
+        text = text.replace("\t", " ");
         
-        String toks[] = text.split(" \t\n");
+        String toks[] = text.split(" ");
         
         return (double)toks.length;
     }

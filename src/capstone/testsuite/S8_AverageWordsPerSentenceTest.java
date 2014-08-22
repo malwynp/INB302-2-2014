@@ -15,8 +15,13 @@ import capstone.yelpmodel.Review;
  */
 public class S8_AverageWordsPerSentenceTest extends ReviewTest {
 
+    public S8_AverageWordsPerSentenceTest(double minimum, double maximum) {
+        super(minimum, maximum);
+    }
+
     public double getScore(Review review, int index) throws CapException {
-        throw new CapException("Not yet implemented: " + this.getClass().getSimpleName());
+        return (minimum + maximum) / 2;
+//        throw new CapException("Not yet implemented: " + this.getClass().getSimpleName());
     }
     
 }

@@ -15,6 +15,44 @@ import capstone.yelpmodel.Review;
  */
 public abstract class ReviewTest {
     
-    public abstract double getScore(Review review, int index) throws CapException;
+    public static final int PROBABILITY_SCORE_MODEL = 1;
+    public static final int PERCENTAGE_SCORE_MODEL = 2;
+    public static final int ABSOLUTE_SCORE_MODEL = 3;
     
+    double minimum = 0, maximum = 100;
+    public ReviewTest(double minimum, double maximum) {
+        setMinimum(minimum);
+        setMaximum(maximum);
+    }
+    
+    public abstract double getScore(Review review, int index) throws CapException;
+
+    public boolean getScorePassFail(Review review, int index) throws CapException {
+        double score = getScore(review, index);
+        return passes(score);
+    }
+    
+    public void setMinimum(double minimum) {
+        this.minimum = minimum;
+    }
+    public void setMaximum(double maximum) {
+        this.maximum = maximum;
+    }
+    
+    public double getMinimum() {
+        return minimum;
+    }
+    
+    public double getMaximum() {
+        return maximum;
+    }
+    
+    public boolean passes(double score) {
+        return (score >= minimum) && (score < maximum);
+    }
+    
+    public boolean fails(double score) {
+        return !passes(score);
+    }
+        
 }
