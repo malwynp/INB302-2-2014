@@ -7,8 +7,10 @@
 package capstone;
 
 import capstone.testsuite.ReviewTest;
+import capstone.testsuite.S2_UpperCasePercentageTest;
 import capstone.testsuite.S4_WordCountTest;
 import capstone.testsuite.TestInverter;
+import capstone.testsuite.TestResult;
 import capstone.testsuite.TestSuite;
 import capstone.yelpmodel.Business;
 import capstone.yelpmodel.Review;
@@ -37,7 +39,7 @@ import org.json.simple.JSONObject;
  */
 public class Capstone {
     
-    public static final int MAX_RECORDS = 25000;
+    public static final int MAX_RECORDS = 2500;
     public static final int OUTPUT_RECORD_FREQUENCY = 500;
 
     protected static YelpModel model;
@@ -87,25 +89,14 @@ public class Capstone {
         System.out.println("set size: " +set.size());
         
         TestSuite suite = new TestSuite(new ReviewTest[] {
-//           new S2_UpperCasePercentageTest(70, 100), 
-//            new S4_WordCountTest(1, 2),
-            new TestInverter(new S4_WordCountTest(10, 1000)),
+            new S2_UpperCasePercentageTest(70, 100), 
+            new S4_WordCountTest(10, 500),
+        //    new TestInverter(new S4_WordCountTest(10, 1000)),
         });
         
-//        suite = TestSuite.getDefaultSuite();
-
-        System.out.println("Trimming by test suite:");
-        Review setB = set.trimByTestSuite(suite);
-        System.out.println("set size: " +setB.size());
-        double[] score = suite.testAllRecords(setB);
+        TestResult tr = suite.testAndStoreAllRecords(set);
         
-        for (int i = 0; i < setB.size(); i++) {
-            JSONObject record = setB.get(i);
-            String str = (String) record.get("text");
-            str = str.replace("\n", "");
-            System.out.println(i + "[testscore:" + score[i] + "] " + str);
-//            System.out.println(i + "[testscore:" + score[i] + "] " + Review.niceString(record));
-        }
+        System.out.println(tr);
         
         System.exit(0);
         

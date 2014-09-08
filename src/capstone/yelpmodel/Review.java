@@ -30,6 +30,15 @@ public class Review extends JSONWrapper {
         super(arr);
     }
     
+    protected void storeBusinessNames(Business business) {
+        for (int i = 0; i < json.size(); i++) {
+            JSONObject obj = (JSONObject) json.get(i);
+            if (!obj.containsKey("business_id")) continue;
+            JSONObject bus = business.getBusinessById((String) obj.get("business_id"));
+            obj.put("business_name", bus.get("name"));
+        }
+    }
+    
     public Review getReviewsForBusiness(String business_id) {
         if (business_id == null) return null;
         List<JSONObject> lobj = new ArrayList<>();

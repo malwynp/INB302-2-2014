@@ -27,6 +27,27 @@ public abstract class ReviewTest {
     
     public abstract double getScore(Review review, int index) throws CapException;
 
+    public String toString() {
+        String str = this.getClass().getSimpleName();
+
+        // Nice-ify S#_ prefix, if any
+        if (str.contains("_")) {
+            String prefix = str.substring(0, str.indexOf("_"));
+            str = str.substring(str.indexOf("_") + 1);
+            str = prefix + "\t" + str;
+        }
+        
+        // Remove *Test suffix, if any
+        if (str.endsWith("Test")) {
+            str = str.substring(0, str.length() - 4);
+        }
+        
+        // Append range
+        str += " (" + minimum + " < n < " + maximum + ")\t";
+        
+        return str;
+    }
+    
     public boolean getScorePassFail(Review review, int index) throws CapException {
         double score = getScore(review, index);
         return passes(score);

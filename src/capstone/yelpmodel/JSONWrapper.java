@@ -39,7 +39,8 @@ public class JSONWrapper implements Serializable {
                 String line = br.readLine();
                 src += line + ",\n";
                 count++;
-                if (count % capstone.Capstone.OUTPUT_RECORD_FREQUENCY == 0) System.out.println("\t[ read: " + count + " ]");
+                if (count % capstone.Capstone.OUTPUT_RECORD_FREQUENCY == 0)
+                    System.out.println("\t[ read: " + count + " ]");
             }
             System.out.print(" (records: " + count + ") ");
             

@@ -23,13 +23,11 @@ public class Business extends JSONWrapper {
     }
     
     public JSONObject getBusinessById(String business_id) {
-        
         for (int i = 0; i < size(); i++) {
             if (get(i).get("business_id").equals(business_id)) return get(i);
         }
         
         return null;
-        
     }
     
     public static String niceString(JSONObject o) {

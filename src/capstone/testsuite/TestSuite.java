@@ -38,6 +38,9 @@ public class TestSuite {
         
         return score;
     }
+    public double testRecord(Review reviews, int index, ReviewTest test) throws CapException {
+        return test.getScore(reviews, index);
+    }
     public boolean testRecordPassFail(Review reviews, int index) throws CapException {
         
         for (ReviewTest rt : tests) {
@@ -47,12 +50,27 @@ public class TestSuite {
         
         return true;
     }
+    public boolean testRecordPassFail(Review reviews, int index, ReviewTest test) throws CapException {
+        return test.getScorePassFail(reviews, index);
+    }
     
     public double[] testAllRecords(Review reviews) throws CapException {
         double[] results = new double[reviews.size()];
         
         for (int i = 0; i < reviews.size(); i++) {
             results[i] = testRecord(reviews, i);
+        }
+        
+        return results;
+    }
+    
+    public TestResult testAndStoreAllRecords(Review reviews) throws CapException {
+        TestResult results = new TestResult();
+        
+        for (int i = 0; i < reviews.size(); i++) {
+            for (ReviewTest rt : tests) {
+                results.store(reviews.get(i), rt, testRecord(reviews, i, rt), testRecordPassFail(reviews, i, rt));
+            }
         }
         
         return results;
