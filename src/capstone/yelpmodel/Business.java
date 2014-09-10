@@ -89,4 +89,18 @@ public class Business extends JSONWrapper {
         ignoreRecordLimit = true;
     }
     
+    public String[] getAllBusinessCategories() {
+        List<String> list = new ArrayList<>();
+        
+        for (Object obj : json) {
+            JSONObject o = (JSONObject)obj;
+            JSONArray cats = (JSONArray) o.get("categories");
+            for (Object c : cats) {
+                if (!list.contains((String)c)) list.add((String)c);
+            }
+        }
+        
+        return list.toArray(new String[list.size()]);
+    }
+    
 }

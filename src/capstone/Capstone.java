@@ -38,7 +38,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
  */
 public class Capstone {
     
-    public static final int MAX_RECORDS = 12500;
+    public static final int MAX_RECORDS = 5000;
     public static final int OUTPUT_RECORD_FREQUENCY = 500;
 
     protected static YelpModel model;
