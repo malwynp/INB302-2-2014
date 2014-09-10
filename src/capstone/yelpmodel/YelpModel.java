@@ -40,6 +40,10 @@ public class YelpModel implements Serializable {
         review = new Review(reviewFile);
         System.out.println("...done.");
 
+        System.out.println("Syncing reviews to businesses...");
+        review.storeBusinessNames(business);
+        System.out.println("...done.");
+
         System.out.println("Reading users...");
         user = new User(userFile);
         System.out.println("...done.");

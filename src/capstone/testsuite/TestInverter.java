@@ -42,4 +42,9 @@ public class TestInverter extends ReviewTest {
         return innerTest.passes(score);
     }
     
+    @Override
+    public String toString() {
+        return "!" + innerTest.toString();
+    }
+    
 }

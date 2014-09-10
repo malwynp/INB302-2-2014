@@ -11,20 +11,27 @@ import org.json.simple.JSONValue;
 
 public class JSONWrapper implements Serializable {
     
+    protected boolean ignoreRecordLimit = false;
+    
     JSONArray json = null;
     
     public JSONWrapper(String src) {
+        preload();
         json = (JSONArray)JSONValue.parse(src);
+        postload();
     }
     
     public JSONWrapper(JSONObject[] arr) {
+        preload();
         json = new JSONArray();
         for (JSONObject o : arr) {
             json.add(o);
         }
+        postload();
     }
 
     public JSONWrapper(File f) {
+        preload();
         
         try {
         
@@ -35,7 +42,7 @@ public class JSONWrapper implements Serializable {
             BufferedReader br = new BufferedReader(isr);
 
             int count = 0;
-            while (br.ready() && count < capstone.Capstone.MAX_RECORDS) {
+            while (br.ready() && (count < capstone.Capstone.MAX_RECORDS || ignoreRecordLimit)) {
                 String line = br.readLine();
                 src += line + ",\n";
                 count++;
@@ -52,6 +59,8 @@ public class JSONWrapper implements Serializable {
         catch (Exception e) {
             System.out.println(e);
         }
+        
+        postload();
     }
     
     public int size() {
@@ -60,6 +69,11 @@ public class JSONWrapper implements Serializable {
     
     public JSONObject get(int index) {
         return (JSONObject)json.get(index);
+    }
+    
+    public void preload() {
+    }
+    public void postload() {
     }
 
 }
