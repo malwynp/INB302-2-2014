@@ -31,7 +31,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-import org.json.simple.JSONObject;
 
 /**
  *
@@ -39,7 +38,7 @@ import org.json.simple.JSONObject;
  */
 public class Capstone {
     
-    public static final int MAX_RECORDS = 2500;
+    public static final int MAX_RECORDS = 12500;
     public static final int OUTPUT_RECORD_FREQUENCY = 500;
 
     protected static YelpModel model;
@@ -81,8 +80,14 @@ public class Capstone {
 
         Review set = model.getReviews();
         Business bus = model.getBusinesses();
-        
+
         System.out.println("Original set size: " +set.size());
+
+        System.out.println("Trimming businesses by category: " + "Diners");
+        bus = bus.trimByCategory(new String[]{"diners"});
+        System.out.println("Trimming reviews by business set:");
+        set = set.trimByBusinessSet(bus);
+        System.out.println("Set size: " +set.size());
 
         System.out.println("Trimming by useful votes:");
         set = set.trimByVotes("useful", 1L);
@@ -91,8 +96,9 @@ public class Capstone {
         TestSuite suite = new TestSuite(new ReviewTest[] {
             new S2_UpperCasePercentageTest(70, 100), 
             new S4_WordCountTest(10, 500),
-        //    new TestInverter(new S4_WordCountTest(10, 1000)),
+//            new TestInverter(new TestInverter(new S4_WordCountTest(10, 500))),
         });
+//        suite = TestSuite.getDefaultSuite();
         
         TestResult tr = suite.testAndStoreAllRecords(set);
         

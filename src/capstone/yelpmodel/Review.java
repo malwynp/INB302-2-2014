@@ -34,8 +34,13 @@ public class Review extends JSONWrapper {
         for (int i = 0; i < json.size(); i++) {
             JSONObject obj = (JSONObject) json.get(i);
             if (!obj.containsKey("business_id")) continue;
-            JSONObject bus = business.getBusinessById((String) obj.get("business_id"));
-            obj.put("business_name", bus.get("name"));
+            
+            String busId = (String) obj.get("business_id");
+            JSONObject bus = business.getBusinessById(busId);
+            
+            String busName = (String) bus.get("name");
+            
+            obj.put("business_name", busName);
         }
     }
     
@@ -147,4 +152,32 @@ public class Review extends JSONWrapper {
     public boolean contains(int index) {
         return index >= 0 && index < size();
     }
+
+    public Review trimByBusinessSet(Business business) {
+        List <JSONObject> lobj = new ArrayList<>();
+        
+        for (Object obj : json) {
+            JSONObject o = (JSONObject) obj;
+            if (business.getBusinessById((String) o.get("business_id")) != null) {
+                lobj.add(o);
+            }
+        }
+        
+        return new Review(lobj.toArray(new JSONObject[lobj.size()]));
+    }
+    
+    protected HashMap<String, Integer> reviewIndex;
+    @Override
+    public void postload() {
+        reviewIndex = new HashMap<>();
+        
+        int index = 0;
+        for (Object obj : json) {
+            JSONObject o = (JSONObject)obj;
+            String reviewId = (String)o.get("review_id");
+            if (reviewId != null) reviewIndex.put(reviewId, index);
+            index++;
+        }
+    }
+
 }

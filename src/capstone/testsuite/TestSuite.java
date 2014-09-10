@@ -84,7 +84,11 @@ public class TestSuite {
            new S5_ComplexWordCountTest(5, 250), 
            new S6_SentenceCountTest(1, 50), 
            new S7_AverageWordSyllableTest(1,3), 
-           new S8_AverageWordsPerSentenceTest(3,10), 
+           new S8_AverageWordsPerSentenceTest(3,10),
+           new S9_FleschReadingEaseTest(0,0),
+           new S10_FleschKinkaidGradeLevelTest(0,0),
+           new S11_FogIndexTest(0,0),
+           new S12_SmogTest(0,0),
         });
     }
 
