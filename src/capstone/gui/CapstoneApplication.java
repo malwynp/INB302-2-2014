@@ -88,6 +88,7 @@ public class CapstoneApplication extends JFrame implements ActionListener {
         if (model == null || model.getBusinesses() == null) return null;
         String[] arr = model.getBusinesses().getAllBusinessCategories();
         ComboBoxModel cbm = new DefaultComboBoxModel(arr);
+        
         return cbm;
     }
     

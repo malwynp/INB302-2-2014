@@ -6,6 +6,7 @@
 
 package capstone.gui;
 
+import capstone.yelpmodel.Business;
 import capstone.yelpmodel.YelpModel;
 
 /**
@@ -40,6 +41,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         businessCategorySelection = new javax.swing.JComboBox();
+        businessCategorySetView = new capstone.gui.DataSetView();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
 
@@ -47,13 +49,21 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
 
+        businessCategorySelection.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                businessCategorySelectionEvent(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(businessCategorySelection, 0, 364, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(businessCategorySetView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(businessCategorySelection, 0, 364, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -61,7 +71,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(businessCategorySelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(253, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(businessCategorySetView, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Select Business Type", jPanel1);
@@ -95,9 +107,19 @@ public class MainGUIPanel extends javax.swing.JPanel {
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void businessCategorySelectionEvent(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_businessCategorySelectionEvent
+        if (evt.getItem() == null) return;
+        
+        Business bus = model.getBusinesses();
+        bus = bus.trimByCategory(new String[] { (String)evt.getItem() });
+
+        businessCategorySetView.setModel(bus);
+    }//GEN-LAST:event_businessCategorySelectionEvent
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox businessCategorySelection;
+    private capstone.gui.DataSetView businessCategorySetView;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

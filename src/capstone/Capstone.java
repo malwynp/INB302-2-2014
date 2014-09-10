@@ -40,6 +40,7 @@ public class Capstone {
     
     public static final int MAX_RECORDS = 5000;
     public static final int OUTPUT_RECORD_FREQUENCY = 500;
+    public static final boolean GUI_DEBUG = false;
 
     protected static YelpModel model;
     

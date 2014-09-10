@@ -42,7 +42,7 @@ public class JSONWrapper implements Serializable {
             BufferedReader br = new BufferedReader(isr);
 
             int count = 0;
-            while (br.ready() && (count < capstone.Capstone.MAX_RECORDS || ignoreRecordLimit)) {
+            while (br.ready() && (count < capstone.Capstone.MAX_RECORDS || (ignoreRecordLimit && !capstone.Capstone.GUI_DEBUG))) {
                 String line = br.readLine();
                 src += line + ",\n";
                 count++;
@@ -74,6 +74,10 @@ public class JSONWrapper implements Serializable {
     public void preload() {
     }
     public void postload() {
+    }
+    
+    public JSONObject[] getArray() {
+        return (JSONObject[]) json.toArray(new JSONObject[json.size()]);
     }
 
 }
