@@ -53,7 +53,7 @@ public class Review extends JSONWrapper {
                 lobj.add(get(i));
         }
         
-        return new Review((JSONObject[]) lobj.toArray());
+        return new Review(lobj.toArray(new JSONObject[lobj.size()]));
     }
     
     public Review trimByVotes(String voteType, long minimum) {

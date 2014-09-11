@@ -42,7 +42,17 @@ public class JSONFriendlyListCellRenderer implements ListCellRenderer<JSONObject
         
         if (keys != null) {
             for (String k : keys) {
+                Object var = o.get(k);
+
+                if (k.contains(".")) {
+                    String[] path = k.split(".");
+                    for (String p : path) {
+                        var = ((JSONObject)var).get(p);
+                    }
+                }
+                
                 if (o.get(k) == null) continue;
+                
                 JLabel cell = null;
                 if (o.get(k) instanceof Number) {
                     cell = new JLabel("" + o.get(k));

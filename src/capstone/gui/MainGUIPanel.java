@@ -6,8 +6,15 @@
 
 package capstone.gui;
 
+import capstone.CapException;
 import capstone.yelpmodel.Business;
+import capstone.yelpmodel.Review;
 import capstone.yelpmodel.YelpModel;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -20,6 +27,17 @@ public class MainGUIPanel extends javax.swing.JPanel {
      */
     public MainGUIPanel() {
         initComponents();
+        
+        businessSelectView.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent lse) {
+                try {
+                    businessSelected(lse);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                        
+            }
+        });
     }
 
     private CapstoneApplication app;
@@ -27,6 +45,16 @@ public class MainGUIPanel extends javax.swing.JPanel {
         super();
         this.app = app;
         initComponents();
+        businessSelectView.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent lse) {
+                try {
+                    businessSelected(lse);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                        
+            }
+        });
     }
 
     /**
@@ -41,8 +69,11 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         businessCategorySelection = new javax.swing.JComboBox();
-        businessCategorySetView = new capstone.gui.DataSetView();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        businessDetailView = new javax.swing.JLabel();
+        businessSelectView = new capstone.gui.DataSetView();
         jPanel2 = new javax.swing.JPanel();
+        businessReviewView = new capstone.gui.DataSetView();
         jPanel3 = new javax.swing.JPanel();
 
         setLayout(new java.awt.GridLayout(1, 1));
@@ -55,8 +86,17 @@ public class MainGUIPanel extends javax.swing.JPanel {
             }
         });
 
-        businessCategorySetView.setSortKey("review_count");
-        businessCategorySetView.setSorted(true);
+        jSplitPane1.setDividerLocation(230);
+        jSplitPane1.setDividerSize(8);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        businessDetailView.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        businessDetailView.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jSplitPane1.setRightComponent(businessDetailView);
+
+        businessSelectView.setSortKey("review_count");
+        businessSelectView.setSorted(true);
+        jSplitPane1.setLeftComponent(businessSelectView);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -65,8 +105,8 @@ public class MainGUIPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(businessCategorySetView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(businessCategorySelection, 0, 364, Short.MAX_VALUE))
+                    .addComponent(jSplitPane1)
+                    .addComponent(businessCategorySelection, 0, 368, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -74,38 +114,40 @@ public class MainGUIPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(businessCategorySelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(businessCategorySetView, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Select Business Type", jPanel1);
 
+        businessReviewView.setKeys(new String[] {"votes.useful", "stars", "text"});
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addComponent(businessReviewView, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 292, Short.MAX_VALUE)
+            .addComponent(businessReviewView, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab2", jPanel2);
+        jTabbedPane1.addTab("Business Reviews", jPanel2);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGap(0, 392, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 292, Short.MAX_VALUE)
+            .addGap(0, 446, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab3", jPanel3);
+        jTabbedPane1.addTab("", jPanel3);
 
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
@@ -116,7 +158,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         try {
             Business bus = model.getBusinesses();
             bus = bus.trimByCategory(new String[] { (String)evt.getItem() });
-            businessCategorySetView.setModel(bus);
+            businessSelectView.setModel(bus);
         } catch (Exception e) {
         }
     }//GEN-LAST:event_businessCategorySelectionEvent
@@ -124,10 +166,13 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox businessCategorySelection;
-    private capstone.gui.DataSetView businessCategorySetView;
+    private javax.swing.JLabel businessDetailView;
+    private capstone.gui.DataSetView businessReviewView;
+    private capstone.gui.DataSetView businessSelectView;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 
@@ -137,5 +182,60 @@ public class MainGUIPanel extends javax.swing.JPanel {
         this.model = model;
         
         businessCategorySelection.setModel(app.getAllBusinessCategories());
+    }
+    
+    public void businessSelected(ListSelectionEvent lse) throws CapException {
+
+        businessReviewView.setModel(null);
+        
+        businessDetailView.setText("");
+        JSONObject obj;
+        if ((obj = businessSelectView.getSelected()) == null) return;
+        String str = "<html>";
+
+        String businessID = (String)(obj.get("business_id"));
+        Review rSet = model.getReviews().getReviewsForBusiness(businessID);
+        businessReviewView.setModel(rSet);
+
+        String ignoreKeys[] = new String[] {
+            "type", "state", "open", "neighborhoods", "latitude", "longitude"
+        };
+        
+        for (Object k : obj.keySet()) {
+            Object val = obj.get(k);
+            
+            boolean skipTest = false;
+            
+            for (String si : ignoreKeys)
+                if (((String)k).equalsIgnoreCase(si)) skipTest = true;
+
+            if (skipTest) continue;
+            
+            str += "<b>" + (String)k + "</b>: ";
+            
+            if (val == null) {
+                str += "(null)" + "<br/>";
+            } else if (val instanceof JSONArray) {
+                str += "<br/>&nbsp;&nbsp;&nbsp;&nbsp;";
+                
+                int dicks = ((JSONArray)val).size();
+                
+                for (int i = 0; i < dicks; i++) {
+                    str += ((JSONArray)val).get(i)
+                        + ((i != dicks - 1) ? ", " : "");
+                }
+                                
+            } else if (val instanceof Number) {
+                str += "<i>" + val + "</i><br/>";
+            } else {
+                str += val + "<br/>";
+            }
+            
+            str += "<br/>";
+        }
+        
+        str += "</html>";
+        
+        businessDetailView.setText(str);
     }
 }
