@@ -7,6 +7,7 @@
 package capstone.gui;
 
 import capstone.CapException;
+import capstone.yelpmodel.Business;
 import capstone.yelpmodel.JSONWrapper;
 import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
