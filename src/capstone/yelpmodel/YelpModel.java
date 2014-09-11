@@ -6,7 +6,6 @@
 
 package capstone.yelpmodel;
 
-import capstone.gui.YelpModelLoader;
 import java.io.File;
 import java.io.Serializable;
 import org.json.simple.JSONObject;
