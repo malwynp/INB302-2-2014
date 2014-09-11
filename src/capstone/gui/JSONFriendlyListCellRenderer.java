@@ -6,10 +6,10 @@
 
 package capstone.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -32,10 +32,13 @@ public class JSONFriendlyListCellRenderer implements ListCellRenderer<JSONObject
     public Component getListCellRendererComponent(JList<? extends JSONObject> jlist, JSONObject o, int index, boolean selected, boolean focused) {
         
         JPanel pane = new JPanel();
-        pane.setLayout(new GridLayout(1, 0));
+        pane.setLayout(new FlowLayout(FlowLayout.LEFT));
         
         JLabel number = new JLabel("" + index);
         pane.add(number);
+        
+        number.setPreferredSize(new Dimension(32, 16));
+        number.setForeground(Color.CYAN);
         
         if (keys != null) {
             for (String k : keys) {
@@ -50,7 +53,10 @@ public class JSONFriendlyListCellRenderer implements ListCellRenderer<JSONObject
                 pane.add(cell);
             }
         }
-        
+
+        pane.setOpaque(selected);
+        if (selected) pane.setBackground(Color.decode("#005555"));
+
         return pane;
         
     }

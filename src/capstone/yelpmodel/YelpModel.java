@@ -6,7 +6,6 @@
 
 package capstone.yelpmodel;
 
-import capstone.gui.CapstoneApplication;
 import capstone.gui.YelpModelLoader;
 import java.io.File;
 import java.io.Serializable;
@@ -17,14 +16,23 @@ import org.json.simple.JSONObject;
  * @author mark
  */
 public class YelpModel implements Serializable {
+    public static final long serialVersionUID = -1L;
     
     Business business;
     Checkin checkin;
     Review review;
     User user;
+
+    public void forget() {
+        loader = null;
+    }
     
-    private YelpModelLoader loader = null;
-    public YelpModel(String dir, YelpModelLoader loader) {
+    public interface YelpModelLoaderUI {
+        public void update(String str);
+    }
+    
+    private YelpModelLoaderUI loader = null;
+    public YelpModel(String dir, YelpModelLoaderUI loader) {
         this.loader = loader;
         
         File businessFile = new File(dir + "yelp_training_set/yelp_training_set_business.json");
@@ -109,3 +117,4 @@ public class YelpModel implements Serializable {
     }
     
 }
+ 

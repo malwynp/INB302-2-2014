@@ -55,6 +55,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
             }
         });
 
+        businessCategorySetView.setSortKey("review_count");
+        businessCategorySetView.setSorted(true);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -110,10 +113,12 @@ public class MainGUIPanel extends javax.swing.JPanel {
     private void businessCategorySelectionEvent(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_businessCategorySelectionEvent
         if (evt.getItem() == null) return;
         
-        Business bus = model.getBusinesses();
-        bus = bus.trimByCategory(new String[] { (String)evt.getItem() });
-
-        businessCategorySetView.setModel(bus);
+        try {
+            Business bus = model.getBusinesses();
+            bus = bus.trimByCategory(new String[] { (String)evt.getItem() });
+            businessCategorySetView.setModel(bus);
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_businessCategorySelectionEvent
 
 

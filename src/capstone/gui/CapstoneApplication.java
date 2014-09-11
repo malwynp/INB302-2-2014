@@ -6,6 +6,7 @@
 
 package capstone.gui;
 
+import capstone.gui.YelpModelLoader.YelpModelLoadListener;
 import capstone.yelpmodel.YelpModel;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -20,7 +21,7 @@ import javax.swing.UIManager;
  *
  * @author mark
  */
-public class CapstoneApplication extends JFrame implements ActionListener {
+public class CapstoneApplication extends JFrame implements ActionListener, YelpModelLoadListener {
 
     private MenuBar menuBar;
     private MainGUIPanel panel;
@@ -78,7 +79,7 @@ public class CapstoneApplication extends JFrame implements ActionListener {
         }
     }
 
-    void modelIsLoaded(YelpModel model) {
+    public void modelIsLoaded(YelpModel model) {
         this.model = model;
         panel.setVisible(true);
         panel.modelIsLoaded(model);
