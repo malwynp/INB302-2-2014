@@ -7,6 +7,7 @@
 package capstone.gui;
 
 import capstone.yelpmodel.YelpModel;
+import capstone.yelpmodel.YelpModel.YelpModelLoaderUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,31 +20,34 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 
 /**
  *
  * @author mark
  */
-public class YelpModelLoader extends Thread {
+public class YelpModelLoader extends Thread implements YelpModelLoaderUI {
+    
+    public interface YelpModelLoadListener {
+        public void modelIsLoaded(YelpModel model);
+    }
     
     private YelpModel model;
     private JFrame loaderView;
-    private CapstoneApplication app;
+    private YelpModelLoadListener app;
     private JList<String> log;
     private DefaultListModel<String> logModel;
     private JProgressBar progress;
     
-    public YelpModelLoader(CapstoneApplication app) {
+    public YelpModelLoader(YelpModelLoadListener app) {
         this.app = app;
         
         loaderView = new JFrame("Loading Yelp data set...");
@@ -73,7 +77,7 @@ public class YelpModelLoader extends Thread {
         progress.setPreferredSize(new Dimension(32, 32));
         progress.setIndeterminate(true);
         
-        loaderView.setType(Window.Type.POPUP);
+        loaderView.setType(Window.Type.UTILITY);
         pane.setBackground(Color.DARK_GRAY);
         log.setBackground(Color.DARK_GRAY);
         progress.setBackground(Color.DARK_GRAY);
@@ -102,6 +106,7 @@ public class YelpModelLoader extends Thread {
             ObjectInputStream ois = new ObjectInputStream(fis);
             model = (YelpModel) (ois.readObject());
         } catch (Exception e) {
+            e.printStackTrace();
             update("Reading from JSON files...");
             model = new YelpModel("/home/mark/Downloads/yelp/", this);
 
@@ -110,6 +115,7 @@ public class YelpModelLoader extends Thread {
 
                 FileOutputStream fos = new FileOutputStream(f);
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
+                model.forget();
                 oos.writeObject(model);
                 oos.close();
                 fos.close();

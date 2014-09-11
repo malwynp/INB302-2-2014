@@ -17,11 +17,20 @@ import org.json.simple.JSONObject;
  * @author mark
  */
 public class YelpModel implements Serializable {
+    public static final long serialVersionUID = -1L;
     
     Business business;
     Checkin checkin;
     Review review;
     User user;
+
+    public void forget() {
+        loader = null;
+    }
+    
+    public interface YelpModelLoaderUI {
+        public void update(String str);
+    }
     
     private YelpModelLoader loader = null;
     public YelpModel(String dir, YelpModelLoader loader) {
@@ -109,3 +118,4 @@ public class YelpModel implements Serializable {
     }
     
 }
+ 
