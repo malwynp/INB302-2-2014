@@ -37,6 +37,8 @@ public class JSONFriendlyListCellRenderer implements ListCellRenderer<JSONObject
         JLabel number = new JLabel("" + index);
         pane.add(number);
         
+        number.setPreferredSize(new Dimension(16, 16));
+        
         number.setPreferredSize(new Dimension(32, 16));
         number.setForeground(Color.CYAN);
         
