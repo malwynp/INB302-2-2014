@@ -25,7 +25,6 @@ public class YelpModel implements Serializable {
     public void forget() {
         loader = null;
     }
-    
     public interface YelpModelLoaderUI {
         public void update(String str);
     }
