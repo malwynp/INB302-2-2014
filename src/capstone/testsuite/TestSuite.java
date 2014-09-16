@@ -102,4 +102,15 @@ public class TestSuite {
         return results;
     }
     
+    @Override
+    public String toString() {
+        String str = "Test suite:\n";
+        
+        for (ReviewTest rt : tests) {
+            str += "\t" + ReviewTest.niceClassName(rt.getClass().getSimpleName()) + "\n";
+        }
+        
+        return str;
+    }
+    
 }

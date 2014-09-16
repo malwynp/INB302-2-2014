@@ -24,23 +24,33 @@ public abstract class ReviewTest {
         setMinimum(minimum);
         setMaximum(maximum);
     }
+    public ReviewTest() {
+    }
     
     public abstract double getScore(Review review, int index) throws CapException;
 
-    public String toString() {
-        String str = this.getClass().getSimpleName();
-
+    public static String niceClassName(String str) {
+        return niceClassName(str, true);
+    }
+    
+    public static final String niceClassName(String str, boolean withPrefix) {
         // Nice-ify S#_ prefix, if any
         if (str.contains("_")) {
             String prefix = str.substring(0, str.indexOf("_"));
             str = str.substring(str.indexOf("_") + 1);
-            str = prefix + "\t" + str;
+            str = (withPrefix) ? (prefix + "\t" + str) : str;
         }
         
         // Remove *Test suffix, if any
         if (str.endsWith("Test")) {
             str = str.substring(0, str.length() - 4);
         }
+        
+        return str;
+    }
+    
+    public String toString() {
+        String str = niceClassName(this.getClass().getSimpleName());
         
         // Append range
         str += " (" + minimum + " < n < " + maximum + ")\t";
