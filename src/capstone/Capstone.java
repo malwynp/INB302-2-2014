@@ -9,7 +9,6 @@ package capstone;
 import capstone.testsuite.ReviewTest;
 import capstone.testsuite.S2_UpperCasePercentageTest;
 import capstone.testsuite.S4_WordCountTest;
-import capstone.testsuite.TestInverter;
 import capstone.testsuite.TestResult;
 import capstone.testsuite.TestSuite;
 import capstone.yelpmodel.Business;
@@ -38,8 +37,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
  */
 public class Capstone {
     
-    public static final int MAX_RECORDS = 5000;
-    public static final int OUTPUT_RECORD_FREQUENCY = 500;
+    public static final int MAX_RECORDS = 500000;
+    public static final int OUTPUT_RECORD_FREQUENCY = 10000;
     public static final boolean GUI_DEBUG = false;
 
     protected static YelpModel model;

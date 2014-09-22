@@ -56,6 +56,32 @@ public class Review extends JSONWrapper {
         return new Review(lobj.toArray(new JSONObject[lobj.size()]));
     }
     
+    public long getMinimumVotesAsLong(String voteType) {
+        long min = 1;
+        for (int i = 0; i < json.size(); i++) {
+            JSONObject vobj = ((JSONObject)(get(i).get("votes")));
+            if (vobj == null || !vobj.containsKey(voteType)) continue;
+            
+            if ((long)vobj.get(voteType) < min) min = (long)vobj.get(voteType);
+        }
+        return min;
+    }
+    public long getMaximumVotesAsLong(String voteType) {
+        long max = 1;
+        for (int i = 0; i < json.size(); i++) {
+            JSONObject vobj = ((JSONObject)(get(i).get("votes")));
+            if (vobj == null || !vobj.containsKey(voteType)) continue;
+            
+            if ((long)vobj.get(voteType) > max) max = (long)vobj.get(voteType);
+        }
+        return max;
+    }
+    
+    public Review trimByVoteDouble(String voteType, double minimum, double scaleMin, double scaleMax) {
+        long minVotesL = (long) ((scaleMax - scaleMin) * minimum + scaleMin);
+        return trimByVotes(voteType, minVotesL);
+    }
+    
     public Review trimByVotes(String voteType, long minimum) {
         if (voteType == null) return null;
         List<JSONObject> lobj = new ArrayList<>();

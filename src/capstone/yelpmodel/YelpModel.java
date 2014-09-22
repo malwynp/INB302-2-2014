@@ -34,15 +34,15 @@ public class YelpModel implements Serializable {
         this.loader = loader;
         
         File businessFile = new File(dir + "yelp_training_set/yelp_training_set_business.json");
-        File checkinFile = new File(dir + "yelp_training_set/yelp_training_set_checkin.json");
+//        File checkinFile = new File(dir + "yelp_training_set/yelp_training_set_checkin.json");
         File reviewFile = new File(dir + "yelp_training_set/yelp_training_set_review.json");
-        File userFile = new File(dir + "yelp_training_set/yelp_training_set_user.json");
+//        File userFile = new File(dir + "yelp_training_set/yelp_training_set_user.json");
         
         loader.update("Reading businesses...");
         business = new Business(businessFile);
 
-        loader.update("Reading checkins...");
-        checkin = new Checkin(checkinFile);
+//        loader.update("Reading checkins...");
+//        checkin = new Checkin(checkinFile);
 
         loader.update("Reading reviews...");
         review = new Review(reviewFile);
@@ -50,8 +50,8 @@ public class YelpModel implements Serializable {
         loader.update("Syncing reviews to businesses...");
         review.storeBusinessNames(business);
 
-        loader.update("Reading users...");
-        user = new User(userFile);
+//        loader.update("Reading users...");
+//        user = new User(userFile);
     }
     
     public YelpModel(String dir) {

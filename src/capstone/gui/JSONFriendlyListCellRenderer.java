@@ -44,23 +44,26 @@ public class JSONFriendlyListCellRenderer implements ListCellRenderer<JSONObject
         
         if (keys != null) {
             for (String k : keys) {
-                Object var = o.get(k);
-
+                Object var;
+                
                 if (k.contains(".")) {
-                    String[] path = k.split(".");
+                    String[] path = k.split("[.]");
+                    var = o;
                     for (String p : path) {
                         var = ((JSONObject)var).get(p);
                     }
+                } else {
+                    var = o.get(k);
                 }
                 
-                if (o.get(k) == null) continue;
+                if (var == null) continue;
                 
                 JLabel cell = null;
-                if (o.get(k) instanceof Number) {
-                    cell = new JLabel("" + o.get(k));
+                if (var instanceof Number) {
+                    cell = new JLabel("" + var);
                     cell.setForeground(Color.GREEN);
                 } else {
-                    cell = new JLabel((String)o.get(k));
+                    cell = new JLabel((String)var);
                 }
                 cell.setOpaque(selected);
                 if (selected) cell.setBackground(Color.decode("#005555"));
