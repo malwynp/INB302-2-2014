@@ -73,7 +73,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         businessDetailView = new javax.swing.JLabel();
         businessSelectView = new capstone.gui.DataSetView();
         jPanel2 = new javax.swing.JPanel();
-        businessReviewView = new capstone.gui.DataSetView();
+        usefulReviewSelection = new capstone.gui.UsefulReviewSelect();
         jPanel3 = new javax.swing.JPanel();
 
         setLayout(new java.awt.GridLayout(1, 1));
@@ -106,7 +106,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSplitPane1)
-                    .addComponent(businessCategorySelection, 0, 368, Short.MAX_VALUE))
+                    .addComponent(businessCategorySelection, 0, 403, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -121,17 +121,18 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Select Business Type", jPanel1);
 
-        businessReviewView.setKeys(new String[] {"votes.useful", "stars", "text"});
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(businessReviewView, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+            .addComponent(usefulReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(businessReviewView, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(usefulReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Business Reviews", jPanel2);
@@ -140,7 +141,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 392, Short.MAX_VALUE)
+            .addGap(0, 427, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,13 +168,13 @@ public class MainGUIPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox businessCategorySelection;
     private javax.swing.JLabel businessDetailView;
-    private capstone.gui.DataSetView businessReviewView;
     private capstone.gui.DataSetView businessSelectView;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private capstone.gui.UsefulReviewSelect usefulReviewSelection;
     // End of variables declaration//GEN-END:variables
 
     
@@ -186,7 +187,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
     
     public void businessSelected(ListSelectionEvent lse) throws CapException {
 
-        businessReviewView.setModel(null);
+        usefulReviewSelection.setModel(null);
         
         businessDetailView.setText("");
         JSONObject obj;
@@ -195,7 +196,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         String businessID = (String)(obj.get("business_id"));
         Review rSet = model.getReviews().getReviewsForBusiness(businessID);
-        businessReviewView.setModel(rSet);
+        usefulReviewSelection.setModel(rSet);
 
         String ignoreKeys[] = new String[] {
             "type", "state", "open", "neighborhoods", "latitude", "longitude"

@@ -39,7 +39,9 @@ public class JSONWrapper implements Serializable {
         
         try {
         
-            String src = "[";
+            json = new JSONArray();
+            
+            //String src = "[";
 
             FileInputStream fis = new FileInputStream(f);
             InputStreamReader isr = new InputStreamReader(fis);
@@ -48,16 +50,19 @@ public class JSONWrapper implements Serializable {
             int count = 0;
             while (br.ready() && (count < capstone.Capstone.MAX_RECORDS || (ignoreRecordLimit))) {
                 String line = br.readLine();
-                src += line + ",\n";
+                //src += line + ",\n";
+                JSONObject obj = (JSONObject) JSONValue.parse(line);
+                json.add(obj);
+                
                 count++;
                 if (count % capstone.Capstone.OUTPUT_RECORD_FREQUENCY == 0)
                     System.out.println("\t[ read: " + count + " ]");
             }
             System.out.print(" (records: " + count + ") ");
             
-            src += "]";
+            //src += "]";
 
-            json = (JSONArray)JSONValue.parse(src);
+            //json = (JSONArray)JSONValue.parse(src);
         }
         
         catch (Exception e) {
@@ -111,14 +116,17 @@ public class JSONWrapper implements Serializable {
         if (list.isEmpty()) 
             throw new CapException("Attempting to sort an empty list");
 
-        if (!list.get(0).containsKey(key)) 
+        JSONObject one = list.get(0);
+        Object oneVar = getKeyPath(one, key);
+   
+        if (oneVar == null) 
             throw new CapException("List data does not contain search key '" + key + "'");
 
-        if (!(list.get(0).get(key) instanceof Number))
+        if (!(oneVar instanceof Number))
             throw new CapException("List key '" + key + "' does not inherit Number, it is a "
-                    + list.get(0).get(key).getClass().getSimpleName()
+                    + oneVar.getClass().getSimpleName()
                     + ", "
-                    + list.get(0).get(key).toString()
+                    + oneVar.toString()
                     + "."
             );
 
@@ -130,19 +138,19 @@ public class JSONWrapper implements Serializable {
         while (l < middle - start && r < end - middle) {
             JSONObject objA = list.get(start + l), objB = list.get(middle + r);
 
-            if (objA.get(key) == null || objB.get(key) == null)
+            if (getKeyPath(objA, key) == null || getKeyPath(objB, key) == null)
                 throw new CapException("List data key points to null values");
             
             boolean isLong, swap; // Go to hell Java
-            isLong = objA.get(key) instanceof Long;
+            isLong = getKeyPath(objA, key) instanceof Long;
             
             if (isLong) {
-                long aVal = (long)objA.get(key);
-                long bVal = (long)objB.get(key);
+                long aVal = (long)getKeyPath(objA, key);
+                long bVal = (long)getKeyPath(objB, key);
                 swap = order ? (aVal > bVal) : (bVal > aVal);
             } else {
-                double aVal = (double)objA.get(key);
-                double bVal = (double)objB.get(key);
+                double aVal = (double)getKeyPath(objA, key);
+                double bVal = (double)getKeyPath(objB, key);
                 swap = order ? (aVal > bVal) : (bVal > aVal);
             }
             
@@ -156,6 +164,29 @@ public class JSONWrapper implements Serializable {
         for (i = 0; i < buffer.size(); i++) {
             list.set(i + start, buffer.get(i));
         }
+    }
+    
+    public static final Object getKeyPath(JSONObject o, String k) {
+        if (o == null || k == null) return null;
+
+        if (!k.contains(".")) {
+            if (o.containsKey(k)) return o.get(k);
+            return null;
+        }
+        
+        Object var;
+        
+        if (k.contains(".")) {
+            String[] path = k.split("[.]");
+            var = o;
+            for (String p : path) {
+                var = ((JSONObject)var).get(p);
+            }
+        } else {
+            var = o.get(k);
+        }
+        
+        return var;
     }
 
 }

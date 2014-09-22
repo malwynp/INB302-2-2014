@@ -48,7 +48,7 @@ public class TestSuiteGUISelect extends JPanel {
         dlm = new DefaultListModel<>();
         list = new JList(dlm);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        selection = new HashMap<Class, Boolean>();
+        selection = new HashMap<>();
         
         list.addListSelectionListener(new ListSelectionListener() {
 
