@@ -112,6 +112,8 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
         businessCategorySelection.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         businessCategorySelection.setMinimumSize(new java.awt.Dimension(64, 64));
         businessCategorySelection.setPreferredSize(new java.awt.Dimension(64, 64));
@@ -134,6 +136,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         businessSelectView.setSortKey("review_count");
         businessSelectView.setSorted(true);
         jSplitPane1.setLeftComponent(businessSelectView);
+        jSplitPane1.setRightComponent(jSONDetailView1);
 
         jSONDetailView1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         jSplitPane1.setRightComponent(jSONDetailView1);
