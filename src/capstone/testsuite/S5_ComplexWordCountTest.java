@@ -8,6 +8,9 @@ package capstone.testsuite;
 
 import capstone.CapException;
 import capstone.yelpmodel.Review;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -15,13 +18,48 @@ import capstone.yelpmodel.Review;
  */
 public class S5_ComplexWordCountTest extends ReviewTest {
 
-    public S5_ComplexWordCountTest(double minimum, double maximum) {
-        super(minimum, maximum);
-    }
-
     public double getScore(Review review, int index) throws CapException {
-        return (minimum + maximum) / 2;
-//        throw new CapException("Not yet implemented: " + this.getClass().getSimpleName());
+        if (review == null || !review.contains(index))
+            throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
+        
+        //Retreive specific JSON set
+        JSONObject record = review.get(index);
+        //Retreive review text out of specified JSON set
+        String text = (String) record.get("text");
+        
+        //Split on spaces or other possible tags that split words 
+        String words[] = text.split("[ \t\n.,;]+");
+        
+        //Intialise variables
+        int numComplex = 0;
+        
+        //For each word in the words array
+        for (String ss : words) {
+            
+            //Re-assign ss to a variable
+            String word = ss;
+            
+            //Create regex pattern for checking syllables in a word
+            Pattern pattern = Pattern.compile("[aeiouy]+");
+            //Check regex pattern against string
+            Matcher matcher = pattern.matcher(word);
+            
+            //Initialise variables
+            int count = 0;
+            
+            //Foreach match to the pattern against the word 
+            while (matcher.find()){
+                count++;
+            }
+            
+            //If the word contains three or more instances of the pattern
+            if(count >= 3){
+              numComplex++;
+            }
+            
+        }
+                
+        return numComplex;
     }
     
 }

@@ -7,7 +7,9 @@
 package capstone.yelpmodel;
 
 import capstone.CapException;
+import capstone.testsuite.TestResult;
 import capstone.testsuite.TestSuite;
+import capstone.testsuite.TestSuite.ReviewTestListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,11 +90,17 @@ public class Review extends JSONWrapper {
         
         for (int i = 0; i < size(); i++) {
             JSONObject vobj = ((JSONObject)(get(i).get("votes")));
-            
-            if (vobj == null || !vobj.containsKey(voteType)) continue;
 
-            if ((long)(vobj.get(voteType)) >= minimum)
-                lobj.add(get(i));
+            if (minimum < 0) {
+                if (vobj == null || !vobj.containsKey(voteType) || ((long)(vobj.get(voteType)) == 0)) {
+                    lobj.add(get(i));
+                }
+            } else {
+                if (vobj == null || !vobj.containsKey(voteType)) continue;
+                if ((long)(vobj.get(voteType)) >= minimum) {
+                    lobj.add(get(i));
+                }
+            }
         }
         
         return new Review(lobj.toArray(new JSONObject[lobj.size()]));
@@ -152,11 +160,9 @@ public class Review extends JSONWrapper {
     
     public Review trimByTestSuite(TestSuite suite) throws CapException {
         List <JSONObject> lobj = new ArrayList<>();
-        boolean scores[] = suite.testAllRecordsPassFail(this);
+        TestResult results = suite.testAndStoreAllRecords(this);
         
-        for (int i = 0; i < scores.length; i++) {
-            if (scores[i]) lobj.add(get(i));
-        }
+        // !!!
         
         return new Review(lobj.toArray(new JSONObject[lobj.size()]));
     }

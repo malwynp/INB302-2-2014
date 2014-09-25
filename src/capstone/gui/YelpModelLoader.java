@@ -22,6 +22,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -52,6 +53,8 @@ public class YelpModelLoader extends Thread implements YelpModelLoaderUI {
         loaderView = new JFrame("Loading Yelp data set...");
 //        loaderView.setPreferredSize(new Dimension(640, 256));
         loaderView.setMinimumSize(new Dimension(640, 128));
+        
+        loaderView.setIconImage(new ImageIcon(getClass().getResource("server.png")).getImage());
 
         JPanel pane = new JPanel();
         pane.setLayout(new BorderLayout());
@@ -76,7 +79,7 @@ public class YelpModelLoader extends Thread implements YelpModelLoaderUI {
         progress.setPreferredSize(new Dimension(32, 32));
         progress.setIndeterminate(true);
         
-        loaderView.setType(Window.Type.UTILITY);
+        loaderView.setType(Window.Type.POPUP);
         pane.setBackground(Color.DARK_GRAY);
         log.setBackground(Color.DARK_GRAY);
         progress.setBackground(Color.DARK_GRAY);

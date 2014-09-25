@@ -16,23 +16,25 @@ import org.json.simple.JSONObject;
  */
 public class S3_NewLineRatioTest extends ReviewTest {
 
-    public S3_NewLineRatioTest(double minimum, double maximum) {
-        super(minimum, maximum);
-    }
-
     public double getScore(Review review, int index) throws CapException {
         if (review == null || !review.contains(index))
             throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
-
+        
+        //Retreive specific JSON set 
         JSONObject record = review.get(index);
+        //Retreive review text out of specified JSON set
         String text = (String) record.get("text");
         
+        //Replace html new line tags to standard new line tag
         text = text.replace("<br/>", "\n");
         text = text.replace("<br />", "\n");
         text = text.replace("<p>", "\n");
         
+        //Initialise variables
         int charCount = text.length();
         int newLineCount = 0;
+        
+        //Loop through review text checking for standard new line tag
         for (int i = 0; i < charCount; i++)
             if (text.charAt(i) == '\n')
                 newLineCount++;

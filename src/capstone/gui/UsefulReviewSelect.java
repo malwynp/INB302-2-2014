@@ -10,6 +10,8 @@ import capstone.yelpmodel.Review;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -50,6 +52,10 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     
     public void setModel(Review model) {
         reviewModel = model;
+        try {
+            dsv.setModel(getUsefulModel());
+        } catch (Exception e) {
+        }
     }
     
     public Review getModel() {
@@ -57,20 +63,17 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     }
     
     public Review getUsefulModel() {
-        double minimum = spinner.getValue();
-        
-        long minVotes = reviewModel.getMinimumVotesAsLong("useful");
-        long maxVotes = reviewModel.getMaximumVotesAsLong("useful");
-        
-        long mvl = (long) ((maxVotes - minVotes) * minimum);
-        
-        return reviewModel.trimByVotes("useful", mvl);
+        if (reviewModel == null) return null;
+        return reviewModel.trimByVotes("useful", minimumVoteCount());
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         try {
             dsv.setModel(getUsefulModel());
+            long newmin = minimumVoteCount();
+            for (ChangeVotesListener cvl : listeners)
+                cvl.votesChange(newmin);
         } catch (CapException ex) {
         }
     }
@@ -78,5 +81,32 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     public SpinButton getSpinButton() {
         return spinner;
     }
+
+    public long minimumVoteCount() {
+        double minimum = spinner.getValue();
+        if (reviewModel == null) return 0;
+        
+        long minVotes = reviewModel.getMinimumVotesAsLong("useful");
+        long maxVotes = reviewModel.getMaximumVotesAsLong("useful");
+        
+        long mvl = (long) ((maxVotes - minVotes) * minimum);
+        
+        return mvl;
+    }
+    
+    private List<ChangeVotesListener> listeners = new ArrayList<>();
+    public void addListener(ChangeVotesListener cvl) {
+        if (cvl == null || listeners.contains(cvl)) return;
+        listeners.add(cvl);
+    }
+    public void removeListener(ChangeVotesListener cvl) {
+        if (cvl == null || !listeners.contains(cvl)) return;
+        listeners.remove(cvl);
+    }
+    
+    public static interface ChangeVotesListener {
+        public void votesChange(long newVotes);
+    }
+
     
 }

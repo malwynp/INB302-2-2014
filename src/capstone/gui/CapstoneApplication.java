@@ -11,9 +11,11 @@ import capstone.yelpmodel.YelpModel;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
@@ -29,6 +31,8 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
     
     public CapstoneApplication() {
         super("Capstone Yelp Review Categorisation");
+        
+        setIconImage(new ImageIcon(getClass().getResource("server.png")).getImage());
         
         setPreferredSize(new Dimension(1024, 768));
         setExtendedState(JFrame.MAXIMIZED_BOTH);

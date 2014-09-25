@@ -6,9 +6,6 @@
 
 package capstone;
 
-import capstone.testsuite.ReviewTest;
-import capstone.testsuite.S2_UpperCasePercentageTest;
-import capstone.testsuite.S4_WordCountTest;
 import capstone.testsuite.TestResult;
 import capstone.testsuite.TestSuite;
 import capstone.yelpmodel.Business;
@@ -93,12 +90,7 @@ public class Capstone {
         set = set.trimByVotes("useful", 1L);
         System.out.println("set size: " +set.size());
         
-        TestSuite suite = new TestSuite(new ReviewTest[] {
-            new S2_UpperCasePercentageTest(70, 100), 
-            new S4_WordCountTest(10, 500),
-//            new TestInverter(new TestInverter(new S4_WordCountTest(10, 500))),
-        });
-//        suite = TestSuite.getDefaultSuite();
+        TestSuite suite = TestSuite.getDefaultSuite();
         
         TestResult tr = suite.testAndStoreAllRecords(set);
         

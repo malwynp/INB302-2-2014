@@ -8,20 +8,42 @@ package capstone.testsuite;
 
 import capstone.CapException;
 import capstone.yelpmodel.Review;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.json.simple.JSONObject;
 
 /**
  *
  * @author mark
  */
 public class S6_SentenceCountTest extends ReviewTest {
-
-    public S6_SentenceCountTest(double minimum, double maximum) {
-        super(minimum, maximum);
-    }
-
-    public double getScore(Review review, int index) throws CapException {
-        return (minimum + maximum) / 2;
-//        throw new CapException("Not yet implemented: " + this.getClass().getSimpleName());
-    }
     
+     public double getScore(Review review, int index) throws CapException {
+        if (review == null || !review.contains(index))
+           throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
+
+        //Initialise variables
+        double sentenceCounter = 0;
+        
+        //Retreive specific JSON set
+        JSONObject record = review.get(index);
+        //Retreive review text out of specified JSON set
+        String text = (String) record.get("text");
+        
+        //Replace possible sentence endings with the standard
+        text = text.replace("!", ".");
+        text = text.replace("?", ".");
+        
+        //Create regex pattern for checking for one or more periods.
+        Pattern pattern = Pattern.compile("[.]+");
+        //Check regex pattern against string
+        Matcher matcher = pattern.matcher(text);
+        
+        //For each match of the pattern within the string
+        while (matcher.find()){
+            sentenceCounter++;
+        }
+        
+        return sentenceCounter;
+    }
 }

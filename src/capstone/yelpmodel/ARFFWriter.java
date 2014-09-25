@@ -5,6 +5,9 @@
  */
 package capstone.yelpmodel;
 
+import capstone.testsuite.ReviewTest;
+import capstone.testsuite.TestResult;
+import capstone.testsuite.TestResult.ResultRecord;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -15,17 +18,44 @@ import org.json.simple.JSONObject;
  *
  * @author mark
  */
-public class ARFFWriter {
+public final class ARFFWriter {
 
-    private JSONWrapper model;
+    private TestResult model;
     private String relation;
     private List<AttributeWriter> attribs;
     
-    public ARFFWriter(String relation, JSONWrapper model, AttributeWriter[] attr) {
+    public ARFFWriter(String relation, TestResult model, AttributeWriter[] attr) {
         this.model = model;
         attribs = new ArrayList<>();
         for (AttributeWriter aw : attr) attribs.add(aw);
     }
+    public ARFFWriter(String relation, final TestResult model) {
+        this.model = model;
+        attribs = new ArrayList<>();
+        addAttribute(new AttributeWriter("text", "String") {
+            @Override
+            public String getAttributeFor(JSONObject obj) {
+                String str = (String)obj.get("text");
+                str = str.replace("\n", "<br/>");
+                str = str.replace("\"", "'");
+                return "\"" + str + "\"";
+            }
+        });
+        for (final ReviewTest rt : model.getTests()) {
+            addAttribute(new AttributeWriter(ReviewTest.niceClassName(rt.getClass().getSimpleName(), false), "Numeric") {
+
+                @Override
+                public String getAttributeFor(JSONObject obj) {
+                    for (ResultRecord rec : model.getRecord(obj))
+                        if (rec.getTest().equals(rt))
+                            return "" + rec.getDouble();
+                    
+                    return "?";
+                }
+            });
+        }
+    }
+
     public void addAttribute(AttributeWriter aw) {
         if (aw == null || attribs.contains(aw)) return;
         attribs.add(aw);
@@ -42,10 +72,10 @@ public class ARFFWriter {
         return relation;
     }
 
-    public void setModel(JSONWrapper model) {
+    public void setModel(TestResult model) {
         this.model = model;
     }
-    public JSONWrapper getModel() {
+    public TestResult getModel() {
         return model;
     }
     
@@ -68,12 +98,14 @@ public class ARFFWriter {
         str += comment("Capstone 2014 User Review Analysis");
         str += "@RELATION\t" + getRelation() + "\n";
         
+        str += "\n\n" + getAttributes();
+        
         return str;
     }
     public String getData() {
         String str = "@DATA\n";
         
-        for (JSONObject o : model.getArray()) {
+        for (JSONObject o : model.getRecordObjects()) {
             str += getItemHeader(o);
             str += getItemData(o);
             str += getItemFooter(o);
@@ -83,12 +115,12 @@ public class ARFFWriter {
     }
     
     public String getItemHeader(JSONObject obj) {
-        String str = "A New Review Begins--\n";
-        return str;
+        String str = comment("A New Review Begins--");
+        return "";
     }
     public String getItemFooter(JSONObject obj) {
-        String str = "";
-        return str + "A Review End--\n";
+        String str = comment("A Review End--");
+        return "";
     }
     public String getItemData(JSONObject obj) {
         String str = "";

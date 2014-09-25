@@ -8,6 +8,9 @@ package capstone.testsuite;
 
 import capstone.CapException;
 import capstone.yelpmodel.Review;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -15,13 +18,83 @@ import capstone.yelpmodel.Review;
  */
 public class S11_FogIndexTest extends ReviewTest {
 
-    public S11_FogIndexTest(double minimum, double maximum) {
-        super(minimum, maximum);
-    }
-
     @Override
     public double getScore(Review review, int index) throws CapException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (review == null || !review.contains(index))
+            throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
+        
+        //Retreive specific JSON set
+        JSONObject record = review.get(index);
+        //Retreive review text out of specified JSON set
+        String text = (String) record.get("text");
+        
+        //Replace possible html space replacements with the standard
+        text = text.replace("<br/>", " ");
+        text = text.replace("<br />", " ");
+        text = text.replace("<p>", " ");
+        text = text.replace("</p>", " ");
+        text = text.replace("\n", " ");
+        text = text.replace("\t", " ");
+        
+        //Split the review text on each space, thus the array stores each word as an instance
+        String toks[] = text.split(" ");
+        
+        double wordCount = (double)toks.length;
+        
+        //##############################################################
+        
+        //Split text in individual words
+        String words[] = text.split("[ .,;]+");
+        
+        //Initialise variables
+        double numComplex = 0;
+        
+        //For each word in the array of words
+        for (String ss : words) {
+            
+            //Re-assign ss to a variable
+            String word = ss;
+            
+            //Create regex pattern for checking syllables in a word
+            Pattern pattern = Pattern.compile("[aeiouy]+");
+            //Check regex pattern against string
+            Matcher matcher = pattern.matcher(word);
+            
+            //Initialise variable
+            int count = 0;
+            
+            //For each syllable in the word
+            while (matcher.find()){
+                count++;
+            }
+            
+            //If there is three or more syllables in a word
+            if(count >= 3){
+              numComplex++;
+            }
+            
+        }
+        //##############################################################
+        
+        //Initialise variables
+        double sentenceCounter = 0;
+        
+        //Replace possible sentence endings with the standard sentence ending
+        text = text.replace("!", ".");
+        text = text.replace("?", ".");
+        
+        //Create regex pattern for checking for one or more periods.
+        Pattern pattern = Pattern.compile("[.]+");
+        //Check regex pattern against string
+        Matcher matcher = pattern.matcher(text);
+        
+        //For each single or group of periods in the text
+        while (matcher.find()){
+            sentenceCounter++;
+        }
+        
+        //Fog index formula
+        return (.4 * ((wordCount / sentenceCounter) + (numComplex / wordCount) * 100));
     }
     
 }

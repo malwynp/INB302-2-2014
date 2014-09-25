@@ -9,6 +9,7 @@ package capstone.gui;
 import capstone.CapException;
 import capstone.yelpmodel.Business;
 import capstone.yelpmodel.JSONWrapper;
+import capstone.yelpmodel.Review;
 import java.awt.BorderLayout;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -27,6 +28,7 @@ public class DataSetView extends JPanel {
     
     private JList<JSONObject> list;
     private DefaultListModel<JSONObject> listModel;
+    private JSONWrapper dataModel;
     private JScrollPane jsp;
     
     private String sortKey;
@@ -75,7 +77,9 @@ public class DataSetView extends JPanel {
         add(jsp, BorderLayout.CENTER);
     }
     
-    void setModel(JSONWrapper wrapper) throws CapException {
+    public void setModel(JSONWrapper wrapper) throws CapException {
+        dataModel = wrapper;
+        
         if (wrapper == null) {
             listModel = new DefaultListModel<>();
             list.setModel(listModel);
@@ -121,6 +125,10 @@ public class DataSetView extends JPanel {
     public void setKeys(String[] keys) {
         this.keys = keys;
         list.setCellRenderer(new JSONFriendlyListCellRenderer(keys));
+    }
+
+    public JSONWrapper getModel() {
+        return dataModel;
     }
     
 }
