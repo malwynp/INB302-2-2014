@@ -18,11 +18,23 @@ import org.json.simple.JSONObject;
  */
 public class TestResult implements Serializable {
     
-    protected class ResultRecord {
-        JSONObject obj;
-        ReviewTest test;
-        double dVal;
-        boolean bVal;
+    public final static class ResultRecord {
+        protected JSONObject obj;
+        protected ReviewTest test;
+        protected double dVal;
+        protected boolean bVal;
+        public JSONObject getObject() {
+            return obj;
+        }
+        public boolean getBoolean() {
+            return bVal;
+        }
+        public double getDouble() {
+            return dVal;
+        }
+        public ReviewTest getTest() {
+            return test;
+        }
         
         public ResultRecord(JSONObject obj, ReviewTest test, double dVal, boolean bVal) {
             this.obj = obj;
@@ -37,7 +49,7 @@ public class TestResult implements Serializable {
             double scale = 0.001;
             
             str += test.toString() + " ";
-            str += "Result: " + Math.round(dVal / scale) * scale + ", Pass: " + bVal;
+            str += "Result: " + Math.round(dVal / scale) * scale;
             
             return str;
         }
@@ -78,6 +90,20 @@ public class TestResult implements Serializable {
             str += "\n";
         }
         return str;
+    }
+    
+    public int size() {
+        return results.size();
+    }
+    public int getTestCount() {
+        if (size() == 0) return 0;
+        List<ResultRecord> rec = results.get(results.keySet().toArray()[0]);
+        if (rec == null) return 0;
+        return (rec).size();
+    }
+    public ResultRecord[] getRecord(int index) {
+        List<ResultRecord> rec = results.get(results.keySet().toArray()[index]);
+        return rec.toArray(new ResultRecord[rec.size()]);
     }
     
 }

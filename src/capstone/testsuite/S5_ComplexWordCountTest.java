@@ -15,13 +15,8 @@ import capstone.yelpmodel.Review;
  */
 public class S5_ComplexWordCountTest extends ReviewTest {
 
-    public S5_ComplexWordCountTest(double minimum, double maximum) {
-        super(minimum, maximum);
-    }
-
     public double getScore(Review review, int index) throws CapException {
-        return (minimum + maximum) / 2;
-//        throw new CapException("Not yet implemented: " + this.getClass().getSimpleName());
+        throw new CapException("Not yet implemented: " + this.getClass().getSimpleName());
     }
     
 }

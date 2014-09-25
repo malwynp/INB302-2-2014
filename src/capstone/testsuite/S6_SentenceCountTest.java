@@ -15,13 +15,8 @@ import capstone.yelpmodel.Review;
  */
 public class S6_SentenceCountTest extends ReviewTest {
 
-    public S6_SentenceCountTest(double minimum, double maximum) {
-        super(minimum, maximum);
-    }
-
     public double getScore(Review review, int index) throws CapException {
-        return (minimum + maximum) / 2;
-//        throw new CapException("Not yet implemented: " + this.getClass().getSimpleName());
+        throw new CapException("Not yet implemented: " + this.getClass().getSimpleName());
     }
     
 }

@@ -9,6 +9,7 @@ package capstone.testsuite;
 import capstone.CapException;
 import capstone.yelpmodel.Review;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -39,19 +40,31 @@ public class TestSuite {
         return score;
     }
     public double testRecord(Review reviews, int index, ReviewTest test) throws CapException {
-        return test.getScore(reviews, index);
+        double score = test.getScore(reviews, index);
+        for (ReviewTestListener rtl : getListeners(test))
+            rtl.classify(reviews, index, this, test, score);
+
+        return score;
     }
-    public boolean testRecordPassFail(Review reviews, int index) throws CapException {
-        
-        for (ReviewTest rt : tests) {
-            if (!rt.getScorePassFail(reviews, index))
-                return false;
+    private HashMap<ReviewTest, List<ReviewTestListener>> listeners = new HashMap<>();
+    public void addListener(ReviewTest test, ReviewTestListener l) {
+        if (test == null || l == null) return;
+        if (listeners.get(test) == null) {
+            listeners.put(test, new ArrayList<ReviewTestListener>());
         }
-        
-        return true;
+        listeners.get(test).add(l);
     }
-    public boolean testRecordPassFail(Review reviews, int index, ReviewTest test) throws CapException {
-        return test.getScorePassFail(reviews, index);
+    public void removeListener(ReviewTest test, ReviewTestListener l) {
+        if (test == null || l == null) return;
+        if (listeners.get(test) == null) return;
+        if (!listeners.get(test).contains(l)) return;
+        listeners.get(test).remove(l);
+    }
+    public ReviewTestListener[] getListeners(ReviewTest test) {
+        if (listeners.get(test) == null || listeners.get(test).isEmpty())
+            return new ReviewTestListener[]{};
+        
+        return listeners.get(test).toArray(new ReviewTestListener[listeners.get(test).size()]);
     }
     
     public double[] testAllRecords(Review reviews) throws CapException {
@@ -69,7 +82,13 @@ public class TestSuite {
         
         for (int i = 0; i < reviews.size(); i++) {
             for (ReviewTest rt : tests) {
-                results.store(reviews.get(i), rt, testRecord(reviews, i, rt), testRecordPassFail(reviews, i, rt));
+                boolean classify = true;
+                double score = testRecord(reviews, i, rt);
+                
+                for (ReviewTestListener rtl : getListeners(rt))
+                    classify = rtl.classify(reviews, i, this, rt, score);
+
+                results.store(reviews.get(i), rt, score, classify);
             }
         }
         
@@ -78,30 +97,20 @@ public class TestSuite {
     
     public static final TestSuite getDefaultSuite() {
         return new TestSuite( new ReviewTest[] {
-           new S2_UpperCasePercentageTest(0, 15), 
-           new S3_NewLineRatioTest(0, 10), 
-           new S4_WordCountTest(5, 250), 
-           new S5_ComplexWordCountTest(5, 250), 
-           new S6_SentenceCountTest(1, 50), 
-           new S7_AverageWordSyllableTest(1,3), 
-           new S8_AverageWordsPerSentenceTest(3,10),
-           new S9_FleschReadingEaseTest(0,0),
+           new S2_UpperCasePercentageTest(), 
+           new S3_NewLineRatioTest(), 
+           new S4_WordCountTest(), 
+           new S5_ComplexWordCountTest(), 
+           new S6_SentenceCountTest(), 
+           new S7_AverageWordSyllableTest(), 
+           new S8_AverageWordsPerSentenceTest(),
+           new S9_FleschReadingEaseTest(),
         //   new S10_FleschKinkaidGradeLevelTest(0,0),
         //   new S11_FogIndexTest(0,0),
         //   new S12_SmogTest(0,0),
         });
     }
 
-    public boolean[] testAllRecordsPassFail(Review reviews) throws CapException {
-        boolean[] results = new boolean[reviews.size()];
-        
-        for (int i = 0; i < reviews.size(); i++) {
-            results[i] = testRecordPassFail(reviews, i);
-        }
-        
-        return results;
-    }
-    
     @Override
     public String toString() {
         String str = "Test suite:\n";
@@ -111,6 +120,10 @@ public class TestSuite {
         }
         
         return str;
+    }
+    
+    public static interface ReviewTestListener {
+        public boolean classify(Review reviews, int index, TestSuite suite, ReviewTest test, double score);
     }
     
 }

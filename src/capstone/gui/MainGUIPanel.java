@@ -7,13 +7,15 @@
 package capstone.gui;
 
 import capstone.CapException;
+import capstone.gui.UsefulReviewSelect.ChangeVotesListener;
+import capstone.testsuite.TestSuite;
 import capstone.yelpmodel.Business;
 import capstone.yelpmodel.Review;
 import capstone.yelpmodel.YelpModel;
-import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -28,33 +30,31 @@ public class MainGUIPanel extends javax.swing.JPanel {
     public MainGUIPanel() {
         initComponents();
         
-        businessSelectView.addListSelectionListener(new ListSelectionListener() {
+        businessSelectView.addListSelectionListener(businessListUpdate);
+        usefulReviewSelection.addListener(helpfulLabelUpdate);
+    }
+    private ChangeVotesListener helpfulLabelUpdate = new ChangeVotesListener() {
+            public void votesChange(long newVotes) {
+                helpfulVotesLabel.setText("Reviews with 'helpful' votes >= " + newVotes);
+            }
+        };
+    private ListSelectionListener businessListUpdate = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent lse) {
                 try {
                     businessSelected(lse);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                        
             }
-        });
-    }
+        };
 
     private CapstoneApplication app;
     MainGUIPanel(CapstoneApplication app) {
         super();
         this.app = app;
         initComponents();
-        businessSelectView.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent lse) {
-                try {
-                    businessSelected(lse);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                        
-            }
-        });
+        businessSelectView.addListSelectionListener(businessListUpdate);
+        usefulReviewSelection.addListener(helpfulLabelUpdate);
     }
 
     /**
@@ -70,85 +70,243 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         businessCategorySelection = new javax.swing.JComboBox();
         jSplitPane1 = new javax.swing.JSplitPane();
-        businessDetailView = new javax.swing.JLabel();
         businessSelectView = new capstone.gui.DataSetView();
+        jSONDetailView1 = new capstone.gui.JSONDetailView();
+        jPanel7 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jSplitPane2 = new javax.swing.JSplitPane();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        uselessReviewSelection = new capstone.gui.DataSetView();
+        jPanel5 = new javax.swing.JPanel();
+        helpfulVotesLabel = new javax.swing.JLabel();
         usefulReviewSelection = new capstone.gui.UsefulReviewSelect();
+        jSONDetailView2 = new capstone.gui.JSONDetailView();
         jPanel3 = new javax.swing.JPanel();
+        testSuiteGUISelect1 = new capstone.gui.TestSuiteGUISelect();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
+        jPanel8 = new javax.swing.JPanel();
+        trainingSetResults = new capstone.gui.ResultTable();
+        jPanel9 = new javax.swing.JPanel();
+        testSetResults = new capstone.gui.ResultTable();
+        jButton2 = new javax.swing.JButton();
 
         setLayout(new java.awt.GridLayout(1, 1));
 
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
         businessCategorySelection.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 businessCategorySelectionEvent(evt);
             }
         });
+        businessCategorySelection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                businessCategorySelectionActionPerformed(evt);
+            }
+        });
+        jPanel1.add(businessCategorySelection, java.awt.BorderLayout.NORTH);
 
         jSplitPane1.setDividerLocation(230);
         jSplitPane1.setDividerSize(8);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        businessDetailView.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        businessDetailView.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jSplitPane1.setRightComponent(businessDetailView);
-
         businessSelectView.setSortKey("review_count");
         businessSelectView.setSorted(true);
         jSplitPane1.setLeftComponent(businessSelectView);
+        jSplitPane1.setRightComponent(jSONDetailView1);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSplitPane1)
-                    .addComponent(businessCategorySelection, 0, 403, Short.MAX_VALUE))
+        jPanel1.add(jSplitPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel7.setMaximumSize(new java.awt.Dimension(64, 64));
+        jPanel7.setPreferredSize(new java.awt.Dimension(64, 64));
+
+        jButton1.setText("Select Review Sets");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(587, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(businessCategorySelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel1.add(jPanel7, java.awt.BorderLayout.SOUTH);
+
+        jTabbedPane1.addTab("Select Business", jPanel1);
+
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jSplitPane2.setDividerLocation(320);
+        jSplitPane2.setDividerSize(8);
+        jSplitPane2.setResizeWeight(0.5);
+
+        jLabel1.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Reviews without 'helpful' votes");
+
+        uselessReviewSelection.setKeys(new String[] {"text"});
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(uselessReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
+                .addComponent(uselessReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Select Business Type", jPanel1);
+        jSplitPane2.setLeftComponent(jPanel4);
+
+        helpfulVotesLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
+        helpfulVotesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        helpfulVotesLabel.setText("Reviews with ? helpful votes");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(helpfulVotesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(usefulReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(helpfulVotesLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(usefulReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jSplitPane2.setRightComponent(jPanel5);
+
+        jPanel6.add(jSplitPane2, java.awt.BorderLayout.CENTER);
+
+        jSONDetailView2.setPreferredSize(new java.awt.Dimension(96, 96));
+        jPanel6.add(jSONDetailView2, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(usefulReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(usefulReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Business Reviews", jPanel2);
 
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(trainingSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(trainingSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane2.addTab("Training set (voted helpful)", jPanel8);
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(testSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(testSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane2.addTab("Test set (not voted helpful)", jPanel9);
+
+        jButton2.setText("Run tests");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 427, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(testSuiteGUISelect1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 446, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(testSuiteGUISelect1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        jTabbedPane1.addTab("", jPanel3);
+        jTabbedPane1.addTab("Select Review Tests", jPanel3);
 
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
@@ -164,17 +322,55 @@ public class MainGUIPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_businessCategorySelectionEvent
 
+    private void businessCategorySelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_businessCategorySelectionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_businessCategorySelectionActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        jTabbedPane1.setSelectedIndex(1);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        TestSuite genSuite = this.testSuiteGUISelect1.generateTestSuite();
+        if (genSuite == null) return;
+        
+        Review testSet = (Review) uselessReviewSelection.getModel();
+        Review trainSet = usefulReviewSelection.getUsefulModel();
+        
+        testSetResults.generateModel(genSuite, testSet);
+        trainingSetResults.generateModel(genSuite, trainSet);
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox businessCategorySelection;
-    private javax.swing.JLabel businessDetailView;
     private capstone.gui.DataSetView businessSelectView;
+    private javax.swing.JLabel helpfulVotesLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private capstone.gui.JSONDetailView jSONDetailView1;
+    private capstone.gui.JSONDetailView jSONDetailView2;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane2;
+    private capstone.gui.ResultTable testSetResults;
+    private capstone.gui.TestSuiteGUISelect testSuiteGUISelect1;
+    private capstone.gui.ResultTable trainingSetResults;
     private capstone.gui.UsefulReviewSelect usefulReviewSelection;
+    private capstone.gui.DataSetView uselessReviewSelection;
     // End of variables declaration//GEN-END:variables
 
     
@@ -187,56 +383,26 @@ public class MainGUIPanel extends javax.swing.JPanel {
     
     public void businessSelected(ListSelectionEvent lse) throws CapException {
 
+        uselessReviewSelection.setModel(null);
         usefulReviewSelection.setModel(null);
         
-        businessDetailView.setText("");
         JSONObject obj;
         if ((obj = businessSelectView.getSelected()) == null) return;
-        String str = "<html>";
 
         String businessID = (String)(obj.get("business_id"));
         Review rSet = model.getReviews().getReviewsForBusiness(businessID);
+    
+        uselessReviewSelection.setModel(rSet.trimByVotes("useful", -1));
         usefulReviewSelection.setModel(rSet);
 
         String ignoreKeys[] = new String[] {
             "type", "state", "open", "neighborhoods", "latitude", "longitude"
         };
         
-        for (Object k : obj.keySet()) {
-            Object val = obj.get(k);
-            
-            boolean skipTest = false;
-            
-            for (String si : ignoreKeys)
-                if (((String)k).equalsIgnoreCase(si)) skipTest = true;
-
-            if (skipTest) continue;
-            
-            str += "<b>" + (String)k + "</b>: ";
-            
-            if (val == null) {
-                str += "(null)" + "<br/>";
-            } else if (val instanceof JSONArray) {
-                str += "<br/>&nbsp;&nbsp;&nbsp;&nbsp;";
-                
-                int dicks = ((JSONArray)val).size();
-                
-                for (int i = 0; i < dicks; i++) {
-                    str += ((JSONArray)val).get(i)
-                        + ((i != dicks - 1) ? ", " : "");
-                }
-                                
-            } else if (val instanceof Number) {
-                str += "<i>" + val + "</i><br/>";
-            } else {
-                str += val + "<br/>";
-            }
-            
-            str += "<br/>";
-        }
-        
-        str += "</html>";
-        
-        businessDetailView.setText(str);
+        jSONDetailView1.addIgnoreKeys(ignoreKeys);
+        jSONDetailView1.setModel(obj);
+        jSONDetailView2.addIgnoreKeys(ignoreKeys);
+        jSONDetailView2.setModel(obj);
     }
+    
 }

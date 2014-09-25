@@ -106,6 +106,7 @@ public class TestSuiteGUISelect extends JPanel {
             for (Class c : cc) {
                 if (!c.getSimpleName().startsWith("S")) continue;
                 dlm.addElement(c);
+                selection.put(c, Boolean.TRUE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -188,10 +189,8 @@ public class TestSuiteGUISelect extends JPanel {
             if (!selection.get(c)) continue;
             
             try {
-                Constructor<?> ct = c.getConstructor(double.class, double.class);
-                double min = 0;
-                double max = 0;
-                Object obj = ct.newInstance(new Object[] { min, max });
+                Constructor<?> ct = c.getConstructor();
+                Object obj = ct.newInstance(new Object[] { });
                 tests.add((ReviewTest) obj);
             } catch (Exception e) {
                 e.printStackTrace();

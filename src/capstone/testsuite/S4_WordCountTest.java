@@ -16,10 +16,6 @@ import org.json.simple.JSONObject;
  */
 public class S4_WordCountTest extends ReviewTest {
 
-    public S4_WordCountTest(double minimum, double maximum) {
-        super(minimum, maximum);
-    }
-
     public double getScore(Review review, int index) throws CapException {
         if (review == null || !review.contains(index))
             throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
