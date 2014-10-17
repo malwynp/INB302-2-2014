@@ -58,7 +58,6 @@ public class S8_AverageWordsPerSentenceTest extends ReviewTest {
         }
         
         return (wordCount / sentenceCounter);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
             
 }

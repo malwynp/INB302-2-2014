@@ -6,6 +6,7 @@
 
 package capstone.gui;
 
+import capstone.yelpmodel.Model;
 import capstone.yelpmodel.YelpModel;
 import capstone.yelpmodel.YelpModel.YelpModelLoaderUI;
 import java.awt.BorderLayout;
@@ -15,11 +16,6 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -37,7 +33,7 @@ import javax.swing.border.Border;
 public class YelpModelLoader extends Thread implements YelpModelLoaderUI {
     
     public interface YelpModelLoadListener {
-        public void modelIsLoaded(YelpModel model);
+        public void modelIsLoaded(Model model);
     }
     
     private YelpModel model;
@@ -47,8 +43,13 @@ public class YelpModelLoader extends Thread implements YelpModelLoaderUI {
     private DefaultListModel<String> logModel;
     private JProgressBar progress;
     
-    public YelpModelLoader(YelpModelLoadListener app) {
+    private File directory = null;
+    
+    public YelpModelLoader(File directory, YelpModelLoadListener app) {
         this.app = app;
+        
+        this.directory = directory;
+        if (directory == null) directory = new File("/home/mark/Downloads/yelp/");
         
         loaderView = new JFrame("Loading Yelp data set...");
 //        loaderView.setPreferredSize(new Dimension(640, 256));
@@ -99,36 +100,10 @@ public class YelpModelLoader extends Thread implements YelpModelLoaderUI {
         
         loaderView.setVisible(true);
         
-        File f = new File("capstone_yelp_2p31.ser");
-
-        try {
-            update("Reading from serialised object file...");
-            model = null;
-            FileInputStream fis = new FileInputStream(f);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            model = (YelpModel) (ois.readObject());
-        } catch (Exception e) {
-            e.printStackTrace();
-            update("Reading from JSON files...");
-            model = new YelpModel("/home/mark/Downloads/yelp/", this);
-
-            try {
-                update("Saving serialised data set...");
-
-                FileOutputStream fos = new FileOutputStream(f);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                model.forget();
-                oos.writeObject(model);
-                oos.close();
-                fos.close();
-            } catch (IOException ex) {
-            }
-        }
-        
-        finally {
-            app.modelIsLoaded(model);
-            loaderView.dispose();
-        }
+        update("Reading from JSON files...");
+        model = new YelpModel(directory.toString(), this);
+        app.modelIsLoaded(model);
+        loaderView.dispose();
     }
 
     public void update(String txt) {

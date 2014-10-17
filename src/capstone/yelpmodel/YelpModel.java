@@ -7,14 +7,13 @@
 package capstone.yelpmodel;
 
 import java.io.File;
-import java.io.Serializable;
 import org.json.simple.JSONObject;
 
 /**
  *
  * @author mark
  */
-public class YelpModel implements Serializable {
+public class YelpModel implements Model {
     public static final long serialVersionUID = -1L;
     
     Business business;
@@ -33,10 +32,10 @@ public class YelpModel implements Serializable {
     public YelpModel(String dir, YelpModelLoaderUI loader) {
         this.loader = loader;
         
-        File businessFile = new File(dir + "yelp_training_set/yelp_training_set_business.json");
-//        File checkinFile = new File(dir + "yelp_training_set/yelp_training_set_checkin.json");
-        File reviewFile = new File(dir + "yelp_training_set/yelp_training_set_review.json");
-//        File userFile = new File(dir + "yelp_training_set/yelp_training_set_user.json");
+        File businessFile = new File(dir + "/yelp_training_set_business.json");
+//        File checkinFile = new File(dir + "yelp_training_set_checkin.json");
+        File reviewFile = new File(dir + "/yelp_training_set_review.json");
+//        File userFile = new File(dir + "yelp_training_set_user.json");
         
         loader.update("Reading businesses...");
         business = new Business(businessFile);

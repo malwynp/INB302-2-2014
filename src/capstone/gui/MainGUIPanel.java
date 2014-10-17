@@ -10,18 +10,16 @@ import capstone.CapException;
 import capstone.gui.UsefulReviewSelect.ChangeVotesListener;
 import capstone.testsuite.TestSuite;
 import capstone.yelpmodel.ARFFWriter;
+import capstone.yelpmodel.AttributeWriter;
 import capstone.yelpmodel.Business;
+import capstone.yelpmodel.Model;
 import capstone.yelpmodel.Review;
-import capstone.yelpmodel.YelpModel;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.simple.JSONObject;
 
@@ -87,13 +85,13 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         uselessReviewSelection = new capstone.gui.DataSetView();
+        jButton3 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         helpfulVotesLabel = new javax.swing.JLabel();
         usefulReviewSelection = new capstone.gui.UsefulReviewSelect();
+        jButton4 = new javax.swing.JButton();
         jSONDetailView2 = new capstone.gui.JSONDetailView();
         jPanel10 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         testSuiteGUISelect1 = new capstone.gui.TestSuiteGUISelect();
@@ -102,6 +100,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         trainingSetResults = new capstone.gui.ResultTable();
         jPanel9 = new javax.swing.JPanel();
         testSetResults = new capstone.gui.ResultTable();
+        jPanel11 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         exportButtonTestWRFF = new javax.swing.JButton();
         exportButtonTrainingWRFF = new javax.swing.JButton();
@@ -109,8 +108,6 @@ public class MainGUIPanel extends javax.swing.JPanel {
         setLayout(new java.awt.GridLayout(1, 1));
 
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -136,7 +133,6 @@ public class MainGUIPanel extends javax.swing.JPanel {
         businessSelectView.setSortKey("review_count");
         businessSelectView.setSorted(true);
         jSplitPane1.setLeftComponent(businessSelectView);
-        jSplitPane1.setRightComponent(jSONDetailView1);
 
         jSONDetailView1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         jSplitPane1.setRightComponent(jSONDetailView1);
@@ -160,7 +156,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(523, Short.MAX_VALUE)
+                .addContainerGap(541, Short.MAX_VALUE)
                 .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -187,6 +183,8 @@ public class MainGUIPanel extends javax.swing.JPanel {
             }
         });
 
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
         jLabel1.setBackground(new java.awt.Color(128, 128, 128));
         jLabel1.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -194,30 +192,17 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jLabel1.setText("Reviews without 'helpful' votes");
         jLabel1.setMinimumSize(new java.awt.Dimension(32, 32));
         jLabel1.setOpaque(true);
+        jPanel4.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         uselessReviewSelection.setKeys(new String[] {"text"});
+        jPanel4.add(uselessReviewSelection, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(uselessReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
-                .addGap(0, 0, 0))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(uselessReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))
-        );
+        jButton3.setText("Export Test Data File (Unvoted)");
+        jPanel4.add(jButton3, java.awt.BorderLayout.PAGE_END);
 
         jSplitPane2.setLeftComponent(jPanel4);
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
 
         helpfulVotesLabel.setBackground(new java.awt.Color(128, 128, 128));
         helpfulVotesLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
@@ -226,22 +211,11 @@ public class MainGUIPanel extends javax.swing.JPanel {
         helpfulVotesLabel.setText("Reviews with ? helpful votes");
         helpfulVotesLabel.setMinimumSize(new java.awt.Dimension(32, 32));
         helpfulVotesLabel.setOpaque(true);
+        jPanel5.add(helpfulVotesLabel, java.awt.BorderLayout.NORTH);
+        jPanel5.add(usefulReviewSelection, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(usefulReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
-            .addComponent(helpfulVotesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(helpfulVotesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(usefulReviewSelection, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))
-        );
+        jButton4.setText("Export Training Data File (Voted useful)");
+        jPanel5.add(jButton4, java.awt.BorderLayout.PAGE_END);
 
         jSplitPane2.setRightComponent(jPanel5);
 
@@ -250,42 +224,18 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jSONDetailView2.setPreferredSize(new java.awt.Dimension(96, 96));
         jPanel6.add(jSONDetailView2, java.awt.BorderLayout.PAGE_START);
 
-        jButton3.setText("Export Test Data File (Unvoted)");
-
-        jButton4.setText("Export Training Data File (Voted useful)");
+        jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/capstone/gui/go-next.png"))); // NOI18N
         jButton5.setText("Examine Text Features");
+        jButton5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jPanel10.add(jButton5);
 
         jPanel6.add(jPanel10, java.awt.BorderLayout.SOUTH);
 
@@ -295,7 +245,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -308,20 +258,23 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Business Reviews", jPanel2);
 
+        jPanel3.setLayout(new java.awt.BorderLayout());
+        jPanel3.add(testSuiteGUISelect1, java.awt.BorderLayout.PAGE_START);
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(trainingSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
+                .addComponent(trainingSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(trainingSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addComponent(trainingSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -333,18 +286,22 @@ public class MainGUIPanel extends javax.swing.JPanel {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(testSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 703, Short.MAX_VALUE)
+                .addComponent(testSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(testSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addComponent(testSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane2.addTab("Test set (not voted helpful)", jPanel9);
+
+        jPanel3.add(jTabbedPane2, java.awt.BorderLayout.CENTER);
+
+        jPanel11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
         jButton2.setText("Run tests");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -352,6 +309,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
                 jButton2ActionPerformed(evt);
             }
         });
+        jPanel11.add(jButton2);
 
         exportButtonTestWRFF.setText("Export Test ARFF file...");
         exportButtonTestWRFF.addActionListener(new java.awt.event.ActionListener() {
@@ -359,6 +317,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
                 exportButtonTestWRFFActionPerformed(evt);
             }
         });
+        jPanel11.add(exportButtonTestWRFF);
 
         exportButtonTrainingWRFF.setText("Export Training ARFF file...");
         exportButtonTrainingWRFF.addActionListener(new java.awt.event.ActionListener() {
@@ -366,39 +325,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
                 exportButtonTrainingWRFFActionPerformed(evt);
             }
         });
+        jPanel11.add(exportButtonTrainingWRFF);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(testSuiteGUISelect1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(exportButtonTestWRFF, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(exportButtonTrainingWRFF, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(testSuiteGUISelect1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(exportButtonTrainingWRFF, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
-                    .addComponent(exportButtonTestWRFF, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        jPanel3.add(jPanel11, java.awt.BorderLayout.PAGE_END);
 
         jTabbedPane1.addTab("Select Review Tests", jPanel3);
 
@@ -460,6 +389,12 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
             try {
                 ARFFWriter writer = new ARFFWriter(f.getName(), testSetResults.getModel());
+                writer.addAttribute(new AttributeWriter("class", "{1,0}") {
+                    @Override
+                    public String getAttributeFor(JSONObject obj) {
+                        return "0";
+                    }
+                });
                 fos = new FileOutputStream(f);
                 writer.writeToStream(fos);
                 fos.close();
@@ -484,6 +419,12 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
             try {
                 ARFFWriter writer = new ARFFWriter(f.getName(), trainingSetResults.getModel());
+                writer.addAttribute(new AttributeWriter("class", "{1,0}") {
+                    @Override
+                    public String getAttributeFor(JSONObject obj) {
+                        return "1";
+                    }
+                });
                 fos = new FileOutputStream(f);
                 writer.writeToStream(fos);
                 fos.close();
@@ -508,6 +449,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -531,11 +473,12 @@ public class MainGUIPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     
-    private YelpModel model = null;
-    void modelIsLoaded(YelpModel model) {
+    private Model model = null;
+    void modelIsLoaded(Model model) {
         this.model = model;
-        
-        businessCategorySelection.setModel(app.getAllBusinessCategories());
+        if (model != null) {
+            businessCategorySelection.setModel(app.getAllBusinessCategories());
+        }
     }
     
     public void businessSelected(ListSelectionEvent lse) throws CapException {
