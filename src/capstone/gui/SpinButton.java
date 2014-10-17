@@ -23,11 +23,10 @@ import javax.swing.JPanel;
 public class SpinButton extends JPanel implements ActionListener {
     
     final private JFormattedTextField field;
-    private double min = 0, max = 1, value = 0.25, increment = 0.1;
+    private int min = 0, max = 10, value = 1, increment = 1;
     final private PropertyChangeSupport pcs;
     final private JPanel bPane;
     final private JButton up, down;
-    final private long rounding = 100;
     
     @Override
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
@@ -51,9 +50,9 @@ public class SpinButton extends JPanel implements ActionListener {
         field.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                double d = Double.parseDouble(field.getText());
+                int d = Integer.parseInt(field.getText());
                 setValue(d);
-                field.setText("" + round(getValue(), rounding));
+                field.setText("" + d);
             }
         });
         
@@ -77,8 +76,7 @@ public class SpinButton extends JPanel implements ActionListener {
         
     }
     
-    public void setRange(double minimum, double maximum) {
-        if (Double.isNaN(min) || Double.isNaN(maximum)) return;
+    public void setRange(int minimum, int maximum) {
         if (minimum < maximum) {
             min = minimum;
             max = maximum;
@@ -88,33 +86,31 @@ public class SpinButton extends JPanel implements ActionListener {
         }
     }
     
-    public double getMinimum() {
+    public int getMinimum() {
         return min;
     }
-    public double getMaximum() {
+    public int getMaximum() {
         return max;
     }
     
-    public void setIncrement(double i) {
-        if (Double.isNaN(i)) return;
+    public void setIncrement(int i) {
         increment = i;
     }
-    public double getIncrement() {
+    public int getIncrement() {
         return increment;
     }
     
-    public void setValue(double v) {
-        double oldv = value;
+    public void setValue(int v) {
+        int oldv = value;
         
-        if (Double.isNaN(v)) return;
         if (v > getMaximum()) v = getMaximum();
         if (v < getMinimum()) v = getMinimum();
         value = v;
-        field.setText("" + round(v, rounding));
+        field.setText("" + v);
         
         pcs.firePropertyChange("value", oldv, v);
     }
-    public double getValue() {
+    public int getValue() {
         return value;
     }
 
@@ -123,10 +119,6 @@ public class SpinButton extends JPanel implements ActionListener {
         if (ae.getSource() == up) setValue(getValue() + getIncrement());
         if (ae.getSource() == down) setValue(getValue() - getIncrement());
         repaint();
-    }
-    
-    public double round(double in, long roundTo) {
-        return (double)((long)(in * roundTo)) / (double)roundTo;
     }
     
 }

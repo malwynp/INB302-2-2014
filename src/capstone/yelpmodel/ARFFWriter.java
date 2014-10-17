@@ -32,7 +32,7 @@ public final class ARFFWriter {
     public ARFFWriter(String relation, final TestResult model) {
         this.model = model;
         attribs = new ArrayList<>();
-        addAttribute(new AttributeWriter("text", "String") {
+    /*    addAttribute(new AttributeWriter("text", "String") {
             @Override
             public String getAttributeFor(JSONObject obj) {
                 String str = (String)obj.get("text");
@@ -40,7 +40,7 @@ public final class ARFFWriter {
                 str = str.replace("\"", "'");
                 return "\"" + str + "\"";
             }
-        });
+        }); */
         for (final ReviewTest rt : model.getTests()) {
             addAttribute(new AttributeWriter(ReviewTest.niceClassName(rt.getClass().getSimpleName(), false), "Numeric") {
 

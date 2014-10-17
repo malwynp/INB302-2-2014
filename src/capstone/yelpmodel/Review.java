@@ -212,4 +212,12 @@ public class Review extends JSONWrapper {
         }
     }
 
+    private String usefulKey = "useful";
+    public String getUsefulKey() {
+        return usefulKey;
+    }
+    public void setUsefulKey(String key) {
+        usefulKey = key;
+    }
+
 }

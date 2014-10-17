@@ -58,15 +58,16 @@ public class ResultTable extends JPanel {
 
             @Override
             public int getColumnCount() {
-                return model.getTestCount() + 1;
+                return model.getTestCount();// + 1;
             }
             
             @Override
             public String getColumnName(int x) {
                 ResultRecord[] record = model.getRecord(0);
                 if (record == null || record.length == 0) return null;
-                if (x == 0) return "Review Text";
-                return ReviewTest.niceClassName(record[x-1].getTest().getClass().getSimpleName(), false);
+//                if (x == 0) return "Review Text";
+                return ReviewTest.niceClassName(record[x].getTest().getClass().getSimpleName(), false);
+//                return ReviewTest.niceClassName(record[x-1].getTest().getClass().getSimpleName(), false);
             }
 
             @Override
@@ -74,11 +75,14 @@ public class ResultTable extends JPanel {
                 ResultRecord[] record = model.getRecord(y);
                 if (record == null || record.length == 0) return null;
                 JSONObject obj = record[0].getObject();
-                if (x == 0) {
-                    return obj.get("text");
-                } else {
-                    return record[x - 1].getDouble();
-                }
+                double rounded = record[x].getDouble();
+                rounded = (double)((int)(rounded * 100)) / 100d;
+                return rounded;
+//                if (x == 0) {
+//                    return obj.get("text");
+//                } else {
+//                    return record[x - 1].getDouble();
+//                }
             }
             
         });

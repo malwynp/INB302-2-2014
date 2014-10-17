@@ -52,6 +52,10 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     
     public void setModel(Review model) {
         reviewModel = model;
+        if (reviewModel != null) {
+            spinner.setRange(0, (int)(reviewModel.getMaximumVotesAsLong(reviewModel.getUsefulKey())));
+        }
+
         try {
             dsv.setModel(getUsefulModel());
         } catch (Exception e) {
@@ -64,7 +68,7 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     
     public Review getUsefulModel() {
         if (reviewModel == null) return null;
-        return reviewModel.trimByVotes("useful", minimumVoteCount());
+        return reviewModel.trimByVotes(reviewModel.getUsefulKey(), minimumVoteCount());
     }
 
     @Override
@@ -83,15 +87,15 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     }
 
     public long minimumVoteCount() {
-        double minimum = spinner.getValue();
         if (reviewModel == null) return 0;
+        long minimum = spinner.getValue();
         
-        long minVotes = reviewModel.getMinimumVotesAsLong("useful");
-        long maxVotes = reviewModel.getMaximumVotesAsLong("useful");
+//        long minVotes = reviewModel.getMinimumVotesAsLong(reviewModel.getUsefulKey());
+//        long maxVotes = reviewModel.getMaximumVotesAsLong(reviewModel.getUsefulKey());
         
-        long mvl = (long) ((maxVotes - minVotes) * minimum);
+//        long mvl = (long) ((maxVotes - minVotes) * minimum);
         
-        return mvl;
+        return minimum;
     }
     
     private List<ChangeVotesListener> listeners = new ArrayList<>();
