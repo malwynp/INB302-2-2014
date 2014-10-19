@@ -110,9 +110,7 @@ public class TestResult implements Serializable {
     }
     public int getTestCount() {
         if (size() == 0) return 0;
-        List<ResultRecord> rec = results.get(results.keySet().toArray()[0]);
-        if (rec == null) return 0;
-        return (rec).size();
+        return getTests().length;
     }
     public ResultRecord[] getRecord(int index) {
         List<ResultRecord> rec = results.get(results.keySet().toArray()[index]);

@@ -13,12 +13,11 @@ import capstone.testsuite.TestSuite;
 import capstone.yelpmodel.Review;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableRowSorter;
 import org.json.simple.JSONObject;
 
 /**
@@ -28,8 +27,8 @@ import org.json.simple.JSONObject;
 public class ResultTable extends JPanel {
     
     private TestResult model;
-    private JTable table;
-    private JScrollPane jsp;
+    private final JTable table;
+    private final JScrollPane jsp;
     
     public ResultTable() {
         setLayout(new BorderLayout());
@@ -58,16 +57,14 @@ public class ResultTable extends JPanel {
 
             @Override
             public int getColumnCount() {
-                return model.getTestCount();// + 1;
+                return model.getTestCount();
             }
             
             @Override
             public String getColumnName(int x) {
                 ResultRecord[] record = model.getRecord(0);
                 if (record == null || record.length == 0) return null;
-//                if (x == 0) return "Review Text";
                 return ReviewTest.niceClassName(record[x].getTest().getClass().getSimpleName(), false);
-//                return ReviewTest.niceClassName(record[x-1].getTest().getClass().getSimpleName(), false);
             }
 
             @Override
@@ -78,17 +75,15 @@ public class ResultTable extends JPanel {
                 double rounded = record[x].getDouble();
                 rounded = (double)((int)(rounded * 100)) / 100d;
                 return rounded;
-//                if (x == 0) {
-//                    return obj.get("text");
-//                } else {
-//                    return record[x - 1].getDouble();
-//                }
             }
             
         });
         
         for (int i = 0; i < table.getModel().getColumnCount(); i++)
             table.sizeColumnsToFit(i);
+
+        table.setRowSorter(new TableRowSorter(table.getModel()));
+
     }
     
     public void generateModel(TestSuite suite, Review reviews) {

@@ -17,9 +17,7 @@ public class YelpModel implements Model {
     public static final long serialVersionUID = -1L;
     
     Business business;
-    Checkin checkin;
     Review review;
-    User user;
 
     public void forget() {
         loader = null;
@@ -64,20 +62,12 @@ public class YelpModel implements Model {
         business = new Business(businessFile);
         System.out.println("...done.");
 
-        System.out.println("Reading checkins...");
-        checkin = new Checkin(checkinFile);
-        System.out.println("...done.");
-
         System.out.println("Reading reviews...");
         review = new Review(reviewFile);
         System.out.println("...done.");
 
         System.out.println("Syncing reviews to businesses...");
         review.storeBusinessNames(business);
-        System.out.println("...done.");
-
-        System.out.println("Reading users...");
-        user = new User(userFile);
         System.out.println("...done.");
         
     }
@@ -91,23 +81,11 @@ public class YelpModel implements Model {
         str += "\tBusinesses:" + business.size() + "\n";
         str += "\tBusiness fields: " + ((JSONObject)(business.json.get(0))).keySet() + "\n";
         
-        str += "\tCheckins:" + checkin.size() + "\n";
-        str += "\tCheckin fields: " + ((JSONObject)(checkin.json.get(0))).keySet() + "\n";
-        
-        str += "\tUsers:" + user.size() + "\n";
-        str += "\tUser fields: " + ((JSONObject)(user.json.get(0))).keySet() + "\n";
-        
         return str;
     }
     
     public Business getBusinesses() {
         return business;
-    }
-    public User getUsers() {
-        return user;
-    }
-    public Checkin getCheckin() {
-        return checkin;
     }
     public Review getReviews() {
         return review;

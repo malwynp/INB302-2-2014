@@ -13,6 +13,7 @@ import capstone.yelpmodel.ARFFWriter;
 import capstone.yelpmodel.AttributeWriter;
 import capstone.yelpmodel.Business;
 import capstone.yelpmodel.Model;
+import capstone.yelpmodel.NanModel;
 import capstone.yelpmodel.Review;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -71,15 +72,15 @@ public class MainGUIPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        mainTabs = new javax.swing.JTabbedPane();
+        businessTab = new javax.swing.JPanel();
         businessCategorySelection = new javax.swing.JComboBox();
         jSplitPane1 = new javax.swing.JSplitPane();
         businessSelectView = new capstone.gui.DataSetView();
         jSONDetailView1 = new capstone.gui.JSONDetailView();
         jPanel7 = new javax.swing.JPanel();
         nextButton = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        reviewTab = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jSplitPane2 = new javax.swing.JSplitPane();
         jPanel4 = new javax.swing.JPanel();
@@ -93,7 +94,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jSONDetailView2 = new capstone.gui.JSONDetailView();
         jPanel10 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        testTab = new javax.swing.JPanel();
         testSuiteGUISelect1 = new capstone.gui.TestSuiteGUISelect();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel8 = new javax.swing.JPanel();
@@ -107,9 +108,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridLayout(1, 1));
 
-        jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
+        mainTabs.setTabPlacement(javax.swing.JTabbedPane.LEFT);
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        businessTab.setLayout(new java.awt.BorderLayout());
 
         businessCategorySelection.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         businessCategorySelection.setMinimumSize(new java.awt.Dimension(64, 64));
@@ -124,7 +125,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
                 businessCategorySelectionActionPerformed(evt);
             }
         });
-        jPanel1.add(businessCategorySelection, java.awt.BorderLayout.NORTH);
+        businessTab.add(businessCategorySelection, java.awt.BorderLayout.NORTH);
 
         jSplitPane1.setDividerLocation(230);
         jSplitPane1.setDividerSize(8);
@@ -137,7 +138,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jSONDetailView1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
         jSplitPane1.setRightComponent(jSONDetailView1);
 
-        jPanel1.add(jSplitPane1, java.awt.BorderLayout.CENTER);
+        businessTab.add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
         jPanel7.setMaximumSize(new java.awt.Dimension(64, 64));
         jPanel7.setPreferredSize(new java.awt.Dimension(64, 64));
@@ -168,9 +169,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jPanel1.add(jPanel7, java.awt.BorderLayout.SOUTH);
+        businessTab.add(jPanel7, java.awt.BorderLayout.SOUTH);
 
-        jTabbedPane1.addTab("Select Business", jPanel1);
+        mainTabs.addTab("Select Business", businessTab);
 
         jPanel6.setLayout(new java.awt.BorderLayout());
 
@@ -239,27 +240,27 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         jPanel6.add(jPanel10, java.awt.BorderLayout.SOUTH);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout reviewTabLayout = new javax.swing.GroupLayout(reviewTab);
+        reviewTab.setLayout(reviewTabLayout);
+        reviewTabLayout.setHorizontalGroup(
+            reviewTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(reviewTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        reviewTabLayout.setVerticalGroup(
+            reviewTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(reviewTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Business Reviews", jPanel2);
+        mainTabs.addTab("Business Reviews", reviewTab);
 
-        jPanel3.setLayout(new java.awt.BorderLayout());
-        jPanel3.add(testSuiteGUISelect1, java.awt.BorderLayout.PAGE_START);
+        testTab.setLayout(new java.awt.BorderLayout());
+        testTab.add(testSuiteGUISelect1, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -274,7 +275,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(trainingSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addComponent(trainingSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -293,13 +294,13 @@ public class MainGUIPanel extends javax.swing.JPanel {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(testSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addComponent(testSetResults, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane2.addTab("Test set (not voted helpful)", jPanel9);
 
-        jPanel3.add(jTabbedPane2, java.awt.BorderLayout.CENTER);
+        testTab.add(jTabbedPane2, java.awt.BorderLayout.CENTER);
 
         jPanel11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
@@ -327,11 +328,11 @@ public class MainGUIPanel extends javax.swing.JPanel {
         });
         jPanel11.add(exportButtonTrainingWRFF);
 
-        jPanel3.add(jPanel11, java.awt.BorderLayout.PAGE_END);
+        testTab.add(jPanel11, java.awt.BorderLayout.PAGE_END);
 
-        jTabbedPane1.addTab("Select Review Tests", jPanel3);
+        mainTabs.addTab("Select Review Tests", testTab);
 
-        add(jTabbedPane1);
+        add(mainTabs);
     }// </editor-fold>//GEN-END:initComponents
 
     private void businessCategorySelectionEvent(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_businessCategorySelectionEvent
@@ -350,9 +351,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_businessCategorySelectionActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        int thisTab = jTabbedPane1.getSelectedIndex();
-        if (thisTab + 1 < jTabbedPane1.getTabCount()) thisTab++;
-        jTabbedPane1.setSelectedIndex(thisTab);
+        int thisTab = mainTabs.getSelectedIndex();
+        if (thisTab + 1 < mainTabs.getTabCount()) thisTab++;
+        mainTabs.setSelectedIndex(thisTab);
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -439,6 +440,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox businessCategorySelection;
     private capstone.gui.DataSetView businessSelectView;
+    private javax.swing.JPanel businessTab;
     private javax.swing.JButton exportButtonTestWRFF;
     private javax.swing.JButton exportButtonTrainingWRFF;
     private javax.swing.JLabel helpfulVotesLabel;
@@ -447,11 +449,8 @@ public class MainGUIPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
@@ -462,11 +461,13 @@ public class MainGUIPanel extends javax.swing.JPanel {
     private capstone.gui.JSONDetailView jSONDetailView2;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JSplitPane jSplitPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTabbedPane mainTabs;
     private javax.swing.JButton nextButton;
+    private javax.swing.JPanel reviewTab;
     private capstone.gui.ResultTable testSetResults;
     private capstone.gui.TestSuiteGUISelect testSuiteGUISelect1;
+    private javax.swing.JPanel testTab;
     private capstone.gui.ResultTable trainingSetResults;
     private capstone.gui.UsefulReviewSelect usefulReviewSelection;
     private capstone.gui.DataSetView uselessReviewSelection;
@@ -477,7 +478,22 @@ public class MainGUIPanel extends javax.swing.JPanel {
     void modelIsLoaded(Model model) {
         this.model = model;
         if (model != null) {
-            businessCategorySelection.setModel(app.getAllBusinessCategories());
+            
+            System.out.println(model);
+            if (model instanceof NanModel) {
+                mainTabs.remove(businessTab);
+                try {
+                    uselessReviewSelection.setModel(model.getReviews());
+                    usefulReviewSelection.setModel(model.getReviews());
+                } catch (Exception e) {
+                }
+            } else {
+                if (mainTabs.indexOfTabComponent(businessTab) == -1)
+                    mainTabs.insertTab("Select Business", null, businessTab, "", 0);
+                businessCategorySelection.setModel(app.getAllBusinessCategories());
+            }
+            
+            mainTabs.setSelectedIndex(0);
         }
     }
     

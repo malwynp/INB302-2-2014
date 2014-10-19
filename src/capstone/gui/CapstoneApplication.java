@@ -8,6 +8,7 @@ package capstone.gui;
 
 import capstone.gui.YelpModelLoader.YelpModelLoadListener;
 import capstone.yelpmodel.Model;
+import capstone.yelpmodel.NanModel;
 import capstone.yelpmodel.YelpModel;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -47,6 +50,7 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         menuBar = new MenuBar(this);
+        menuBar.addMenuItem("_Model", "_Load Nan Model");
         menuBar.addMenuItem("_Model", "_Load Yelp Model");
         menuBar.addMenuItem("_Model", "_Load Custom JSON Model");
         menuBar.addMenuItem("_Model", "_Load Serialised Model");
@@ -90,6 +94,21 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
             case "quit":
                 System.exit(0);
                 break;
+            case "load nan model": {
+                JFileChooser jfc = new JFileChooser();
+                jfc.setDialogTitle("Select Nan data set");
+                
+                if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                    File f = jfc.getSelectedFile();
+                    try {
+                        Model m = new NanModel(f);
+                        modelIsLoaded(m);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "An error occured in loading this file:\n" + ex.toString());
+                    }
+                }
+            } break;
 
             case "load yelp model": {
                 JFileChooser jfc = new JFileChooser();

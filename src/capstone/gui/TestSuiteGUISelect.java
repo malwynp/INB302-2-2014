@@ -8,6 +8,7 @@ package capstone.gui;
 
 import capstone.testsuite.ReviewTest;
 import capstone.testsuite.TestSuite;
+import capstone.yelpmodel.Review;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -30,6 +31,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -105,8 +107,18 @@ public class TestSuiteGUISelect extends JPanel {
             Class cc[] = getClasses("capstone.testsuite", ReviewTest.class);
             for (Class c : cc) {
                 if (!c.getSimpleName().startsWith("S")) continue;
-                dlm.addElement(c);
-                selection.put(c, Boolean.TRUE);
+                
+                try {
+                    ReviewTest test = (ReviewTest) c.newInstance();
+                    JSONObject dumRev = new JSONObject();
+                    dumRev.put("text", "");
+                    Review dummy = new Review(new JSONObject[]{dumRev});
+                    test.getScore(dummy, 0);
+                    dlm.addElement(c);
+                    selection.put(c, Boolean.TRUE);
+                } catch (UnsupportedOperationException eu) {
+                }
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
