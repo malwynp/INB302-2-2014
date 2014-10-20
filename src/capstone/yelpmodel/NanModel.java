@@ -30,7 +30,7 @@ public class NanModel implements Model {
     public static final String REVIEW_TEXT = "Review Text--";
     
     private static final String[] jsonAttributes = {
-        "positiveVotes", "helpfulRatio", "stars", "author"
+        "wholeVotes", "voteRatio", "stars", "author"
     };
     
     private final Business businesses;
@@ -72,6 +72,12 @@ public class NanModel implements Model {
                         reviewText = reviewText + s + "\n";
                     }
                     
+                    String wholeVotes = (String)obj.get(jsonAttributes[0]);
+                    String[] toks = wholeVotes.split("[/]");
+                    int goodVotes = Integer.parseInt(toks[0]);
+                    int allVotes = Integer.parseInt(toks[1]);
+                    obj.put("goodVotes", goodVotes);
+                    obj.put("allVotes", allVotes);
                     obj.put("text", reviewText);
                     arr.add(obj);
                 }
@@ -79,6 +85,7 @@ public class NanModel implements Model {
             }
             
             reviews = new Review(arr.toArray(new JSONObject[arr.size()]));
+            reviews.setHasBusinessData(false);
             businesses = new Business(new JSONObject[0]);
         }
         

@@ -9,7 +9,6 @@ package capstone.yelpmodel;
 import capstone.CapException;
 import capstone.testsuite.TestResult;
 import capstone.testsuite.TestSuite;
-import capstone.testsuite.TestSuite.ReviewTestListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -218,6 +217,14 @@ public class Review extends JSONWrapper {
     }
     public void setUsefulKey(String key) {
         usefulKey = key;
+    }
+
+    private boolean isNanModel = true;
+    public boolean hasBusinessData() {
+        return isNanModel;
+    }
+    public void setHasBusinessData(boolean b) {
+        isNanModel = b;
     }
 
 }

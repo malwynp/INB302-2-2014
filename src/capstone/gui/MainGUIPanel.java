@@ -483,8 +483,11 @@ public class MainGUIPanel extends javax.swing.JPanel {
             if (model instanceof NanModel) {
                 mainTabs.remove(businessTab);
                 try {
-                    uselessReviewSelection.setModel(model.getReviews());
-                    usefulReviewSelection.setModel(model.getReviews());
+                    Review useless = model.getReviews();
+                    Review useful = model.getReviews();
+                    
+                    uselessReviewSelection.setModel(useless);
+                    usefulReviewSelection.setModel(useful);
                 } catch (Exception e) {
                 }
             } else {
@@ -501,24 +504,34 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         uselessReviewSelection.setModel(null);
         usefulReviewSelection.setModel(null);
-        
         JSONObject obj;
-        if ((obj = businessSelectView.getSelected()) == null) return;
-
-        String businessID = (String)(obj.get("business_id"));
-        Review rSet = model.getReviews().getReviewsForBusiness(businessID);
-    
-        uselessReviewSelection.setModel(rSet.trimByVotes("useful", -1));
-        usefulReviewSelection.setModel(rSet);
-
-        String ignoreKeys[] = new String[] {
-            "type", "state", "open", "neighborhoods", "latitude", "longitude"
-        };
         
-        jSONDetailView1.addIgnoreKeys(ignoreKeys);
-        jSONDetailView1.setModel(obj);
-        jSONDetailView2.addIgnoreKeys(ignoreKeys);
-        jSONDetailView2.setModel(obj);
+        if (model instanceof NanModel) {
+            Review useless = model.getReviews();
+            Review useful = model.getReviews();
+
+            uselessReviewSelection.setModel(useless);
+            usefulReviewSelection.setModel(useful);
+        } else {
+            if ((obj = businessSelectView.getSelected()) == null) return;
+            
+            String businessID = (String)(obj.get("business_id"));
+            Review rSet = model.getReviews().getReviewsForBusiness(businessID);
+
+            uselessReviewSelection.setModel(rSet.trimByVotes("useful", -1));
+            usefulReviewSelection.setModel(rSet);
+
+            String ignoreKeys[] = new String[] {
+                "type", "state", "open", "neighborhoods", "latitude", "longitude"
+            };
+
+            jSONDetailView1.addIgnoreKeys(ignoreKeys);
+            jSONDetailView1.setModel(obj);
+            jSONDetailView2.addIgnoreKeys(ignoreKeys);
+            jSONDetailView2.setModel(obj);
+        }
+        
+
     }
     
 }

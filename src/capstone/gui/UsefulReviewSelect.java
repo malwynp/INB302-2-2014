@@ -6,6 +6,7 @@
 package capstone.gui;
 
 import capstone.CapException;
+import capstone.yelpmodel.NanModel;
 import capstone.yelpmodel.Review;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
@@ -26,6 +27,7 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     private SpinButton spinner = null;
     private JLabel label = null;
     private DataSetView dsv = null;
+    private boolean nanMode = false;
     
     public UsefulReviewSelect() {
         super();
@@ -52,8 +54,14 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     
     public void setModel(Review model) {
         reviewModel = model;
+        
         if (reviewModel != null) {
-            spinner.setRange(0, (int)(reviewModel.getMaximumVotesAsLong(reviewModel.getUsefulKey())));
+            nanMode = !(model.hasBusinessData());
+            if (nanMode) {
+                spinner.setRange(0, 1);
+            } else {
+                spinner.setRange(0, (int)(reviewModel.getMaximumVotesAsLong(reviewModel.getUsefulKey())));
+            }
         }
 
         try {
