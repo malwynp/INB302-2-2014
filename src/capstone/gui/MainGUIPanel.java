@@ -143,6 +143,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jPanel7.setMaximumSize(new java.awt.Dimension(64, 64));
         jPanel7.setPreferredSize(new java.awt.Dimension(64, 64));
 
+        nextButton.setBackground(new java.awt.Color(51, 153, 0));
         nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/capstone/gui/go-next.png"))); // NOI18N
         nextButton.setText("Select Review Sets");
         nextButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -165,7 +166,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, Short.MAX_VALUE)
+                .addComponent(nextButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -186,15 +187,15 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setBackground(new java.awt.Color(128, 128, 128));
         jLabel1.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Reviews without 'helpful' votes");
+        jLabel1.setText("Reviews (voted helpful)");
         jLabel1.setMinimumSize(new java.awt.Dimension(32, 32));
         jLabel1.setOpaque(true);
         jPanel4.add(jLabel1, java.awt.BorderLayout.NORTH);
+        jLabel1.getAccessibleContext().setAccessibleName("Reviews voted Helpful");
 
+        uselessReviewSelection.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         uselessReviewSelection.setKeys(new String[] {"text"});
         jPanel4.add(uselessReviewSelection, java.awt.BorderLayout.CENTER);
 
@@ -205,14 +206,14 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        helpfulVotesLabel.setBackground(new java.awt.Color(128, 128, 128));
         helpfulVotesLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
-        helpfulVotesLabel.setForeground(new java.awt.Color(0, 0, 0));
         helpfulVotesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        helpfulVotesLabel.setText("Reviews with ? helpful votes");
+        helpfulVotesLabel.setText("Reviews (NOT voted helpful)");
         helpfulVotesLabel.setMinimumSize(new java.awt.Dimension(32, 32));
         helpfulVotesLabel.setOpaque(true);
         jPanel5.add(helpfulVotesLabel, java.awt.BorderLayout.NORTH);
+
+        usefulReviewSelection.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         jPanel5.add(usefulReviewSelection, java.awt.BorderLayout.CENTER);
 
         jButton4.setText("Export Training Data File (Voted useful)");
@@ -222,11 +223,13 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         jPanel6.add(jSplitPane2, java.awt.BorderLayout.CENTER);
 
+        jSONDetailView2.setBackground(new java.awt.Color(91, 91, 95));
         jSONDetailView2.setPreferredSize(new java.awt.Dimension(96, 96));
         jPanel6.add(jSONDetailView2, java.awt.BorderLayout.PAGE_START);
 
         jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
+        jButton5.setBackground(new java.awt.Color(51, 153, 0));
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/capstone/gui/go-next.png"))); // NOI18N
         jButton5.setText("Examine Text Features");
         jButton5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -304,6 +307,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         jPanel11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
+        jButton2.setBackground(new java.awt.Color(51, 153, 0));
         jButton2.setText("Run tests");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -312,6 +316,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         });
         jPanel11.add(jButton2);
 
+        exportButtonTestWRFF.setBackground(new java.awt.Color(0, 153, 153));
         exportButtonTestWRFF.setText("Export Test ARFF file...");
         exportButtonTestWRFF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -320,6 +325,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         });
         jPanel11.add(exportButtonTestWRFF);
 
+        exportButtonTrainingWRFF.setBackground(new java.awt.Color(0, 153, 153));
         exportButtonTrainingWRFF.setText("Export Training ARFF file...");
         exportButtonTrainingWRFF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
