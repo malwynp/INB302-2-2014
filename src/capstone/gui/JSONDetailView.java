@@ -5,12 +5,23 @@
  */
 package capstone.gui;
 
+//Methods for arranging and resizing containers
 import java.awt.BorderLayout;
+
+//Methods for rendering GUI text
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
+
+//Methods for GUI buttons, checkboxes, etc.
+import java.awt.Component;
+
+//Methods for interacting with arrays
 import java.util.ArrayList;
+
+//Methods for interacting with lists
 import java.util.List;
+
+//Methods for creating GUI
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,12 +29,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
+
+//<!-- unsure
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- *
- * @author mark
+ * Overarching class to <!-- unsure
+ * 
  */
 public class JSONDetailView extends JPanel {
     
@@ -32,6 +45,11 @@ public class JSONDetailView extends JPanel {
     private JSONObject model;
     private JScrollPane jsp;
     
+    /**
+     * Displays information on a specific business in a table format
+     * <!-- unsure what this method does at it contains creating a table and the basic text colour scheme for the system
+     * 
+     */
     public JSONDetailView() {
         setLayout(new BorderLayout());
         table = new JTable();
@@ -58,7 +76,8 @@ public class JSONDetailView extends JPanel {
                 } else {
                     
 //                    System.out.println("o = " + o.getClass().getSimpleName() + "; " + o.toString());
-
+                    
+                    //Colour scheme for text displayed within the system
                     if (o instanceof Number) {
                         label.setForeground(Color.GREEN);
                         label.setText(o.toString());
@@ -94,8 +113,8 @@ public class JSONDetailView extends JPanel {
                     }
 
                 }
-
-                if (selected) {
+                
+                if (selected) {//Highlight selected
                     label.setOpaque(true);
                     label.setBackground(Color.BLUE);
                 } else {
@@ -109,6 +128,7 @@ public class JSONDetailView extends JPanel {
         add(jsp = new JScrollPane(table), BorderLayout.CENTER);
     }
     
+    //<!-- are IgnoreKey's business that we skip as they are not within the service that we selected
     public void addIgnoreKey(String k) {
         if (k == null || ignoreKeys.contains(k)) return;
         ignoreKeys.add(k);
@@ -129,6 +149,11 @@ public class JSONDetailView extends JPanel {
         return ignoreKeys.toArray(new String[ignoreKeys.size()]);
     }
     
+    /**
+     * Calculates the number of rows within a data set that aren't on the ignore list
+     * 
+     * @return total number of rows within the dataset
+     */
     public int countRows() {
         if (model == null) return 0;
         int count = 0;
@@ -139,6 +164,11 @@ public class JSONDetailView extends JPanel {
         return count;
     }
     
+    /**
+     * Sets input object to current model
+     * <!-- this is right? right?
+     * @param obj Stores JSONObject that contains a dataset
+     */
     public void setModel(JSONObject obj) {
         this.model = obj;
         table.setModel(new AbstractTableModel() {
@@ -178,6 +208,11 @@ public class JSONDetailView extends JPanel {
         table.sizeColumnsToFit(0);
 
     }
+    
+    /**
+     * Get current model
+     * @return current model
+     */
     public JSONObject getModel() {
         return model;
     }

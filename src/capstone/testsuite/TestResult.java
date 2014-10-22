@@ -6,22 +6,30 @@
 
 package capstone.testsuite;
 
+//Methods for system input & output through datastreams
 import java.io.Serializable;
+
+//<!-- to do
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+//<!-- to do
 import org.json.simple.JSONObject;
 
 /**
  *
- * @author mark
  */
 public class TestResult implements Serializable {
 
     public JSONObject[] getRecordObjects() {
         return results.keySet().toArray(new JSONObject[results.size()]);
     }
-
+    
+    /**
+     * creates an array containing the test suite tests
+     * @return array of test suite tests
+     */
     public ReviewTest[] getTests() {
         if (size() == 0) return new ReviewTest[] {};
         List<ReviewTest> rt = new ArrayList<>();
@@ -31,6 +39,9 @@ public class TestResult implements Serializable {
         return rt.toArray(new ReviewTest[getRecord(0).length]);
     }
     
+    /**
+     * <!-- to do
+     */
     public final static class ResultRecord {
         protected JSONObject obj;
         protected ReviewTest test;
@@ -68,8 +79,18 @@ public class TestResult implements Serializable {
         }
     }
     
+    /**
+     * <!-- to do
+     */
     private HashMap<JSONObject, List<ResultRecord>> results = new HashMap<>();
-
+    
+    /**
+     * <!-- to do
+     * @param obj
+     * @param test
+     * @param d
+     * @param b 
+     */
     public void store(JSONObject obj, ReviewTest test, double d, boolean b) {
         if (obj == null) return;
         if (!results.containsKey(obj)) {
@@ -82,6 +103,7 @@ public class TestResult implements Serializable {
         String str = "Test Results: (" + results.size() + ")\n";
         
         int i = 0;
+        //formats test results <!-- to do
         for (JSONObject obj : results.keySet()) {
             i++;
             String text = (String) obj.get("text");

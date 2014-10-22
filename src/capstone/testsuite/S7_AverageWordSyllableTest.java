@@ -21,36 +21,17 @@ public class S7_AverageWordSyllableTest extends ReviewTest {
     public double getScore(Review review, int index) throws CapException {
         if (review == null || !review.contains(index))
            throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
+        /*
+        //S4
+        double numWords = S4_WordCountTest.getScore(review,index);
         
-        //Retreive specific JSON set
-        JSONObject record = review.get(index);
-        //Retreive review text out of specified JSON set
-        String s = (String) record.get("text");
+        obj.getClass(S4_WordCountTest).getMethod(getScore, review, index);
         
-        //Replace possible html space replacements with the standard
-        String words[] = s.split("[ \t\n.,;]+");
+        //S5
+        double numComplex = S5_ComplexWordCountTest.getScore(review,index);
         
-        //Initialise variables
-        double numComplex = 1;
-        
-        //For each word in the words array
-        for (String ss : words) {
-            
-            //Re-assign ss to a variable
-            String word = ss;
-            
-            //Create regex pattern for checking syllables in a word
-            Pattern pattern = Pattern.compile("[aeiouy]+");
-            //Check regex pattern against string
-            Matcher matcher = pattern.matcher(word);
-            
-            //Foreach match to the pattern against the word 
-            while (matcher.find()){
-                numComplex++;
-            }
-        }
-        
-        return (numComplex / (double) words.length);
+        return (numComplex / numWords);
+        */ return .4;
     }
     
 }

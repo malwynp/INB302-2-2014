@@ -5,21 +5,34 @@
  */
 package capstone.gui;
 
+//Method for displaying custom exception message
 import capstone.CapException;
+
+//Methods for loading in yelp data
 import capstone.yelpmodel.NanModel;
 import capstone.yelpmodel.Review;
+
+//Methods for arranging and resizing containers
 import java.awt.BorderLayout;
+
+//<!-- to do
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+//Methods for interacting with arrays
 import java.util.ArrayList;
+
+//Methods for interacting with lists
 import java.util.List;
+
+//Methods for creating GUI
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
- * @author mark
+ * <!-- to do
+ * 
  */
 public class UsefulReviewSelect extends JPanel implements PropertyChangeListener {
     
@@ -29,6 +42,9 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     private DataSetView dsv = null;
     private boolean nanMode = false;
     
+    /**
+     * Create useful vote filter panel in GUI
+     */
     public UsefulReviewSelect() {
         super();
         
@@ -52,6 +68,10 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
         add(dsv, BorderLayout.CENTER);
     }
     
+    /**
+     * Set model and set min and max ranges depending on dataset type
+     * @param model 
+     */
     public void setModel(Review model) {
         reviewModel = model;
         
@@ -74,11 +94,19 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
         return reviewModel;
     }
     
+    /**
+     * retrieve dataset and apply min and max filtering 
+     * @return filtered dataset with min and max
+     */
     public Review getUsefulModel() {
         if (reviewModel == null) return null;
         return reviewModel.trimByVotes(reviewModel.getUsefulKey(), minimumVoteCount());
     }
 
+    /**
+     * <!-- unsure
+     * @param pce 
+     */
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         try {
@@ -94,6 +122,10 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
         return spinner;
     }
 
+    /**
+     * Retrieve the min useful votes counter from the spinner buttons
+     * @return 
+     */
     public long minimumVoteCount() {
         if (reviewModel == null) return 0;
         long minimum = spinner.getValue();

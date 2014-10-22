@@ -9,11 +9,17 @@ package capstone;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author mark
+ *  Overarching class for custom exceptions
+ * 
+ * @param 
  */
 public class CapException extends Exception {
     
+    /**
+     * Exception method for creating custom exceptions
+     * 
+     * @param mesg stores custom exception text
+     */
     public CapException(String mesg) {
         super(mesg);
         JOptionPane.showMessageDialog(null, getMessage());

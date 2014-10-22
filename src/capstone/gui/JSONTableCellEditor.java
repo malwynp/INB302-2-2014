@@ -5,10 +5,17 @@
  */
 package capstone.gui;
 
+//Methods for rendering GUI text
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
+
+//Methods for GUI buttons, checkboxes, etc.
+import java.awt.Component;
+
+//Methods for arranging components
+import java.awt.FlowLayout;
+
+//Methods for creating GUI
 import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
@@ -17,26 +24,44 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
+
+//<!-- unsure
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- *
- * @author mark
+ * overarching class <!-- unsure
+ * 
  */
 class JSONTableCellEditor extends AbstractCellEditor implements TableCellEditor {
     
     private JLabel label;
     
+    /**
+     * Create new label
+     */
     public JSONTableCellEditor() {
         label = new JLabel();
     }
 
+    /**
+     * Get value of label
+     * @return label text
+     */
     @Override
     public Object getCellEditorValue() {
         return label.getText();
     }
 
+    /**
+     * <!-- isnt this already set somewhere else
+     * @param jtable
+     * @param o
+     * @param isSelected
+     * @param row
+     * @param column
+     * @return 
+     */
     @Override
     public Component getTableCellEditorComponent(JTable jtable, Object o, boolean isSelected, int row, int column) {
         if (column == 0) { // header

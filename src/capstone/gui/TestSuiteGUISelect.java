@@ -6,19 +6,36 @@
 
 package capstone.gui;
 
+//Methods for loading test suites
 import capstone.testsuite.ReviewTest;
 import capstone.testsuite.TestSuite;
+
+//Methods for loading in yelp data
 import capstone.yelpmodel.Review;
+
+//<!-- to do
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
+
+//Methods for controling height and width of a abstract window toolkit component
+import java.awt.Dimension;
+
+//Methods for system input & output through datastreams
 import java.io.File;
+
+//<!-- to do
 import java.lang.reflect.Constructor;
+
+//Methods for handling web adresses
 import java.net.URL;
+
+//<!-- to do
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+
+//Methods for creating GUI
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -31,11 +48,13 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+//<!-- For JSON objects or serilization
 import org.json.simple.JSONObject;
 
 /**
  *
- * @author mark
+ * 
  */
 public class TestSuiteGUISelect extends JPanel {
     
@@ -44,6 +63,9 @@ public class TestSuiteGUISelect extends JPanel {
     private DefaultListModel<Class> dlm;
     private HashMap<Class, Boolean> selection;
     
+    /**
+     * 
+     */
     public TestSuiteGUISelect() {
         super();
         
@@ -53,7 +75,11 @@ public class TestSuiteGUISelect extends JPanel {
         selection = new HashMap<>();
         
         list.addListSelectionListener(new ListSelectionListener() {
-
+            
+            /**
+             * <!-- to do
+             * @param lse 
+             */
             @Override
             public void valueChanged(ListSelectionEvent lse) {
                 
@@ -72,7 +98,16 @@ public class TestSuiteGUISelect extends JPanel {
         });
         
         list.setCellRenderer(new ListCellRenderer() {
-
+            
+            /**
+             * creates check box for testsuite select<!-- to do
+             * @param jlist
+             * @param e
+             * @param i
+             * @param selected
+             * @param focused
+             * @return 
+             */
             @Override
             public Component getListCellRendererComponent(JList jlist, Object e, int i, boolean selected, boolean focused) {
                 JPanel pane = new JPanel();
@@ -106,7 +141,7 @@ public class TestSuiteGUISelect extends JPanel {
         try {
             Class cc[] = getClasses("capstone.testsuite", ReviewTest.class);
             for (Class c : cc) {
-                if (!c.getSimpleName().startsWith("S")) continue;
+                if (!c.getSimpleName().startsWith("S")) continue;//if its not a test
                 
                 try {
                     ReviewTest test = (ReviewTest) c.newInstance();
@@ -129,6 +164,13 @@ public class TestSuiteGUISelect extends JPanel {
     
     // Adapted from code:
     // http://dzone.com/snippets/get-all-classes-within-package
+    /**
+     * Retrieves classes from capstone.testsuite package
+     * @param pkg
+     * @param filter
+     * @return <!-- to do
+     * @throws Exception 
+     */
     private static Class[] getClasses(String pkg, Class filter) throws Exception {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         String path = pkg.replace(".", "/");
@@ -147,6 +189,13 @@ public class TestSuiteGUISelect extends JPanel {
         return classes.toArray(new Class[classes.size()]);
     }
     
+    /**
+     * Finds classes within the capstone.testsuite package
+     * @param dir
+     * @param pkg
+     * @param filter
+     * @return 
+     */
     private static List<Class> findClasses(File dir, String pkg, Class filter) {
         List<Class> classes = new ArrayList<>();
         if (!dir.exists()) return classes;
@@ -174,6 +223,10 @@ public class TestSuiteGUISelect extends JPanel {
         return classes;
     }
     
+    /**
+     * Create window box for testsuite selection
+     * @param args 
+     */
     public static void main(String args[]) {
         JFrame frame = new JFrame("Derp") {
             @Override
@@ -192,6 +245,10 @@ public class TestSuiteGUISelect extends JPanel {
         
     }
     
+    /**
+     * Add test suites to ArrayList<!-- is this right?
+     * @return Array of test suites
+     */
     public TestSuite generateTestSuite() {
         List<ReviewTest> tests = new ArrayList<>();
         

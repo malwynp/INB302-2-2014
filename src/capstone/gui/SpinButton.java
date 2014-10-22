@@ -5,20 +5,31 @@
  */
 package capstone.gui;
 
+//Methods for arranging and resizing containers
 import java.awt.BorderLayout;
+
+//Methods for controling height and width of a abstract window toolkit component
 import java.awt.Dimension;
+
+//<!-- todo
 import java.awt.GridLayout;
+
+//<!-- todo
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+//<!-- todo
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+
+//Methods for creating GUI
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 
 /**
- *
- * @author mark
+ * overarching class containing methods related to the useful votes filter buttons
+ * 
  */
 public class SpinButton extends JPanel implements ActionListener {
     
@@ -28,17 +39,29 @@ public class SpinButton extends JPanel implements ActionListener {
     final private JPanel bPane;
     final private JButton up, down;
     
+    /**
+     * <!-- 
+     * @param pcl 
+     */
     @Override
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         if (pcs == null) return;
         pcs.addPropertyChangeListener(pcl);
     }
+    
+    /**
+     * <!--
+     * @param pcl 
+     */
     @Override
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         if (pcs == null) return;
         pcs.removePropertyChangeListener(pcl);
     }
     
+    /**
+     * Creates buttons for filter useful votes
+     */
     public SpinButton() {
         pcs = new PropertyChangeSupport(this);
         
@@ -48,6 +71,9 @@ public class SpinButton extends JPanel implements ActionListener {
         add(field, BorderLayout.CENTER);
         
         field.addActionListener(new ActionListener() {
+            /**
+             * <!-- to do
+             */
             @Override
             public void actionPerformed(ActionEvent ae) {
                 int d = Integer.parseInt(field.getText());
@@ -76,6 +102,11 @@ public class SpinButton extends JPanel implements ActionListener {
         
     }
     
+    /**
+     * Sets range between two input int's 
+     * @param minimum
+     * @param maximum 
+     */
     public void setRange(int minimum, int maximum) {
         if (minimum < maximum) {
             min = minimum;
@@ -100,6 +131,10 @@ public class SpinButton extends JPanel implements ActionListener {
         return increment;
     }
     
+    /**
+     * Set int to the current field as long as its within the min and max values
+     * @param v 
+     */
     public void setValue(int v) {
         int oldv = value;
         
@@ -113,7 +148,10 @@ public class SpinButton extends JPanel implements ActionListener {
     public int getValue() {
         return value;
     }
-
+    
+    /**
+     * Onclick of the button add or minus the the increment value to the current value
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == up) setValue(getValue() + getIncrement());

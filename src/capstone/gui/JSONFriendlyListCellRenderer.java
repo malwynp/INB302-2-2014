@@ -6,28 +6,53 @@
 
 package capstone.gui;
 
+//Methods for rendering GUI text
 import java.awt.Color;
+
+//Methods for GUI buttons, checkboxes, etc.
 import java.awt.Component;
+
+//Methods for controling height and width of a abstract window toolkit component
 import java.awt.Dimension;
+
+//Methods for arranging components
 import java.awt.FlowLayout;
+
+//Methods for creating GUI
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+
+//<!-- unsure
 import org.json.simple.JSONObject;
 
 /**
- *
- * @author mark
+ * overarching class <!-- unsure
+ * 
  */
 public class JSONFriendlyListCellRenderer implements ListCellRenderer<JSONObject> {
 
     private String keys[] = null;
     
+    /**
+     * <!-- unsure
+     * 
+     * @param keys 
+     */
     public JSONFriendlyListCellRenderer(String keys[]) {
         this.keys = keys;
     }
-
+    
+    /**
+     * <!-- unsure
+     * @param jlist
+     * @param o
+     * @param index
+     * @param selected
+     * @param focused
+     * @return 
+     */
     @Override
     public Component getListCellRendererComponent(JList<? extends JSONObject> jlist, JSONObject o, int index, boolean selected, boolean focused) {
         

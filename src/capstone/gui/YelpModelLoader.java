@@ -6,16 +6,25 @@
 
 package capstone.gui;
 
+//Methods for loading in yelp data
 import capstone.yelpmodel.Model;
 import capstone.yelpmodel.YelpModel;
 import capstone.yelpmodel.YelpModel.YelpModelLoaderUI;
+
+//Methods for arranging and resizing containers
 import java.awt.BorderLayout;
+
+//<!-- to do
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.Window;
+
+//Methods for system input & output through datastreams
 import java.io.File;
+
+//Methods for creating GUI
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -28,10 +37,12 @@ import javax.swing.border.Border;
 
 /**
  *
- * @author mark
  */
 public class YelpModelLoader extends Thread implements YelpModelLoaderUI {
     
+    /**
+     * <!-- to do
+     */
     public interface YelpModelLoadListener {
         public void modelIsLoaded(Model model);
     }
@@ -45,16 +56,22 @@ public class YelpModelLoader extends Thread implements YelpModelLoaderUI {
     
     private File directory = null;
     
+    /**
+     * Creates dataset loading pop up window
+     * @param directory
+     * @param app 
+     */
     public YelpModelLoader(File directory, YelpModelLoadListener app) {
         this.app = app;
         
         this.directory = directory;
-        if (directory == null) directory = new File("/home/mark/Downloads/yelp/");
+        if (directory == null) directory = new File("/home/mark/Downloads/yelp/");//<!-- redundent
         
         loaderView = new JFrame("Loading Yelp data set...");
 //        loaderView.setPreferredSize(new Dimension(640, 256));
         loaderView.setMinimumSize(new Dimension(640, 128));
         
+        //set favicon
         loaderView.setIconImage(new ImageIcon(getClass().getResource("server.png")).getImage());
 
         JPanel pane = new JPanel();
@@ -96,6 +113,9 @@ public class YelpModelLoader extends Thread implements YelpModelLoaderUI {
         loaderView.setLocation(midPoint);
     }
     
+    /**
+     * reads in dataset
+     */
     public void run() {
         
         loaderView.setVisible(true);
@@ -106,6 +126,10 @@ public class YelpModelLoader extends Thread implements YelpModelLoaderUI {
         loaderView.dispose();
     }
 
+    /**
+     * <!-- not sure what this does?
+     * @param txt 
+     */
     public void update(String txt) {
         logModel.addElement(txt);
         loaderView.pack();

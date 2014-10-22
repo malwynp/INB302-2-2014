@@ -6,24 +6,34 @@
 
 package capstone.gui;
 
+//Methods for creating GUI
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 /**
- *
- * @author mark
+ * overarching class for interacting with the menuBar
+ * <!-- unsure
  */
 public class MenuBar extends JMenuBar {
     
     CapstoneApplication app;
     
+    /**
+     * <!-- it sets app to current app? unsure
+     * @param app 
+     */
     public MenuBar(CapstoneApplication app) {
         super();
         this.app = app;
     }
     
+    /**
+     * Adds a menu menu item
+     * @param menuStr contains name of menu item
+     * @param action contains action for when clicked
+     */
     public void addMenuItem(String menuStr, String action) {
         int menuMem = -1, actMem = -1;
         Character memM = null, memA = null;

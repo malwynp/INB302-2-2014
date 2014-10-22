@@ -5,24 +5,37 @@
  */
 package capstone.gui;
 
+//Method for displaying custom exception message
 import capstone.CapException;
+
+//Methods for loading test suites
 import capstone.testsuite.ReviewTest;
 import capstone.testsuite.TestResult;
 import capstone.testsuite.TestResult.ResultRecord;
 import capstone.testsuite.TestSuite;
+
+//Methods for loading in yelp data
 import capstone.yelpmodel.Review;
+
+//Methods for arranging and resizing containers
 import java.awt.BorderLayout;
+
+//Methods for controling height and width of a abstract window toolkit component
 import java.awt.Dimension;
+
+//Methods for creating GUI
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
+
+//<!-- For JSON objects or serilization
 import org.json.simple.JSONObject;
 
 /**
- *
- * @author mark
+ * overarching class for interacting with the results table
+ * 
  */
 public class ResultTable extends JPanel {
     
@@ -30,6 +43,9 @@ public class ResultTable extends JPanel {
     private final JTable table;
     private final JScrollPane jsp;
     
+    /**
+     * Create results table panel
+     */
     public ResultTable() {
         setLayout(new BorderLayout());
         table = new JTable();
@@ -38,9 +54,18 @@ public class ResultTable extends JPanel {
         setPreferredSize(new Dimension(96, 96));
     }
     
+    /**
+     * Get current label
+     * @return model
+     */
     public TestResult getModel() {
         return model;
     }
+    
+    /**
+     * Set results dataset and create room for the results <!--  
+     * @param result 
+     */
     public void setModel(TestResult result) {
         model = result;
         if (model == null) {
@@ -86,6 +111,11 @@ public class ResultTable extends JPanel {
 
     }
     
+    /**
+     * Runs the test suite and returns the results into the current model 
+     * @param suite
+     * @param reviews 
+     */
     public void generateModel(TestSuite suite, Review reviews) {
         if (suite == null || reviews == null) {
             setModel(null);

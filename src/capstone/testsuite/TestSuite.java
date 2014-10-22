@@ -6,15 +6,20 @@
 
 package capstone.testsuite;
 
+//Method for displaying custom exception message
 import capstone.CapException;
+
+//Methods for loading in yelp data
 import capstone.yelpmodel.Review;
+
+//<!-- to do
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  *
- * @author mark
+ * 
  */
 public class TestSuite {
     
@@ -23,6 +28,10 @@ public class TestSuite {
     public TestSuite() {
     }
     
+    /**
+     * take array of test and puts them into tests <!-- to do
+     * @param rts 
+     */
     public TestSuite(ReviewTest[] rts) {
         for (ReviewTest rt : rts) {
             if (rt == null) continue;
@@ -30,6 +39,13 @@ public class TestSuite {
         }
     }
     
+    /**
+     * Completes the series of tests on a spesific review
+     * @param reviews <!-- to do
+     * @param index
+     * @return
+     * @throws CapException 
+     */
     public double testRecord(Review reviews, int index) throws CapException {
         double score = 0;
         
@@ -39,6 +55,15 @@ public class TestSuite {
         
         return score;
     }
+    
+    /**
+     * Test a specific review with a specific test <!--
+     * @param reviews
+     * @param index
+     * @param test
+     * @return
+     * @throws CapException 
+     */
     public double testRecord(Review reviews, int index, ReviewTest test) throws CapException {
         double score = test.getScore(reviews, index);
         for (ReviewTestListener rtl : getListeners(test))
@@ -46,6 +71,8 @@ public class TestSuite {
 
         return score;
     }
+    
+    //<!-- to do
     private HashMap<ReviewTest, List<ReviewTestListener>> listeners = new HashMap<>();
     public void addListener(ReviewTest test, ReviewTestListener l) {
         if (test == null || l == null) return;
@@ -54,12 +81,16 @@ public class TestSuite {
         }
         listeners.get(test).add(l);
     }
+    
+    //<!-- to do
     public void removeListener(ReviewTest test, ReviewTestListener l) {
         if (test == null || l == null) return;
         if (listeners.get(test) == null) return;
         if (!listeners.get(test).contains(l)) return;
         listeners.get(test).remove(l);
     }
+    
+    //<!--
     public ReviewTestListener[] getListeners(ReviewTest test) {
         if (listeners.get(test) == null || listeners.get(test).isEmpty())
             return new ReviewTestListener[]{};
@@ -67,6 +98,12 @@ public class TestSuite {
         return listeners.get(test).toArray(new ReviewTestListener[listeners.get(test).size()]);
     }
     
+    /**
+     * Runs test suite on each review in the dataset
+     * @param reviews <!--
+     * @return
+     * @throws CapException 
+     */
     public double[] testAllRecords(Review reviews) throws CapException {
         double[] results = new double[reviews.size()];
         
@@ -77,6 +114,12 @@ public class TestSuite {
         return results;
     }
     
+    /**
+     * <!-- to do
+     * @param reviews
+     * @return
+     * @throws CapException 
+     */
     public TestResult testAndStoreAllRecords(Review reviews) throws CapException {
         TestResult results = new TestResult();
         
@@ -95,6 +138,10 @@ public class TestSuite {
         return results;
     }
     
+    /**
+     * Default test suite containing all available test suites
+     * @return 
+     */
     public static final TestSuite getDefaultSuite() {
         return new TestSuite( new ReviewTest[] {
            new S2_UpperCasePercentageTest(), 

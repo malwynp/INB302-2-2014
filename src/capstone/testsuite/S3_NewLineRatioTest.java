@@ -32,14 +32,10 @@ public class S3_NewLineRatioTest extends ReviewTest {
         
         //Initialise variables
         int charCount = text.length();
-        int newLineCount = 0;
+        String toks[] = text.split("\n");
+        int newLineCount = toks.length;
         
-        //Loop through review text checking for standard new line tag
-        for (int i = 0; i < charCount; i++)
-            if (text.charAt(i) == '\n')
-                newLineCount++;
-        
-        return (double)newLineCount / (double)charCount * 100D;
+        return ((double)newLineCount / (double)charCount) * 100;
     }
     
 }

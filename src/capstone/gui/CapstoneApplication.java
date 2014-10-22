@@ -6,20 +6,33 @@
 
 package capstone.gui;
 
+//Methods for loading model information to the GUI
 import capstone.gui.YelpModelLoader.YelpModelLoadListener;
+
+//Methods for loading in models
 import capstone.yelpmodel.Model;
 import capstone.yelpmodel.NanModel;
 import capstone.yelpmodel.YelpModel;
+
+//Methods for controling height and width of a abstract window toolkit component
 import java.awt.Dimension;
+
+//Methods for user interaction with abstract window toolkit components
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+//Methods for system input & output through datastreams
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+//<!-- redundent
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+//Methods for creating GUI
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -31,8 +44,8 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
- *
- * @author mark
+ * Overarching class to create the applications display window
+ * 
  */
 public class CapstoneApplication extends JFrame implements ActionListener, YelpModelLoadListener {
 
@@ -40,15 +53,25 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
     private MainGUIPanel panel;
     private Model model;
     
+    /**
+     * Create main application window, containing blank panel with a menu bar to
+     * select model to load in
+     * 
+     */
     public CapstoneApplication() {
+        //Window title
         super("Capstone Yelp Review Categorisation");
         
+        //Window favicon
         setIconImage(new ImageIcon(getClass().getResource("server.png")).getImage());
         
+        //Set window size
         setPreferredSize(new Dimension(1024, 768));
+        //Define current size is max window size for both vert and hoz
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //Menu options
         menuBar = new MenuBar(this);
         menuBar.addMenuItem("_Model", "_Load Nan Model");
         menuBar.addMenuItem("_Model", "_Load Yelp Model");
@@ -71,6 +94,11 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
         setVisible(true);
     }
     
+    /**
+     * Sets look and feel before creating application window
+     * 
+     * @param args array containing parameters from the compiler
+     */
     public static void main(String args[]) {
         
         // Set native toolkit if available
@@ -78,14 +106,21 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
             for (UIManager.LookAndFeelInfo lafi : UIManager.getInstalledLookAndFeels())
                 if (lafi.getName().contains("GTK"))
                     UIManager.setLookAndFeel(lafi.getClassName());
-        } catch (Exception e) {
+        } catch (Exception e) {//<!-- redundent
         }
         
-        new CapstoneApplication();
+        new CapstoneApplication();//<!-- ignored?
     }
-
+    
+    /**
+     * 
+     * 
+     * @param ae stores information about an action event, more spesificaly the
+     * name of which option the user select from the model menu
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
+        //convert string to lowercase, in prep for comparison
         String cmd = ae.getActionCommand().toLowerCase();
         
         switch (cmd) {
@@ -98,8 +133,10 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
                 JFileChooser jfc = new JFileChooser();
                 jfc.setDialogTitle("Select Nan data set");
                 
+                //If specified file selected by the user is a known format
                 if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     File f = jfc.getSelectedFile();
+                    //try loading file into specified format 
                     try {
                         Model m = new NanModel(f);
                         modelIsLoaded(m);
@@ -113,25 +150,30 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
             case "load yelp model": {
                 JFileChooser jfc = new JFileChooser();
                 jfc.setDialogTitle("Select Yelp model directory");
+                //Allow only full directories to be uploaded
                 jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 jfc.setAcceptAllFileFilterUsed(false);
                 
+                //If specified file selected by the user is a known format
                 if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     File dir = jfc.getSelectedFile();
                     System.out.println(dir.toString());
+                    //Load in yelp model files
                     File bus = new File(dir.toString() + "/yelp_training_set_business.json");
                     File rev = new File(dir.toString() + "/yelp_training_set_review.json");
+                    //If the models failed to load in
                     if (!bus.exists() || !rev.exists()) {
                         JOptionPane.showMessageDialog(null, "This does not appear to be a correctly formatted Yelp model directory.");
                     } else {
                         YelpModelLoader yml = new YelpModelLoader(dir, this);
+                        //<!-- Haven't come across this yet so im going to leave one of these and hopefully get back to it before u see it
                         yml.start();
                     }
                 }
                 break;
             }
 
-            case "load custom json model": {
+            case "load custom json model": {//<!-- Am i going to be commenting this or are you?
                 
                 break;
             }
@@ -148,10 +190,14 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
                 } else {
                     JFileChooser jfc = new JFileChooser();
                     jfc.setDialogTitle("Save serialised model");
+                    //Only allow '.ser' to be saved
                     jfc.setFileFilter(new FileNameExtensionFilter("Serialised Model File", "ser"));
+                    
+                    //If specified file selected by the user is a known format
                     if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
                         FileOutputStream fos;
                         ObjectOutputStream oos;
+                        //Try writting to serialisation file
                         try {
                             fos = new FileOutputStream(jfc.getSelectedFile());
                             oos = new ObjectOutputStream(fos);
@@ -169,16 +215,20 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
 
             case "load serialised model": {
                 if (model != null)
+                    //<!-- should this be added to the other classes that load models
                     if (JOptionPane.showConfirmDialog(null, "There is already a model loaded. Close without saving?") != JOptionPane.OK_OPTION)
                         break;
                 
                     JFileChooser jfc = new JFileChooser();
                     jfc.setDialogTitle("Load serialised model");
+                    //Only allow '.ser' to be saved
                     jfc.setFileFilter(new FileNameExtensionFilter("Serialised Model File", "ser"));
+                    
+                    //If specified file selected by the user is a known format
                     if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                         FileInputStream fis;
                         ObjectInputStream ois;
-                        try {
+                        try {//Try load in specified model
                             fis = new FileInputStream(jfc.getSelectedFile());
                             ois = new ObjectInputStream(fis);
                             Model m = (Model)(ois.readObject());
@@ -193,7 +243,13 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
             }
         }
     }
-
+    
+    /**
+     * Changes the main panel to be visible, this allows the user to explore the data set and run test
+     * <!-- panel.Visible refrences the main panel that was set to false before right?
+     * 
+     * @param model Contains information on dataset <!-- reads from object so it has the dataset? or the info on the input type?
+     */
     public void modelIsLoaded(Model model) {
         this.model = model;
         panel.setVisible(model != null);
@@ -204,6 +260,11 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
         }
     }
     
+    /**
+     * Creates drop down list containing all businesses options
+     * 
+     * @return array of businesses
+     */
     public ComboBoxModel getAllBusinessCategories() {
         if (model == null || model.getBusinesses() == null) return null;
         String[] arr = model.getBusinesses().getAllBusinessCategories();

@@ -6,12 +6,14 @@
 
 package capstone.testsuite;
 
+//Method for displaying custom exception message
 import capstone.CapException;
+
+//Methods for loading in yelp data
 import capstone.yelpmodel.Review;
 
 /**
- *
- * @author mark
+ * Class contains methods related to interacting with the review test suite
  */
 public abstract class ReviewTest {
     
@@ -24,6 +26,12 @@ public abstract class ReviewTest {
         return niceClassName(str, true);
     }
     
+    /**
+     * refines test suite's test name's, removes '_' prefix and the inclusion of the word 'test'
+     * @param str
+     * @param withPrefix
+     * @return 
+     */
     public static final String niceClassName(String str, boolean withPrefix) {
         // Nice-ify S#_ prefix, if any
         if (str.contains("_")) {
