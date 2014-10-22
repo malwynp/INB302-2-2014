@@ -23,7 +23,7 @@ public class S6_SentenceCountTest extends ReviewTest {
            throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
 
         //Initialise variables
-        double sentenceCounter = 0;
+        double sentenceCounter = 1;
         
         //Retreive specific JSON set
         JSONObject record = review.get(index);

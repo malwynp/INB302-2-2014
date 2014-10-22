@@ -31,7 +31,7 @@ public class S5_ComplexWordCountTest extends ReviewTest {
         String words[] = text.split("[ \t\n.,;]+");
         
         //Intialise variables
-        int numComplex = 0;
+        int numComplex = 1;
         
         //For each word in the words array
         for (String ss : words) {
@@ -45,7 +45,7 @@ public class S5_ComplexWordCountTest extends ReviewTest {
             Matcher matcher = pattern.matcher(word);
             
             //Initialise variables
-            int count = 0;
+            int count = 1;
             
             //Foreach match to the pattern against the word 
             while (matcher.find()){

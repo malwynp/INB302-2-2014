@@ -77,7 +77,7 @@ public class S11_FogIndexTest extends ReviewTest {
         //##############################################################
         
         //Initialise variables
-        double sentenceCounter = 0;
+        double sentenceCounter = 1;
         
         //Replace possible sentence endings with the standard sentence ending
         text = text.replace("!", ".");

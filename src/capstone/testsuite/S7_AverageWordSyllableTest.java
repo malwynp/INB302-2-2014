@@ -31,7 +31,7 @@ public class S7_AverageWordSyllableTest extends ReviewTest {
         String words[] = s.split("[ \t\n.,;]+");
         
         //Initialise variables
-        double numComplex = 0;
+        double numComplex = 1;
         
         //For each word in the words array
         for (String ss : words) {
