@@ -47,7 +47,7 @@ public class DataSetView extends JPanel {
     private String[] keys;
     
     /**
-     * <!-- this is only used here no where else from what i can see
+     * <!-- This is only used here no where else from what I can see
      * @return 
      */
     public String getSortKey() {
@@ -55,7 +55,7 @@ public class DataSetView extends JPanel {
     }
     
     /**
-     * <!-- what is sort key
+     * <!-- What is sort key
      * @param key 
      */
     public void setSortKey(String key) {
@@ -169,7 +169,7 @@ public class DataSetView extends JPanel {
     }
     
     /**
-     * <!-- unsure
+     * <!-- Unsure
      * @param lsl 
      */
     public void addListSelectionListener(ListSelectionListener lsl) {
@@ -177,7 +177,7 @@ public class DataSetView extends JPanel {
     }
     
     /**
-     * <!-- unsure
+     * <!-- Unsure
      * @param lsl 
      */
     public void removeListSelectionListener(ListSelectionListener lsl) {
@@ -203,7 +203,7 @@ public class DataSetView extends JPanel {
     }
 
     /**
-     * <!-- is this right?
+     * <!-- Is this right?
      * @return dataset being used in the model
      */
     public JSONWrapper getModel() {

@@ -25,12 +25,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
-//<!-- unsure
+//<!-- Unsure
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- * overarching class <!-- unsure
+ * Overarching class <!-- unsure
  * 
  */
 class JSONTableCellEditor extends AbstractCellEditor implements TableCellEditor {
@@ -54,7 +54,7 @@ class JSONTableCellEditor extends AbstractCellEditor implements TableCellEditor 
     }
 
     /**
-     * <!-- isnt this already set somewhere else
+     * <!-- Isnt this already set somewhere else
      * @param jtable
      * @param o
      * @param isSelected
@@ -64,7 +64,7 @@ class JSONTableCellEditor extends AbstractCellEditor implements TableCellEditor 
      */
     @Override
     public Component getTableCellEditorComponent(JTable jtable, Object o, boolean isSelected, int row, int column) {
-        if (column == 0) { // header
+        if (column == 0) { // Header
             label.setFont(label.getFont().deriveFont(Font.BOLD));
             label.setText((String)o);
         } else {

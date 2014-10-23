@@ -30,11 +30,11 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 
-//<!-- For JSON objects or serilization
+//<!-- For JSON objects or serialisation
 import org.json.simple.JSONObject;
 
 /**
- * overarching class for interacting with the results table
+ * Overarching class for interacting with the results table
  * 
  */
 public class ResultTable extends JPanel {
