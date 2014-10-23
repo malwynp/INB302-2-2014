@@ -78,9 +78,13 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
         if (reviewModel != null) {
             nanMode = !(model.hasBusinessData());
             if (nanMode) {
+                spinner.setIntegerMode(false);
                 spinner.setRange(0, 1);
+                spinner.setIncrement(0.1);
             } else {
+                spinner.setIntegerMode(true);
                 spinner.setRange(0, (int)(reviewModel.getMaximumVotesAsLong(reviewModel.getUsefulKey())));
+                spinner.setIncrement(1);
             }
         }
 
@@ -100,7 +104,11 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
      */
     public Review getUsefulModel() {
         if (reviewModel == null) return null;
-        return reviewModel.trimByVotes(reviewModel.getUsefulKey(), minimumVoteCount());
+        if (spinner.isInIntegerMode()) {
+            return reviewModel.trimByVotes(reviewModel.getUsefulKey(), minimumVoteCount());
+        } else {
+            return reviewModel.trimByVotes(reviewModel.getUsefulKey(), spinner.getValue());
+        }
     }
 
     /**
@@ -113,7 +121,7 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
             dsv.setModel(getUsefulModel());
             long newmin = minimumVoteCount();
             for (ChangeVotesListener cvl : listeners)
-                cvl.votesChange(newmin);
+                cvl.votesChange(this, newmin);
         } catch (CapException ex) {
         }
     }
@@ -128,7 +136,7 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
      */
     public long minimumVoteCount() {
         if (reviewModel == null) return 0;
-        long minimum = spinner.getValue();
+        long minimum = (long)(spinner.getValue());
         
 //        long minVotes = reviewModel.getMinimumVotesAsLong(reviewModel.getUsefulKey());
 //        long maxVotes = reviewModel.getMaximumVotesAsLong(reviewModel.getUsefulKey());
@@ -149,7 +157,7 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     }
     
     public static interface ChangeVotesListener {
-        public void votesChange(long newVotes);
+        public void votesChange(UsefulReviewSelect sel, long newVotes);
     }
 
     

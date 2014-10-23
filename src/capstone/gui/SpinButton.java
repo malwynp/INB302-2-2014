@@ -34,10 +34,18 @@ import javax.swing.JPanel;
 public class SpinButton extends JPanel implements ActionListener {
     
     final private JFormattedTextField field;
-    private int min = 0, max = 10, value = 1, increment = 1;
+    private double min = 0, max = 10, value = 1, increment = 1;
     final private PropertyChangeSupport pcs;
     final private JPanel bPane;
     final private JButton up, down;
+    private boolean integerMode = true;
+    
+    public void setIntegerMode(boolean b) {
+        integerMode = b;
+    }
+    public boolean isInIntegerMode() {
+        return integerMode;
+    }
     
     /**
      * <!-- 
@@ -76,8 +84,9 @@ public class SpinButton extends JPanel implements ActionListener {
              */
             @Override
             public void actionPerformed(ActionEvent ae) {
-                int d = Integer.parseInt(field.getText());
+                double d = Double.parseDouble(field.getText());
                 setValue(d);
+                d = (double)((int)(d * 100)) / 100;
                 field.setText("" + d);
             }
         });
@@ -107,7 +116,7 @@ public class SpinButton extends JPanel implements ActionListener {
      * @param minimum
      * @param maximum 
      */
-    public void setRange(int minimum, int maximum) {
+    public void setRange(double minimum, double maximum) {
         if (minimum < maximum) {
             min = minimum;
             max = maximum;
@@ -117,36 +126,50 @@ public class SpinButton extends JPanel implements ActionListener {
         }
     }
     
-    public int getMinimum() {
-        return min;
+    public double getMinimum() {
+        return isInIntegerMode() ? getMinimumInt() : min;
     }
-    public int getMaximum() {
-        return max;
+    public double getMaximum() {
+        return isInIntegerMode() ? getMaximumInt() : max;
+    }
+    public int getMinimumInt() {
+        return (int)min;
+    }
+    public int getMaximumInt() {
+        return (int)max;
     }
     
-    public void setIncrement(int i) {
+    public void setIncrement(double i) {
         increment = i;
     }
-    public int getIncrement() {
-        return increment;
+    public double getIncrement() {
+        return isInIntegerMode() ? getIntIncrement() : increment;
+    }
+    public int getIntIncrement() {
+        return (int)increment;
     }
     
     /**
      * Set int to the current field as long as its within the min and max values
      * @param v 
      */
-    public void setValue(int v) {
-        int oldv = value;
+    public void setValue(double v) {
+        double oldv = value;
         
         if (v > getMaximum()) v = getMaximum();
         if (v < getMinimum()) v = getMinimum();
         value = v;
-        field.setText("" + v);
+        
+        double roundv = (double)((int)(v * 100)) / 100;
+        field.setText("" + roundv);
         
         pcs.firePropertyChange("value", oldv, v);
     }
-    public int getValue() {
-        return value;
+    public double getValue() {
+        return isInIntegerMode() ? getIntValue() : value;
+    }
+    public int getIntValue() {
+        return (int)value;
     }
     
     /**

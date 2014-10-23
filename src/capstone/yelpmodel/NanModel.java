@@ -88,6 +88,12 @@ public class NanModel implements Model {
                     int allVotes = Integer.parseInt(toks[1]);
                     obj.put("goodVotes", goodVotes);
                     obj.put("allVotes", allVotes);
+                    
+                    JSONObject votes = new JSONObject();
+                    votes.put("helpful", goodVotes);
+                    votes.put("useful", goodVotes);
+                    obj.put("votes", votes);
+                    
                     obj.put("text", reviewText);
                     arr.add(obj);
                     

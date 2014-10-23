@@ -104,7 +104,20 @@ public class Review extends JSONWrapper {
         
         return new Review(lobj.toArray(new JSONObject[lobj.size()]));
     }
-    
+
+    public Review trimByVotes(String voteType, double minimum) {
+        if (voteType == null) return null;
+        List<JSONObject> lobj = new ArrayList<>();
+        
+        for (int i = 0; i < size(); i++) {
+            double vr = ((Double)(get(i).get("voteRatio")));
+
+            if (vr >= minimum) lobj.add(get(i));
+        }
+        
+        return new Review(lobj.toArray(new JSONObject[lobj.size()]));
+    }
+
     public int countReviewsForBusiness(String business_id) {
         List<JSONObject> lobj = new ArrayList<>();
         int count = 0;

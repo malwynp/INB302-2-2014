@@ -149,8 +149,8 @@ public class JSONWrapper implements Serializable {
                 long bVal = (long)getKeyPath(objB, key);
                 swap = order ? (aVal > bVal) : (bVal > aVal);
             } else {
-                double aVal = (double)getKeyPath(objA, key);
-                double bVal = (double)getKeyPath(objB, key);
+                double aVal = (double)((int)(getKeyPath(objA, key)));
+                double bVal = (double)((int)(getKeyPath(objB, key)));
                 swap = order ? (aVal > bVal) : (bVal > aVal);
             }
             
@@ -187,6 +187,17 @@ public class JSONWrapper implements Serializable {
         }
         
         return var;
+    }
+
+    public JSONWrapper cull(JSONWrapper not) {
+        if (not == null) return new JSONWrapper(this.getArray());
+        JSONWrapper w = new JSONWrapper(this.getArray());
+        
+        for (JSONObject o : not.getArray()) {
+            if (w.json.contains(o)) w.json.remove(o);
+        }
+        
+        return w;
     }
 
 }

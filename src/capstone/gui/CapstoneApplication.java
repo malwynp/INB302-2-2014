@@ -314,7 +314,7 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
      * @return array of businesses
      */
     public ComboBoxModel getAllBusinessCategories() {
-        if (model == null || model.getBusinesses() == null) return null;
+        if (model == null || model instanceof NanModel || model.getBusinesses() == null) return null;
         String[] arr = model.getBusinesses().getAllBusinessCategories();
         ComboBoxModel cbm = new DefaultComboBoxModel(arr);
         
