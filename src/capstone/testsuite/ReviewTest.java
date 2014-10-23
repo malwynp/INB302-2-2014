@@ -27,7 +27,7 @@ public abstract class ReviewTest {
     }
     
     /**
-     * refines test suite's test name's, removes '_' prefix and the inclusion of the word 'test'
+     * Refines test suite's test names, removes '_' prefix and the inclusion of the word 'test'
      * @param str
      * @param withPrefix
      * @return 
