@@ -28,7 +28,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 
 /**
- * overarching class containing methods related to the useful votes filter buttons
+ * Overarching class containing methods related to the useful votes filter buttons
  * 
  */
 public class SpinButton extends JPanel implements ActionListener {
@@ -112,7 +112,7 @@ public class SpinButton extends JPanel implements ActionListener {
     }
     
     /**
-     * Sets range between two input int's 
+     * Sets range between two input ints 
      * @param minimum
      * @param maximum 
      */

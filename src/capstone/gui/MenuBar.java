@@ -16,7 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 
 /**
- * overarching class for interacting with the menuBar
+ * Overarching class for interacting with the menuBar
  * <!-- unsure
  */
 public class MenuBar extends JMenuBar {
@@ -24,7 +24,7 @@ public class MenuBar extends JMenuBar {
     CapstoneApplication app;
     
     /**
-     * <!-- it sets app to current app? unsure
+     * <!-- Sets app to current app? Unsure.
      * @param app 
      */
     public MenuBar(CapstoneApplication app) {
