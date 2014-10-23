@@ -37,6 +37,8 @@ public class NanModel implements Model {
     private final Review reviews;
     
     public NanModel(File src) throws Exception {
+
+        long count = 0;
         
         try (FileInputStream fis = new FileInputStream(src);
             InputStreamReader isr = new InputStreamReader(fis);
@@ -50,9 +52,17 @@ public class NanModel implements Model {
                 if (str.equalsIgnoreCase(REVIEW_BEGIN)) {
                     
                     JSONObject obj = new JSONObject();
-                    for (String s : jsonAttributes) {
+                    for (int i = 0; i < jsonAttributes.length; i++) {
+                        String s = jsonAttributes[i];
                         str = br.readLine();
-                        obj.put(s, JSONValue.parse(str));
+                        System.out.println(s + "=" + str);
+                        if (str.contains("/")) { // May confuse JSON parser
+                            obj.put(s, str);
+                        } else if (i == jsonAttributes.length-1) { // Author
+                            obj.put(s, str);
+                        } else {
+                            obj.put(s, JSONValue.parse(str));
+                        }
                     }
                     
                     while (br.ready()) {
@@ -72,7 +82,7 @@ public class NanModel implements Model {
                         reviewText = reviewText + s + "\n";
                     }
                     
-                    String wholeVotes = (String)obj.get(jsonAttributes[0]);
+                    String wholeVotes = (String)(obj.get(jsonAttributes[0]));
                     String[] toks = wholeVotes.split("[/]");
                     int goodVotes = Integer.parseInt(toks[0]);
                     int allVotes = Integer.parseInt(toks[1]);
@@ -80,6 +90,8 @@ public class NanModel implements Model {
                     obj.put("allVotes", allVotes);
                     obj.put("text", reviewText);
                     arr.add(obj);
+                    
+                    count++;
                 }
                 
             }

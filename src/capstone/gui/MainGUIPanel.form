@@ -257,10 +257,13 @@
                             </Constraint>
                           </Constraints>
                         </Component>
-                        <Component class="javax.swing.JButton" name="jButton3">
+                        <Component class="javax.swing.JButton" name="btnNanTestExport">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="Export Test Data File (Unvoted)"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNanTestExportActionPerformed"/>
+                          </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                               <BorderConstraints direction="Last"/>
@@ -310,10 +313,13 @@
                             </Constraint>
                           </Constraints>
                         </Component>
-                        <Component class="javax.swing.JButton" name="jButton4">
+                        <Component class="javax.swing.JButton" name="btnNanTrainingExport">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="Export Training Data File (Voted useful)"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNanTrainingExportActionPerformed"/>
+                          </Events>
                           <Constraints>
                             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                               <BorderConstraints direction="Last"/>

@@ -14,6 +14,7 @@ import capstone.yelpmodel.AttributeWriter;
 import capstone.yelpmodel.Business;
 import capstone.yelpmodel.Model;
 import capstone.yelpmodel.NanModel;
+import capstone.yelpmodel.NanWriter;
 import capstone.yelpmodel.Review;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -86,11 +87,11 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         uselessReviewSelection = new capstone.gui.DataSetView();
-        jButton3 = new javax.swing.JButton();
+        btnNanTestExport = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         helpfulVotesLabel = new javax.swing.JLabel();
         usefulReviewSelection = new capstone.gui.UsefulReviewSelect();
-        jButton4 = new javax.swing.JButton();
+        btnNanTrainingExport = new javax.swing.JButton();
         jSONDetailView2 = new capstone.gui.JSONDetailView();
         jPanel10 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
@@ -199,8 +200,13 @@ public class MainGUIPanel extends javax.swing.JPanel {
         uselessReviewSelection.setKeys(new String[] {"text"});
         jPanel4.add(uselessReviewSelection, java.awt.BorderLayout.CENTER);
 
-        jButton3.setText("Export Test Data File (Unvoted)");
-        jPanel4.add(jButton3, java.awt.BorderLayout.PAGE_END);
+        btnNanTestExport.setText("Export Test Data File (Unvoted)");
+        btnNanTestExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNanTestExportActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnNanTestExport, java.awt.BorderLayout.PAGE_END);
 
         jSplitPane2.setLeftComponent(jPanel4);
 
@@ -216,8 +222,13 @@ public class MainGUIPanel extends javax.swing.JPanel {
         usefulReviewSelection.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         jPanel5.add(usefulReviewSelection, java.awt.BorderLayout.CENTER);
 
-        jButton4.setText("Export Training Data File (Voted useful)");
-        jPanel5.add(jButton4, java.awt.BorderLayout.PAGE_END);
+        btnNanTrainingExport.setText("Export Training Data File (Voted useful)");
+        btnNanTrainingExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNanTrainingExportActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnNanTrainingExport, java.awt.BorderLayout.PAGE_END);
 
         jSplitPane2.setRightComponent(jPanel5);
 
@@ -442,8 +453,52 @@ public class MainGUIPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_exportButtonTrainingWRFFActionPerformed
 
+    private void btnNanTestExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNanTestExportActionPerformed
+        JFileChooser jfc = new JFileChooser();
+        jfc.setDialogTitle("Export Test NanModel file");
+        jfc.setSelectedFile(new File("test.txt"));
+        jfc.setFileFilter(new FileNameExtensionFilter("NanModel file", "txt"));
+        
+        if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            try {
+                NanWriter nw = new NanWriter(uselessReviewSelection.getModel());
+                FileOutputStream fos = new FileOutputStream(jfc.getSelectedFile());
+                nw.writeToStream("@Test review dataset", fos);
+                fos.close();
+            }
+            
+            catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "An error has occurred in trying to export this file:\n" + e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnNanTestExportActionPerformed
+
+    private void btnNanTrainingExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNanTrainingExportActionPerformed
+        JFileChooser jfc = new JFileChooser();
+        jfc.setDialogTitle("Export Training NanModel file");
+        jfc.setSelectedFile(new File("training.txt"));
+        jfc.setFileFilter(new FileNameExtensionFilter("NanModel file", "txt"));
+        
+        if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            try {
+                NanWriter nw = new NanWriter(uselessReviewSelection.getModel());
+                FileOutputStream fos = new FileOutputStream(jfc.getSelectedFile());
+                nw.writeToStream("@Training review dataset", fos);
+                fos.close();
+            }
+            
+            catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "An error has occurred in trying to export this file:\n" + e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnNanTrainingExportActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnNanTestExport;
+    private javax.swing.JButton btnNanTrainingExport;
     private javax.swing.JComboBox businessCategorySelection;
     private capstone.gui.DataSetView businessSelectView;
     private javax.swing.JPanel businessTab;
@@ -451,8 +506,6 @@ public class MainGUIPanel extends javax.swing.JPanel {
     private javax.swing.JButton exportButtonTrainingWRFF;
     private javax.swing.JLabel helpfulVotesLabel;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel10;

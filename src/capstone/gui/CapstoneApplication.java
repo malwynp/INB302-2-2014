@@ -29,8 +29,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 //<!-- redundent
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 //Methods for creating GUI
 import javax.swing.BorderFactory;
@@ -40,7 +38,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -60,8 +60,12 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
      */
     public CapstoneApplication() {
         //Window title
-        super("Capstone Yelp Review Categorisation");
-        
+        super("Capstone Review Processing and Analysis");
+        initGUI();
+        setVisible(true);
+    }
+    
+    private void initGUI() {
         //Window favicon
         setIconImage(new ImageIcon(getClass().getResource("server.png")).getImage());
         
@@ -73,13 +77,26 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
 
         //Menu options
         menuBar = new MenuBar(this);
+        JRadioButtonMenuItem[] bg = menuBar.addRadioMenu("_Application", "Look and Feel", new String[] {
+            "GTK Look and Feel", "Native Look and Feel", "Metal Look and Feel"
+        });
+        menuBar.addMenuItem("_Application", "_Quit");
         menuBar.addMenuItem("_Model", "_Load Nan Model");
         menuBar.addMenuItem("_Model", "_Load Yelp Model");
-        menuBar.addMenuItem("_Model", "_Load Custom JSON Model");
+//        menuBar.addMenuItem("_Model", "_Load Custom JSON Model");
         menuBar.addMenuItem("_Model", "_Load Serialised Model");
         menuBar.addMenuItem("_Model", "_Save Serialised Model");
         menuBar.addMenuItem("_Model", "_Close Model");
-        menuBar.addMenuItem("_Application", "_Quit");
+        
+        if (UIManager.getLookAndFeel().getName().contains("GTK")) {
+            bg[0].setSelected(true);
+        }
+        if (UIManager.getLookAndFeel().equals(UIManager.getSystemLookAndFeelClassName())) {
+            bg[1].setSelected(true);
+        }
+        if (UIManager.getLookAndFeel().getName().contains("Metal")) {
+            bg[2].setSelected(true);
+        }
         
         setJMenuBar(menuBar);
 
@@ -90,8 +107,6 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
         panel.setVisible(false);
         
         pack();
-        
-        setVisible(true);
     }
     
     /**
@@ -99,17 +114,17 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
      * 
      * @param args array containing parameters from the compiler
      */
+    private static CapstoneApplication instance = null;
     public static void main(String args[]) {
-        
-        // Set native toolkit if available
-        try {
-            for (UIManager.LookAndFeelInfo lafi : UIManager.getInstalledLookAndFeels())
-                if (lafi.getName().contains("GTK"))
-                    UIManager.setLookAndFeel(lafi.getClassName());
-        } catch (Exception e) {//<!-- redundent
-        }
-        
-        new CapstoneApplication();//<!-- ignored?
+        instance = new CapstoneApplication();
+    }
+
+    private CapstoneApplication(Model model) {
+        //Window title
+        super("Capstone Review Processing and Analysis");
+        initGUI();
+        modelIsLoaded(model);
+        setVisible(true);
     }
     
     /**
@@ -126,6 +141,38 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
         switch (cmd) {
             default: break;
                 
+            case "gtk look and feel":
+                try {
+                    for (LookAndFeelInfo lafi : UIManager.getInstalledLookAndFeels()) {
+                        if (lafi.getClassName().contains("GTK")) {
+                            UIManager.setLookAndFeel(lafi.getClassName());
+                            break;
+                        }
+                    }
+                    refreshLookAndFeel(this);
+                } catch (Exception e) {
+                }
+                break;
+            case "native look and feel":
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    refreshLookAndFeel(this);
+                } catch (Exception e) {
+                }
+                break;
+            case "metal look and feel":
+                try {
+                    for (LookAndFeelInfo lafi : UIManager.getInstalledLookAndFeels()) {
+                        if (lafi.getClassName().contains("Metal")) {
+                            UIManager.setLookAndFeel(lafi.getClassName());
+                            break;
+                        }
+                    }
+                    refreshLookAndFeel(this);
+                } catch (Exception e) {
+                }
+                break;
+                
             case "quit":
                 System.exit(0);
                 break;
@@ -141,6 +188,7 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
                         Model m = new NanModel(f);
                         modelIsLoaded(m);
                     } catch (Exception ex) {
+                        ex.printStackTrace();
                         JOptionPane.showMessageDialog(null,
                                 "An error occured in loading this file:\n" + ex.toString());
                     }
@@ -272,5 +320,16 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
         
         return cbm;
     }
-    
+
+    public static CapstoneApplication refreshLookAndFeel(CapstoneApplication app) {
+        if (app.model == null) {
+            app.dispose();
+            instance = new CapstoneApplication();
+        } else {
+            app.dispose();
+            instance = new CapstoneApplication(app.model);
+        }
+        return instance;
+    }
+
 }
