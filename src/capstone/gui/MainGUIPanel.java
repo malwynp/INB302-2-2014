@@ -41,7 +41,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         usefulReviewSelection.addListener(helpfulLabelUpdate);
     }
     private ChangeVotesListener helpfulLabelUpdate = new ChangeVotesListener() {
-            public void votesChange(long newVotes) {
+            public void votesChange(UsefulReviewSelect sel, long newVotes) {
                 helpfulVotesLabel.setText("Reviews with 'helpful' votes >= " + newVotes);
             }
         };
@@ -378,7 +378,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         TestSuite genSuite = this.testSuiteGUISelect1.generateTestSuite();
         if (genSuite == null) return;
         
-        Review testSet = uselessReviewSelection.getModel();
+        Review testSet = (Review) uselessReviewSelection.getModel();
         Review trainSet = usefulReviewSelection.getUsefulModel();
         
         testSetResults.generateModel(genSuite, testSet);
