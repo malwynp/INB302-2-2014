@@ -29,7 +29,7 @@ public class TestSuite {
     }
     
     /**
-     * take array of test and puts them into tests <!-- to do
+     * Take array of test and puts them into tests <!-- to do
      * @param rts 
      */
     public TestSuite(ReviewTest[] rts) {
@@ -40,7 +40,7 @@ public class TestSuite {
     }
     
     /**
-     * Completes the series of tests on a spesific review
+     * Completes the series of tests on a specific review
      * @param reviews <!-- to do
      * @param index
      * @return

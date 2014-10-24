@@ -27,7 +27,7 @@ public class TestResult implements Serializable {
     }
     
     /**
-     * creates an array containing the test suite tests
+     * Creates an array containing the test suite tests
      * @return array of test suite tests
      */
     public ReviewTest[] getTests() {
@@ -103,7 +103,7 @@ public class TestResult implements Serializable {
         String str = "Test Results: (" + results.size() + ")\n";
         
         int i = 0;
-        //formats test results <!-- to do
+        //Formats test results <!-- to do
         for (JSONObject obj : results.keySet()) {
             i++;
             String text = (String) obj.get("text");

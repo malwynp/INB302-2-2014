@@ -130,8 +130,8 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
     /**
      * 
      * 
-     * @param ae stores information about an action event, more spesificaly the
-     * name of which option the user select from the model menu
+     * @param ae stores information about an action event, more specifically, the
+     * name of which option the user selects from the model menu
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -180,7 +180,7 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
                 JFileChooser jfc = new JFileChooser();
                 jfc.setDialogTitle("Select Nan data set");
                 
-                //If specified file selected by the user is a known format
+                //If the specified file is selected by the user is a known format
                 if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     File f = jfc.getSelectedFile();
                     //try loading file into specified format 
@@ -263,7 +263,7 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
 
             case "load serialised model": {
                 if (model != null)
-                    //<!-- should this be added to the other classes that load models
+                    //<!-- Should this be added to the other classes that load models
                     if (JOptionPane.showConfirmDialog(null, "There is already a model loaded. Close without saving?") != JOptionPane.OK_OPTION)
                         break;
                 

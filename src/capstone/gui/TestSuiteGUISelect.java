@@ -49,7 +49,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-//<!-- For JSON objects or serilization
+//<!-- For JSON objects or serialisation
 import org.json.simple.JSONObject;
 
 /**
@@ -137,11 +137,11 @@ public class TestSuiteGUISelect extends JPanel {
         sp = new JScrollPane(list);
         add(sp);
         
-        // Populate list with tests
+        //Populate list with tests
         try {
             Class cc[] = getClasses("capstone.testsuite", ReviewTest.class);
             for (Class c : cc) {
-                if (!c.getSimpleName().startsWith("S")) continue;//if its not a test
+                if (!c.getSimpleName().startsWith("S")) continue;//If it is not a test
                 
                 try {
                     ReviewTest test = (ReviewTest) c.newInstance();
@@ -246,7 +246,7 @@ public class TestSuiteGUISelect extends JPanel {
     }
     
     /**
-     * Add test suites to ArrayList<!-- is this right?
+     * Add test suites to ArrayList<!-- Is this right?
      * @return Array of test suites
      */
     public TestSuite generateTestSuite() {

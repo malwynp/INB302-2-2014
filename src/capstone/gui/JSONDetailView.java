@@ -30,12 +30,12 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
-//<!-- unsure
+//<!-- Unsure
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- * Overarching class to <!-- unsure
+ * Overarching class to <!-- Unsure
  * 
  */
 public class JSONDetailView extends JPanel {
@@ -47,7 +47,7 @@ public class JSONDetailView extends JPanel {
     
     /**
      * Displays information on a specific business in a table format
-     * <!-- unsure what this method does at it contains creating a table and the basic text colour scheme for the system
+     * <!-- Unsure what this method does at it contains creating a table and the basic text colour scheme for the system
      * 
      */
     public JSONDetailView() {
@@ -75,7 +75,7 @@ public class JSONDetailView extends JPanel {
                     label.setText((String)o);
                 } else {
                     
-//                    System.out.println("o = " + o.getClass().getSimpleName() + "; " + o.toString());
+                    //System.out.println("o = " + o.getClass().getSimpleName() + "; " + o.toString());
                     
                     //Colour scheme for text displayed within the system
                     if (o instanceof Number) {
@@ -128,7 +128,7 @@ public class JSONDetailView extends JPanel {
         add(jsp = new JScrollPane(table), BorderLayout.CENTER);
     }
     
-    //<!-- are IgnoreKey's business that we skip as they are not within the service that we selected
+    //<!-- Are IgnoreKey's business that we skip? They are not within the service that we selected.
     public void addIgnoreKey(String k) {
         if (k == null || ignoreKeys.contains(k)) return;
         ignoreKeys.add(k);
@@ -150,9 +150,9 @@ public class JSONDetailView extends JPanel {
     }
     
     /**
-     * Calculates the number of rows within a data set that aren't on the ignore list
+     * Calculates the number of rows within a data set that aren't on the ignore list.
      * 
-     * @return total number of rows within the dataset
+     * @return Total number of rows within the dataset
      */
     public int countRows() {
         if (model == null) return 0;
@@ -166,7 +166,7 @@ public class JSONDetailView extends JPanel {
     
     /**
      * Sets input object to current model
-     * <!-- this is right? right?
+     * <!-- This is Right? Right?
      * @param obj Stores JSONObject that contains a dataset
      */
     public void setModel(JSONObject obj) {

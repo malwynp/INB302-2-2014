@@ -24,11 +24,11 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-//<!-- unsure
+//<!-- Unsure
 import org.json.simple.JSONObject;
 
 /**
- * overarching class <!-- unsure
+ * Overarching class <!-- unsure
  * 
  */
 public class JSONFriendlyListCellRenderer implements ListCellRenderer<JSONObject> {
@@ -36,7 +36,7 @@ public class JSONFriendlyListCellRenderer implements ListCellRenderer<JSONObject
     private String keys[] = null;
     
     /**
-     * <!-- unsure
+     * <!-- Unsure
      * 
      * @param keys 
      */
@@ -45,7 +45,7 @@ public class JSONFriendlyListCellRenderer implements ListCellRenderer<JSONObject
     }
     
     /**
-     * <!-- unsure
+     * <!-- Unsure
      * @param jlist
      * @param o
      * @param index

@@ -99,7 +99,7 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     }
     
     /**
-     * retrieve dataset and apply min and max filtering 
+     * Retrieve dataset and apply min and max filtering 
      * @return filtered dataset with min and max
      */
     public Review getUsefulModel() {
@@ -112,7 +112,7 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     }
 
     /**
-     * <!-- unsure
+     * <!-- Unsure
      * @param pce 
      */
     @Override
