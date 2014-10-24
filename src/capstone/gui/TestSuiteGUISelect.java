@@ -11,7 +11,7 @@ import capstone.testsuite.ReviewTest;
 import capstone.testsuite.TestSuite;
 
 //Methods for loading in yelp data
-import capstone.yelpmodel.Review;
+import capstone.model.Review;
 
 //<!-- to do
 import java.awt.Component;

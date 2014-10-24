@@ -3,17 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package capstone.yelpmodel;
 
-import java.io.Serializable;
+package capstone.model;
+
+import java.io.File;
 
 /**
  *
  * @author mark
  */
-public interface Model extends Serializable {
-    
-    public Business getBusinesses();
-    public Review getReviews();
-    
+public class Checkin extends JSONWrapper {
+
+    public Checkin(String src) {
+        super(src);
+    }
+
+    public Checkin(File f) {
+        super(f);
+    }
+
 }

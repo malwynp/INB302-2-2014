@@ -6,7 +6,7 @@
 package capstone.gui;
 
 import capstone.gui.UsefulReviewSelect.ChangeVotesListener;
-import capstone.yelpmodel.JSONWrapper;
+import capstone.model.Review;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,12 +15,15 @@ import javax.swing.JOptionPane;
  */
 public class UselessReviewSelection extends DataSetView implements ChangeVotesListener {
         
-    private JSONWrapper rootModel = null;
-    public void setRootModel(JSONWrapper o) {
+    private Review rootModel = null;
+    public void setRootModel(Review o) {
         rootModel = o;
     }
-    public JSONWrapper getRootModel() {
+    public Review getRootModel() {
         return rootModel;
+    }
+    public Review getModel() {
+        return (Review)(super.getModel());
     }
     
     @Override

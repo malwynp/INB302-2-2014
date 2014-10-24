@@ -13,9 +13,9 @@ import capstone.testsuite.TestResult;
 import capstone.testsuite.TestSuite;
 
 //Methods for loading in yelp data
-import capstone.yelpmodel.Business;
-import capstone.yelpmodel.Review;
-import capstone.yelpmodel.YelpModel;
+import capstone.model.Business;
+import capstone.model.Review;
+import capstone.model.YelpModel;
 
 //Methods for controling height and width of a abstract window toolkit component
 import java.awt.Dimension;

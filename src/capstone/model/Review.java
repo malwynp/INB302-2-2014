@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package capstone.yelpmodel;
+package capstone.model;
 
 import capstone.CapException;
 import capstone.testsuite.TestResult;
@@ -238,6 +238,17 @@ public class Review extends JSONWrapper {
     }
     public void setHasBusinessData(boolean b) {
         isNanModel = b;
+    }
+
+    public Review cull(Review not) {
+        if (not == null) return new Review(this.getArray());
+        Review w = new Review(this.getArray());
+        
+        for (JSONObject o : not.getArray()) {
+            if (w.json.contains(o)) w.json.remove(o);
+        }
+        
+        return w;
     }
 
 }

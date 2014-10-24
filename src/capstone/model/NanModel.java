@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package capstone.yelpmodel;
+package capstone.model;
 
 import capstone.gui.DataSetView;
 import java.awt.Dimension;

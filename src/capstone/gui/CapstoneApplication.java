@@ -10,9 +10,9 @@ package capstone.gui;
 import capstone.gui.YelpModelLoader.YelpModelLoadListener;
 
 //Methods for loading in models
-import capstone.yelpmodel.Model;
-import capstone.yelpmodel.NanModel;
-import capstone.yelpmodel.YelpModel;
+import capstone.model.Model;
+import capstone.model.NanModel;
+import capstone.model.YelpModel;
 
 //Methods for controling height and width of a abstract window toolkit component
 import java.awt.Dimension;

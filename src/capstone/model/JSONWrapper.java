@@ -1,4 +1,4 @@
-package capstone.yelpmodel;
+package capstone.model;
 
 import capstone.CapException;
 import java.io.BufferedReader;
@@ -187,17 +187,6 @@ public class JSONWrapper implements Serializable {
         }
         
         return var;
-    }
-
-    public JSONWrapper cull(JSONWrapper not) {
-        if (not == null) return new JSONWrapper(this.getArray());
-        JSONWrapper w = new JSONWrapper(this.getArray());
-        
-        for (JSONObject o : not.getArray()) {
-            if (w.json.contains(o)) w.json.remove(o);
-        }
-        
-        return w;
     }
 
 }

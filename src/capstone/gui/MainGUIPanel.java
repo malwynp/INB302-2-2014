@@ -9,13 +9,13 @@ package capstone.gui;
 import capstone.CapException;
 import capstone.gui.UsefulReviewSelect.ChangeVotesListener;
 import capstone.testsuite.TestSuite;
-import capstone.yelpmodel.ARFFWriter;
-import capstone.yelpmodel.AttributeWriter;
-import capstone.yelpmodel.Business;
-import capstone.yelpmodel.Model;
-import capstone.yelpmodel.NanModel;
-import capstone.yelpmodel.NanWriter;
-import capstone.yelpmodel.Review;
+import capstone.model.ARFFWriter;
+import capstone.model.AttributeWriter;
+import capstone.model.Business;
+import capstone.model.Model;
+import capstone.model.NanModel;
+import capstone.model.NanWriter;
+import capstone.model.Review;
 import java.io.File;
 import java.io.FileOutputStream;
 import javax.swing.DefaultComboBoxModel;
@@ -347,7 +347,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         TestSuite genSuite = this.testSuiteGUISelect1.generateTestSuite();
         if (genSuite == null) return;
         
-        Review testSet = (Review) uselessReviewSelection.getModel();
+        Review testSet = uselessReviewSelection.getModel();
         Review trainSet = usefulReviewSelection.getUsefulModel();
         
         testSetResults.generateModel(genSuite, testSet);
@@ -379,7 +379,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
                 writer.addAttribute(new AttributeWriter("class", "{1,0}") {
                     @Override
                     public String getAttributeFor(JSONObject obj) {
-                        return "0";
+                        return "?";
                     }
                 });
                 fos = new FileOutputStream(f);

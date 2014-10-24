@@ -7,7 +7,7 @@
 package capstone.testsuite;
 
 import capstone.CapException;
-import capstone.yelpmodel.Review;
+import capstone.model.Review;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.json.simple.JSONObject;

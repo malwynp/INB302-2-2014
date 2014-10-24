@@ -10,9 +10,9 @@ package capstone.gui;
 import capstone.CapException;
 
 //Methods for loading in yelp data
-import capstone.yelpmodel.Business;
-import capstone.yelpmodel.Review;
-import capstone.yelpmodel.JSONWrapper;//<!-- unsure what this does
+import capstone.model.Business;
+import capstone.model.Review;
+import capstone.model.JSONWrapper;//<!-- unsure what this does
 
 //Methods for arranging and resizing containers
 import java.awt.BorderLayout;

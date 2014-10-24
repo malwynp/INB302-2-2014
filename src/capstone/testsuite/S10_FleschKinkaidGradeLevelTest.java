@@ -7,7 +7,7 @@
 package capstone.testsuite;
 
 import capstone.CapException;
-import capstone.yelpmodel.Review;
+import capstone.model.Review;
 
 /**
  *

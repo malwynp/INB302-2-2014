@@ -9,8 +9,8 @@ package capstone.gui;
 import capstone.CapException;
 
 //Methods for loading in yelp data
-import capstone.yelpmodel.NanModel;
-import capstone.yelpmodel.Review;
+import capstone.model.NanModel;
+import capstone.model.Review;
 
 //Methods for arranging and resizing containers
 import java.awt.BorderLayout;

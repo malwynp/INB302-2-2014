@@ -15,7 +15,7 @@ import capstone.testsuite.TestResult.ResultRecord;
 import capstone.testsuite.TestSuite;
 
 //Methods for loading in yelp data
-import capstone.yelpmodel.Review;
+import capstone.model.Review;
 
 //Methods for arranging and resizing containers
 import java.awt.BorderLayout;

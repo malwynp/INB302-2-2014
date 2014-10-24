@@ -10,7 +10,7 @@ package capstone.testsuite;
 import capstone.CapException;
 
 //Methods for loading in yelp data
-import capstone.yelpmodel.Review;
+import capstone.model.Review;
 
 /**
  * Class contains methods related to interacting with the review test suite

@@ -7,9 +7,9 @@
 package capstone.gui;
 
 //Methods for loading in yelp data
-import capstone.yelpmodel.Model;
-import capstone.yelpmodel.YelpModel;
-import capstone.yelpmodel.YelpModel.YelpModelLoaderUI;
+import capstone.model.Model;
+import capstone.model.YelpModel;
+import capstone.model.YelpModel.YelpModelLoaderUI;
 
 //Methods for arranging and resizing containers
 import java.awt.BorderLayout;
