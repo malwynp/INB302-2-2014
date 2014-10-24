@@ -11,7 +11,14 @@ import capstone.testsuite.ReviewTest;
 import capstone.testsuite.TestSuite;
 
 //Methods for loading in yelp data
-import capstone.model.Review;
+import capstone.testsuite.S11_FogIndexTest;
+import capstone.testsuite.S2_UpperCasePercentageTest;
+import capstone.testsuite.S3_NewLineRatioTest;
+import capstone.testsuite.S4_WordCountTest;
+import capstone.testsuite.S5_ComplexWordCountTest;
+import capstone.testsuite.S6_SentenceCountTest;
+import capstone.testsuite.S7_AverageWordSyllableTest;
+import capstone.testsuite.S8_AverageWordsPerSentenceTest;
 
 //<!-- to do
 import java.awt.Component;
@@ -24,7 +31,6 @@ import java.awt.Dimension;
 import java.io.File;
 
 //<!-- to do
-import java.lang.reflect.Constructor;
 
 //Methods for handling web adresses
 import java.net.URL;
@@ -50,7 +56,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 //<!-- For JSON objects or serialisation
-import org.json.simple.JSONObject;
 
 /**
  *
@@ -137,7 +142,25 @@ public class TestSuiteGUISelect extends JPanel {
         sp = new JScrollPane(list);
         add(sp);
         
-        //Populate list with tests
+        Class cc[] = new Class[] {
+            S2_UpperCasePercentageTest.class,
+            S3_NewLineRatioTest.class,
+            S4_WordCountTest.class,
+            S5_ComplexWordCountTest.class,
+            S6_SentenceCountTest.class,
+            S7_AverageWordSyllableTest.class,
+            S8_AverageWordsPerSentenceTest.class,
+//            S9_FleschReadingEaseTest.class,
+//            S10_FleschKinkaidGradeLevelTest.class,
+            S11_FogIndexTest.class,
+//            S12_SmogTest.class,
+        };
+        for (Class c : cc) {
+            dlm.addElement(c);
+            selection.put(c, Boolean.TRUE);
+        }
+        
+    /*    //Populate list with tests
         try {
             Class cc[] = getClasses("capstone.testsuite", ReviewTest.class);
             for (Class c : cc) {
@@ -157,7 +180,7 @@ public class TestSuiteGUISelect extends JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         
         list.setModel(dlm);
     }
@@ -251,19 +274,19 @@ public class TestSuiteGUISelect extends JPanel {
      */
     public TestSuite generateTestSuite() {
         List<ReviewTest> tests = new ArrayList<>();
-        
+                
         for (int i = 0; i < dlm.size(); i++) {
             Class c = dlm.get(i);
             if (!selection.containsKey(c)) continue;
             if (!selection.get(c)) continue;
             
-            try {
-                Constructor<?> ct = c.getConstructor();
-                Object obj = ct.newInstance(new Object[] { });
-                tests.add((ReviewTest) obj);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Constructor<?> ct = c.getConstructor();
+//                Object obj = ct.newInstance(new Object[] { });
+ //               tests.add((ReviewTest) obj);
+ //           } catch (Exception e) {
+ //               e.printStackTrace();
+ //           }
         }
         
         return new TestSuite(tests.toArray(new ReviewTest[tests.size()]));
