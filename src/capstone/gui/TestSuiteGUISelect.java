@@ -29,6 +29,7 @@ import java.awt.Dimension;
 
 //Methods for system input & output through datastreams
 import java.io.File;
+import java.lang.reflect.Constructor;
 
 //<!-- to do
 
@@ -280,13 +281,13 @@ public class TestSuiteGUISelect extends JPanel {
             if (!selection.containsKey(c)) continue;
             if (!selection.get(c)) continue;
             
-//            try {
-//                Constructor<?> ct = c.getConstructor();
-//                Object obj = ct.newInstance(new Object[] { });
- //               tests.add((ReviewTest) obj);
- //           } catch (Exception e) {
- //               e.printStackTrace();
- //           }
+            try {
+                Constructor<?> ct = c.getConstructor();
+                Object obj = ct.newInstance(new Object[] { });
+                tests.add((ReviewTest) obj);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         
         return new TestSuite(tests.toArray(new ReviewTest[tests.size()]));
