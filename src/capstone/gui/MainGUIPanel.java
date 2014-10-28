@@ -12,12 +12,17 @@ import capstone.testsuite.TestSuite;
 import capstone.model.ARFFWriter;
 import capstone.model.AttributeWriter;
 import capstone.model.Business;
+import capstone.model.JSONWrapper;
 import capstone.model.Model;
 import capstone.model.NanModel;
 import capstone.model.NanWriter;
 import capstone.model.Review;
+import capstone.testsuite.TestResult;
+import capstone.testsuite.TestResult.ResultRecord;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -39,9 +44,12 @@ public class MainGUIPanel extends javax.swing.JPanel {
         
         businessSelectView.addListSelectionListener(businessListUpdate);
         usefulReviewSelection.addListener(helpfulLabelUpdate);
+        usefulReviewSelection.addListener(uselessReviewSelection);
     }
     private ChangeVotesListener helpfulLabelUpdate = new ChangeVotesListener() {
-            public void votesChange(UsefulReviewSelect sel, long newVotes) {
+            public void votesChange(UsefulReviewSelect sel, double newVotes) {
+                newVotes = (double)((int)(newVotes * 100)) / 100;
+                unhelpfulVotesLabel.setText("Reviews with 'helpful' votes < " + newVotes);
                 helpfulVotesLabel.setText("Reviews with 'helpful' votes >= " + newVotes);
             }
         };
@@ -62,6 +70,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
         initComponents();
         businessSelectView.addListSelectionListener(businessListUpdate);
         usefulReviewSelection.addListener(helpfulLabelUpdate);
+        usefulReviewSelection.addListener(uselessReviewSelection);
     }
 
     /**
@@ -85,9 +94,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jPanel6 = new javax.swing.JPanel();
         jSplitPane2 = new javax.swing.JSplitPane();
         jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        uselessReviewSelection = new capstone.gui.DataSetView();
+        unhelpfulVotesLabel = new javax.swing.JLabel();
         btnNanTestExport = new javax.swing.JButton();
+        uselessReviewSelection = new capstone.gui.UselessReviewSelection();
         jPanel5 = new javax.swing.JPanel();
         helpfulVotesLabel = new javax.swing.JLabel();
         usefulReviewSelection = new capstone.gui.UsefulReviewSelect();
@@ -188,17 +197,14 @@ public class MainGUIPanel extends javax.swing.JPanel {
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Reviews (voted helpful)");
-        jLabel1.setMinimumSize(new java.awt.Dimension(32, 32));
-        jLabel1.setOpaque(true);
-        jPanel4.add(jLabel1, java.awt.BorderLayout.NORTH);
-        jLabel1.getAccessibleContext().setAccessibleName("Reviews voted Helpful");
-
-        uselessReviewSelection.setBorder(javax.swing.BorderFactory.createCompoundBorder());
-        uselessReviewSelection.setKeys(new String[] {"text"});
-        jPanel4.add(uselessReviewSelection, java.awt.BorderLayout.CENTER);
+        unhelpfulVotesLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
+        unhelpfulVotesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        unhelpfulVotesLabel.setText("Reviews with 'helpful' votes < 1");
+        unhelpfulVotesLabel.setMinimumSize(new java.awt.Dimension(32, 32));
+        unhelpfulVotesLabel.setOpaque(true);
+        unhelpfulVotesLabel.setPreferredSize(new java.awt.Dimension(48, 48));
+        jPanel4.add(unhelpfulVotesLabel, java.awt.BorderLayout.NORTH);
+        unhelpfulVotesLabel.getAccessibleContext().setAccessibleName("Reviews voted Helpful");
 
         btnNanTestExport.setText("Export Test Data File (Unvoted)");
         btnNanTestExport.addActionListener(new java.awt.event.ActionListener() {
@@ -208,15 +214,21 @@ public class MainGUIPanel extends javax.swing.JPanel {
         });
         jPanel4.add(btnNanTestExport, java.awt.BorderLayout.PAGE_END);
 
+        uselessReviewSelection.setKeys(new String[] {"goodVotes", "text"});
+        uselessReviewSelection.setSortKey("goodVotes");
+        uselessReviewSelection.setSorted(true);
+        jPanel4.add(uselessReviewSelection, java.awt.BorderLayout.CENTER);
+
         jSplitPane2.setLeftComponent(jPanel4);
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         helpfulVotesLabel.setFont(new java.awt.Font("DejaVu Sans", 1, 13)); // NOI18N
         helpfulVotesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        helpfulVotesLabel.setText("Reviews (NOT voted helpful)");
+        helpfulVotesLabel.setText("Reviews with 'helpful' votes >= 1");
         helpfulVotesLabel.setMinimumSize(new java.awt.Dimension(32, 32));
         helpfulVotesLabel.setOpaque(true);
+        helpfulVotesLabel.setPreferredSize(new java.awt.Dimension(48, 48));
         jPanel5.add(helpfulVotesLabel, java.awt.BorderLayout.NORTH);
 
         usefulReviewSelection.setBorder(javax.swing.BorderFactory.createCompoundBorder());
@@ -378,8 +390,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
         TestSuite genSuite = this.testSuiteGUISelect1.generateTestSuite();
         if (genSuite == null) return;
         
-        Review testSet = (Review) uselessReviewSelection.getModel();
-        Review trainSet = usefulReviewSelection.getUsefulModel();
+        JSONWrapper testSet = uselessReviewSelection.getModel();
+        JSONWrapper trainSet = usefulReviewSelection.getUsefulModel();
+        testSet = testSet.join(trainSet);
         
         testSetResults.generateModel(genSuite, testSet);
         trainingSetResults.generateModel(genSuite, trainSet);
@@ -400,25 +413,52 @@ public class MainGUIPanel extends javax.swing.JPanel {
         jfc.setDialogTitle("Export Test WRFF file");
         jfc.setSelectedFile(new File("test.arff"));
         jfc.setFileFilter(new FileNameExtensionFilter("ARFF File", "arff"));
+
+        TestSuite genSuite = testSuiteGUISelect1.generateTestSuite();
+        if (genSuite == null) return;
         
         if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File f = jfc.getSelectedFile();
-            FileOutputStream fos = null;
+            JSONWrapper useless = uselessReviewSelection.getModel();
+            JSONWrapper useful = usefulReviewSelection.getUsefulModel();
+            useless.putAll("classHelpful", 0L);
+            useful.putAll("classHelpful", 1L);
+            JSONWrapper testSet = useless;
+            JSONWrapper trainSet = useful;
+            testSet = testSet.join(trainSet);
 
+//            TestResult trainRes = trainingSetResults.generateModel(genSuite, trainSet);
+
+            JSONWrapper testModel = null;
             try {
-                ARFFWriter writer = new ARFFWriter(f.getName(), testSetResults.getModel());
-                writer.addAttribute(new AttributeWriter("class", "{1,0}") {
-                    @Override
-                    public String getAttributeFor(JSONObject obj) {
-                        return "?";
-                    }
-                });
-                fos = new FileOutputStream(f);
-                writer.writeToStream(fos);
-                fos.close();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e.toString());
-            } finally {
+                testModel = new JSONWrapper(testSet.getSortedArray("originalOrder", true));
+            } catch (CapException ex) {
+                JOptionPane.showMessageDialog(null, "An error occurred while saving this ARFF file:\n" + ex.toString());
+            }
+            if (testModel != null) {
+                
+                File f = jfc.getSelectedFile();
+                FileOutputStream fos = null;
+
+                try {
+                    TestResult t0 = trainingSetResults.generateModel(genSuite, testSet);
+//                    TestResult t1 = trainRes;
+//                    System.out.println(t0.toString());
+                    
+                    ARFFWriter writer = new ARFFWriter(f.getName(), t0);
+                    writer.addAttribute(new AttributeWriter("class", "{1,0}") {
+                        @Override
+                        public String getAttributeFor(JSONObject obj) {
+                            return ((Long)(obj.get("classHelpful")) != 0) ? "1" : "?";
+                        }
+                    });
+                    fos = new FileOutputStream(f);
+                    writer.writeToStream(fos);
+                    fos.close();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.toString());
+                    e.printStackTrace();
+                } finally {
+                }
             }
             
         }
@@ -436,7 +476,12 @@ public class MainGUIPanel extends javax.swing.JPanel {
             FileOutputStream fos = null;
 
             try {
-                ARFFWriter writer = new ARFFWriter(f.getName(), trainingSetResults.getModel());
+                JSONWrapper useful = usefulReviewSelection.getUsefulModel();
+                JSONWrapper testModel = new JSONWrapper(useful.getSortedArray("originalOrder", true));
+                TestSuite suite = testSuiteGUISelect1.generateTestSuite();
+                TestResult resTrain = trainingSetResults.generateModel(suite, testModel);
+                
+                ARFFWriter writer = new ARFFWriter(f.getName(), resTrain);
                 writer.addAttribute(new AttributeWriter("class", "{1,0}") {
                     @Override
                     public String getAttributeFor(JSONObject obj) {
@@ -461,7 +506,15 @@ public class MainGUIPanel extends javax.swing.JPanel {
         
         if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
-                NanWriter nw = new NanWriter(uselessReviewSelection.getModel());
+                JSONWrapper useless = uselessReviewSelection.getModel();
+                JSONWrapper useful = usefulReviewSelection.getUsefulModel();
+                
+                useless.putAll("classHelpful", true);
+                useful.putAll("classHelpful", false);
+                
+                JSONWrapper testModel = new JSONWrapper(useless.join(useful).getSortedArray("originalOrder", true));
+                
+                NanWriter nw = new NanWriter(testModel);
                 FileOutputStream fos = new FileOutputStream(jfc.getSelectedFile());
                 nw.writeToStream("@Test review dataset", fos);
                 fos.close();
@@ -507,7 +560,6 @@ public class MainGUIPanel extends javax.swing.JPanel {
     private javax.swing.JLabel helpfulVotesLabel;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel4;
@@ -528,8 +580,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
     private capstone.gui.TestSuiteGUISelect testSuiteGUISelect1;
     private javax.swing.JPanel testTab;
     private capstone.gui.ResultTable trainingSetResults;
+    private javax.swing.JLabel unhelpfulVotesLabel;
     private capstone.gui.UsefulReviewSelect usefulReviewSelection;
-    private capstone.gui.DataSetView uselessReviewSelection;
+    private capstone.gui.UselessReviewSelection uselessReviewSelection;
     // End of variables declaration//GEN-END:variables
 
     
@@ -545,8 +598,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
                     Review useless = model.getReviews();
                     Review useful = model.getReviews();
                     
-                    uselessReviewSelection.setModel(useless);
+                    uselessReviewSelection.setRootModel(useless);
                     usefulReviewSelection.setModel(useful);
+                    uselessReviewSelection.setModel(new Review(useless.getArray()).cull(usefulReviewSelection.getUsefulModel()));
                 } catch (Exception e) {
                 }
             } else {
@@ -561,7 +615,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
     
     public void businessSelected(ListSelectionEvent lse) throws CapException {
 
-        uselessReviewSelection.setModel(null);
+        uselessReviewSelection.setRootModel(null);
         usefulReviewSelection.setModel(null);
         JSONObject obj;
         
@@ -569,7 +623,7 @@ public class MainGUIPanel extends javax.swing.JPanel {
             Review useless = model.getReviews();
             Review useful = model.getReviews();
 
-            uselessReviewSelection.setModel(useless);
+            uselessReviewSelection.setRootModel(useless);
             usefulReviewSelection.setModel(useful);
         } else {
             if ((obj = businessSelectView.getSelected()) == null) return;
@@ -577,8 +631,8 @@ public class MainGUIPanel extends javax.swing.JPanel {
             String businessID = (String)(obj.get("business_id"));
             Review rSet = model.getReviews().getReviewsForBusiness(businessID);
 
-            uselessReviewSelection.setModel(rSet.trimByVotes("useful", -1));
             usefulReviewSelection.setModel(rSet);
+            uselessReviewSelection.setModel(rSet.cull(usefulReviewSelection.getUsefulModel()));
 
             String ignoreKeys[] = new String[] {
                 "type", "state", "open", "neighborhoods", "latitude", "longitude"

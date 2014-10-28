@@ -46,9 +46,21 @@ public final class ARFFWriter {
 
                 @Override
                 public String getAttributeFor(JSONObject obj) {
-                    for (ResultRecord rec : model.getRecord(obj))
-                        if (rec.getTest().equals(rt))
-                            return "" + rec.getDouble();
+                //    System.out.println("\tWriting attribute:" + rt.getClass().getSimpleName() + ", for[" + obj.get("originalOrder") + "]");
+                    if (obj == null) System.out.println("Null obj passed to getAttributeFor in AttributeWriter!");
+                    if (model.getRecord(obj) == null)
+                        obj = model.findEquivalentReview(obj);
+                    
+                    ResultRecord[] records = model.getRecord(obj);
+                    if (records == null) {
+                        System.out.println("Error saving records for:" + obj.toString());
+                    } else {
+                        for (ResultRecord rec : records) {
+                        //    System.out.println("record=[" + rec.toString() + "]");
+                            if (rec.getTest().getClass().equals(rt.getClass()))
+                                return "" + rec.getDouble();
+                        }
+                    }
                     
                     return "?";
                 }
@@ -106,6 +118,7 @@ public final class ARFFWriter {
         String str = "@DATA\n";
         
         for (JSONObject o : model.getRecordObjects()) {
+        //    System.out.println("Writing data for object:(" + o.toString());
             str += getItemHeader(o);
             str += getItemData(o);
             str += getItemFooter(o);
@@ -124,10 +137,12 @@ public final class ARFFWriter {
     }
     public String getItemData(JSONObject obj) {
         String str = "";
+        if (obj == null) System.out.println("Null obj passed to getItemData in ARFFWriter!");
         
         for (int i = 0; i < attribs.size(); i++) {
             AttributeWriter aw = attribs.get(i);
-            str += aw.getAttributeFor(obj) + ((i < attribs.size() - 1) ? "," : "");
+            String attrib = aw.getAttributeFor(obj);
+            str += attrib + ((i < attribs.size() - 1) ? "," : "");
         }
         str += "\n";
         

@@ -7,6 +7,7 @@
 package capstone.testsuite;
 
 import capstone.CapException;
+import capstone.model.JSONWrapper;
 import capstone.model.Review;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,8 +19,8 @@ import org.json.simple.JSONObject;
  */
 public class S6_SentenceCountTest extends ReviewTest {
     
-     public double getScore(Review review, int index) throws CapException {
-        if (review == null || !review.contains(index))
+    public double getScore(JSONWrapper review, int index) throws CapException {
+        if (review == null || (index < 0 || index >= review.size()))
            throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
 
         //Initialise variables

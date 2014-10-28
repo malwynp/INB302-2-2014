@@ -7,7 +7,7 @@
 package capstone.testsuite;
 
 import capstone.CapException;
-import capstone.model.Review;
+import capstone.model.JSONWrapper;
 
 /**
  *
@@ -16,7 +16,7 @@ import capstone.model.Review;
 public class S10_FleschKinkaidGradeLevelTest extends ReviewTest {
 
     @Override
-    public double getScore(Review review, int index) throws CapException {
+    public double getScore(JSONWrapper review, int index) throws CapException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

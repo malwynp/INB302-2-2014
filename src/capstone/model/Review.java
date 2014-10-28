@@ -25,10 +25,16 @@ public class Review extends JSONWrapper {
         super(src);
     }
     public Review(File f) {
-        super(f);
+        super(f, "originalOrder");
+    }
+    public Review(File f, String ok) {
+        super(f, ok);
     }
     public Review(JSONObject[] arr) {
         super(arr);
+    }
+    public Review(JSONObject[] arr, String ok) {
+        super(arr, ok);
     }
     
     protected void storeBusinessNames(Business business) {
@@ -42,6 +48,10 @@ public class Review extends JSONWrapper {
             String busName = (String) bus.get("name");
             
             obj.put("business_name", busName);
+            
+            // Kludge for compatibility with NanModel
+            long votesUseful = (long) ((JSONObject)(obj.get("votes"))).get("useful");
+            obj.put("goodVotes", votesUseful);
         }
     }
     

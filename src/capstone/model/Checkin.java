@@ -19,7 +19,7 @@ public class Checkin extends JSONWrapper {
     }
 
     public Checkin(File f) {
-        super(f);
+        super(f, "originalOrder");
     }
 
 }

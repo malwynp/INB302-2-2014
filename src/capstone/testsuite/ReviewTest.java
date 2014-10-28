@@ -8,6 +8,7 @@ package capstone.testsuite;
 
 //Method for displaying custom exception message
 import capstone.CapException;
+import capstone.model.JSONWrapper;
 
 //Methods for loading in yelp data
 import capstone.model.Review;
@@ -15,12 +16,12 @@ import capstone.model.Review;
 /**
  * Class contains methods related to interacting with the review test suite
  */
-public abstract class ReviewTest {
+public abstract class ReviewTest implements Cloneable {
     
     public ReviewTest() {
     }
     
-    public abstract double getScore(Review review, int index) throws CapException;
+    public abstract double getScore(JSONWrapper review, int index) throws CapException;
 
     public static String niceClassName(String str) {
         return niceClassName(str, true);

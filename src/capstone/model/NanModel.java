@@ -95,6 +95,7 @@ public class NanModel implements Model {
                     obj.put("votes", votes);
                     
                     obj.put("text", reviewText);
+                    obj.put("originalOrder", count);
                     arr.add(obj);
                     
                     count++;

@@ -8,6 +8,7 @@ package capstone.testsuite;
 
 //Method for displaying custom exception message
 import capstone.CapException;
+import capstone.model.JSONWrapper;
 
 //Methods for loading in yelp data
 import capstone.model.Review;
@@ -16,6 +17,8 @@ import capstone.model.Review;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 /**
  *
@@ -64,7 +67,7 @@ public class TestSuite {
      * @return
      * @throws CapException 
      */
-    public double testRecord(Review reviews, int index, ReviewTest test) throws CapException {
+    public double testRecord(JSONWrapper reviews, int index, ReviewTest test) throws CapException {
         double score = test.getScore(reviews, index);
         for (ReviewTestListener rtl : getListeners(test))
             rtl.classify(reviews, index, this, test, score);
@@ -120,7 +123,7 @@ public class TestSuite {
      * @return
      * @throws CapException 
      */
-    public TestResult testAndStoreAllRecords(Review reviews) throws CapException {
+    public TestResult testAndStoreAllRecords(JSONWrapper reviews) throws CapException {
         TestResult results = new TestResult();
         
         for (int i = 0; i < reviews.size(); i++) {
@@ -170,7 +173,7 @@ public class TestSuite {
     }
     
     public static interface ReviewTestListener {
-        public boolean classify(Review reviews, int index, TestSuite suite, ReviewTest test, double score);
+        public boolean classify(JSONWrapper reviews, int index, TestSuite suite, ReviewTest test, double score);
     }
     
 }

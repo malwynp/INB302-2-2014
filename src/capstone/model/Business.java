@@ -23,7 +23,7 @@ public class Business extends JSONWrapper {
         super(src);
     }
     public Business(File f) {
-        super(f);
+        super(f, "originalOrder");
     }
     public Business(JSONObject arr[]) {
         super(arr);

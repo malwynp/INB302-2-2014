@@ -116,6 +116,13 @@ public class CapstoneApplication extends JFrame implements ActionListener, YelpM
      */
     private static CapstoneApplication instance = null;
     public static void main(String args[]) {
+        try {
+            for (LookAndFeelInfo lafi : UIManager.getInstalledLookAndFeels())
+                if (lafi.getName().contains("GTK"))
+                    UIManager.setLookAndFeel(lafi.getClassName());
+        } catch (Exception e) {
+        }
+        
         instance = new CapstoneApplication();
     }
 

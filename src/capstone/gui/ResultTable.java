@@ -7,6 +7,7 @@ package capstone.gui;
 
 //Method for displaying custom exception message
 import capstone.CapException;
+import capstone.model.JSONWrapper;
 
 //Methods for loading test suites
 import capstone.testsuite.ReviewTest;
@@ -22,6 +23,8 @@ import java.awt.BorderLayout;
 
 //Methods for controling height and width of a abstract window toolkit component
 import java.awt.Dimension;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //Methods for creating GUI
 import javax.swing.JPanel;
@@ -94,8 +97,14 @@ public class ResultTable extends JPanel {
 
             @Override
             public Object getValueAt(int y, int x) {
+                if (model == null) {
+                    System.out.println("Model is null! This should not happen!");
+                }
                 ResultRecord[] record = model.getRecord(y);
-                if (record == null || record.length == 0) return null;
+                if (record == null || record.length == 0) {
+                    System.out.println("Null record:" + y + "," + x + " from model " + model);
+                    return null;
+                }
                 JSONObject obj = record[0].getObject();
                 double rounded = record[x].getDouble();
                 rounded = (double)((int)(rounded * 100)) / 100d;
@@ -115,15 +124,28 @@ public class ResultTable extends JPanel {
      * Runs the test suite and returns the results into the current model 
      * @param suite
      * @param reviews 
+     * @return  
      */
-    public void generateModel(TestSuite suite, Review reviews) {
+    public TestResult generateModel(TestSuite suite, JSONWrapper reviews) {
         if (suite == null || reviews == null) {
             setModel(null);
-            return;
+            return getModel();
         }
         try {
-            setModel(suite.testAndStoreAllRecords(reviews));
+            TestResult newModel = suite.testAndStoreAllRecords(reviews);
+            setModel(newModel);
+            return newModel;
         } catch (CapException ex) {
+        }
+        return getModel();
+    }
+
+    public TestResult getGeneratedModel(TestSuite suite, JSONWrapper reviews) {
+        try {
+            return suite.testAndStoreAllRecords(reviews);
+        } catch (CapException ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
     

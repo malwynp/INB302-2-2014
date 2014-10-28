@@ -63,7 +63,7 @@ public class YelpModel implements Model {
         System.out.println("...done.");
 
         System.out.println("Reading reviews...");
-        review = new Review(reviewFile);
+        review = new Review(reviewFile, "originalOrder");
         System.out.println("...done.");
 
         System.out.println("Syncing reviews to businesses...");

@@ -105,9 +105,9 @@ public class SpinButton extends JPanel implements ActionListener {
         up.addActionListener(this);
         down.addActionListener(this);
         
-        setMinimumSize(new Dimension(32, 32));
-        setPreferredSize(new Dimension(96, 32));
-        bPane.setPreferredSize(new Dimension(32, 48));
+        setMinimumSize(new Dimension(48, 48));
+        setPreferredSize(new Dimension(96, 48));
+        bPane.setPreferredSize(new Dimension(48, 64));
         
     }
     

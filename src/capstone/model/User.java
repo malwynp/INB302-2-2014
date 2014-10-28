@@ -18,7 +18,7 @@ public class User extends JSONWrapper {
         super(src);
     }
     public User(File f) {
-        super(f);
+        super(f, "originalOrder");
     }
     
 }

@@ -63,7 +63,7 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
         
         dsv = new DataSetView();
         dsv.setKeys(new String[] { "votes.useful", "text" } );
-        dsv.setSortKey("votes.useful");
+        dsv.setSortKey("goodVotes");
         dsv.setSorted(true);
         add(dsv, BorderLayout.CENTER);
     }
@@ -119,7 +119,7 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     public void propertyChange(PropertyChangeEvent pce) {
         try {
             dsv.setModel(getUsefulModel());
-            long newmin = minimumVoteCount();
+            double newmin = minimumVoteCount();
             for (ChangeVotesListener cvl : listeners)
                 cvl.votesChange(this, newmin);
         } catch (CapException ex) {
@@ -134,9 +134,9 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
      * Retrieve the min useful votes counter from the spinner buttons
      * @return 
      */
-    public long minimumVoteCount() {
+    public double minimumVoteCount() {
         if (reviewModel == null) return 0;
-        long minimum = (long)(spinner.getValue());
+        double minimum = (spinner.getValue());
         
 //        long minVotes = reviewModel.getMinimumVotesAsLong(reviewModel.getUsefulKey());
 //        long maxVotes = reviewModel.getMaximumVotesAsLong(reviewModel.getUsefulKey());
@@ -157,7 +157,7 @@ public class UsefulReviewSelect extends JPanel implements PropertyChangeListener
     }
     
     public static interface ChangeVotesListener {
-        public void votesChange(UsefulReviewSelect sel, long newVotes);
+        public void votesChange(UsefulReviewSelect sel, double newVotes);
     }
 
     

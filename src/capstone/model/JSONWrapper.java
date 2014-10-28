@@ -12,7 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-public class JSONWrapper implements Serializable {
+public class JSONWrapper implements Serializable, Cloneable {
     public static final long serialVersionUID = -1L;
     
     protected boolean ignoreRecordLimit = false;
@@ -28,13 +28,27 @@ public class JSONWrapper implements Serializable {
     public JSONWrapper(JSONObject[] arr) {
         preload();
         json = new JSONArray();
+        long originalOrder = 0;
         for (JSONObject o : arr) {
             json.add(o);
+            o.put("originalOrder", originalOrder);
+            originalOrder++;
+        }
+        postload();
+    }
+    public JSONWrapper(JSONObject[] arr, String orderKey) {
+        preload();
+        json = new JSONArray();
+        long originalOrder = 0;
+        for (JSONObject o : arr) {
+            json.add(o);
+            o.put(orderKey, originalOrder);
+            originalOrder++;
         }
         postload();
     }
 
-    public JSONWrapper(File f) {
+    public JSONWrapper(File f, String orderKey) {
         preload();
         
         try {
@@ -52,6 +66,7 @@ public class JSONWrapper implements Serializable {
                 String line = br.readLine();
                 //src += line + ",\n";
                 JSONObject obj = (JSONObject) JSONValue.parse(line);
+                obj.put(orderKey, count);
                 json.add(obj);
                 
                 count++;
@@ -187,6 +202,20 @@ public class JSONWrapper implements Serializable {
         }
         
         return var;
+    }
+    
+    public void putAll(String key, Object o) {
+        for (JSONObject obj : getArray()) {
+            obj.put(key, o);
+        }
+    }
+
+    public JSONWrapper join(JSONWrapper b) {
+        JSONWrapper a = new JSONWrapper(this.getArray());
+        for (JSONObject obj : b.getArray()) {
+            if (!a.json.contains(obj)) a.json.add(obj);
+        }
+        return a;
     }
 
 }
