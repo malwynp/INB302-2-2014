@@ -85,14 +85,15 @@ public class ResultTable extends JPanel {
 
             @Override
             public int getColumnCount() {
-                return model.getTestCount();
+                return model.getTestCount() + 1;
             }
             
             @Override
             public String getColumnName(int x) {
                 ResultRecord[] record = model.getRecord(0);
                 if (record == null || record.length == 0) return null;
-                return ReviewTest.niceClassName(record[x].getTest().getClass().getSimpleName(), false);
+                if (x == 0) return "Original order";
+                return ReviewTest.niceClassName(record[x-1].getTest().getClass().getSimpleName(), false);
             }
 
             @Override
@@ -106,7 +107,8 @@ public class ResultTable extends JPanel {
                     return null;
                 }
                 JSONObject obj = record[0].getObject();
-                double rounded = record[x].getDouble();
+                if (x == 0) return obj.get("originalOrder");
+                double rounded = record[x-1].getDouble();
                 rounded = (double)((int)(rounded * 100)) / 100d;
                 return rounded;
             }

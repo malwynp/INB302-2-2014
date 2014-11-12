@@ -448,7 +448,9 @@ public class MainGUIPanel extends javax.swing.JPanel {
                     writer.addAttribute(new AttributeWriter("class", "{1,0}") {
                         @Override
                         public String getAttributeFor(JSONObject obj) {
-                            return ((Long)(obj.get("classHelpful")) != 0) ? "1" : "?";
+                            return "?";
+//                            return ((Long)(obj.get("classHelpful")) == 0) ? "0" : "?";
+//                            return ((Long)(obj.get("classHelpful")) != 0) ? "1" : "?";
                         }
                     });
                     fos = new FileOutputStream(f);

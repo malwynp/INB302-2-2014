@@ -55,7 +55,7 @@ public class NanModel implements Model {
                     for (int i = 0; i < jsonAttributes.length; i++) {
                         String s = jsonAttributes[i];
                         str = br.readLine();
-                        System.out.println(s + "=" + str);
+                    //    System.out.println(s + "=" + str);
                         if (str.contains("/")) { // May confuse JSON parser
                             obj.put(s, str);
                         } else if (i == jsonAttributes.length-1) { // Author
@@ -79,7 +79,7 @@ public class NanModel implements Model {
                     
                     String reviewText = "";
                     for (String s : reviewTextList) {
-                        reviewText = reviewText + s + "\n";
+                        reviewText = reviewText + s + ".\n";
                     }
                     
                     String wholeVotes = (String)(obj.get(jsonAttributes[0]));

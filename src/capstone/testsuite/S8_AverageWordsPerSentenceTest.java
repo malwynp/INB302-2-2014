@@ -22,15 +22,13 @@ public class S8_AverageWordsPerSentenceTest extends ReviewTest {
     public double getScore(JSONWrapper review, int index) throws CapException {
         if (review == null || (index < 0 || index >= review.size()))
             throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
-        /*
         //S4
-        double wordCount = S4_WordCountTest.getScore(review,index);
+        double wordCount = new S4_WordCountTest().getScore(review,index);
         
         //S6
-        double sentenceCounter = S6_SentenceCountTest.getScore(review,index);
+        double sentenceCounter = new S6_SentenceCountTest().getScore(review,index);
  
         return (wordCount / sentenceCounter);
-        */ return .4;
     }
             
 }

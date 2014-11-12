@@ -22,17 +22,14 @@ public class S7_AverageWordSyllableTest extends ReviewTest {
     public double getScore(JSONWrapper review, int index) throws CapException {
         if (review == null || (index < 0 || index >= review.size()))
            throw new CapException("Bad data passed in " + this.getClass().getSimpleName() + ".getScore(" + review + ", " + index + ")");
-        /*
+
         //S4
-        double numWords = S4_WordCountTest.getScore(review,index);
-        
-        obj.getClass(S4_WordCountTest).getMethod(getScore, review, index);
+        double numWords = new S4_WordCountTest().getScore(review,index);
         
         //S5
-        double numComplex = S5_ComplexWordCountTest.getScore(review,index);
+        double numComplex = new S5_ComplexWordCountTest().getScore(review,index);
         
         return (numComplex / numWords);
-        */ return .4;
     }
     
 }
